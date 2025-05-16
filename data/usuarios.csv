@@ -1,1 +1,1 @@
-id,nombre,email,contraseña,activo
+id,nombre,email,contraseña,activo,bloqueado,edad,es_admin

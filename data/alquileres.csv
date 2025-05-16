@@ -1,1 +1,1 @@
-id,usuario_id,vehiculo_id,fecha_inicio,fecha_fin
+id_reserva,usuario_id,patente,fecha_inicio,fecha_fin,estado
