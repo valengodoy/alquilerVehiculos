@@ -64,7 +64,7 @@ def registrar_usuario(nombre, email, contraseña, fecha_nac):
     st.success("¡Registro exitoso! 🎉")
     st.info("Ahora puedes iniciar sesión desde el menú lateral.")
 
-# Interfaz Streamlit
+# Interfaz
 st.title("Registro de usuario 📝")
 
 with st.form("registro_form"):

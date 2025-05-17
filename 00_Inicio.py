@@ -14,5 +14,8 @@ def main():
     ¡Comenzá tu viaje hoy mismo!
     """)
 
+
 if __name__ == "__main__":
+    if 'session_state' not in st.session_state:
+        st.session_state['session_state'] = 'no_logged'
     main()
