@@ -15,7 +15,7 @@ marca = st.text_input("Marca")
 modelo = st.text_input("Modelo")
 año = st.text_input("Año")
 disponible = st.selectbox("Está disponible?", ["Sí", "No"])
-tipo = st.selectbox("Tipo de vehículo", ["SUV"])
+tipo = st.selectbox("Tipo de vehículo", ["SUV", "Sedan", "Deportivo"])
 precio_dia = st.text_input("Precio por día")
 
 if st.button("Registar Vehículo"):
