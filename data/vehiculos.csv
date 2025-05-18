@@ -1,6 +1,4 @@
-patente,marca,modelo,año,disponible,tipo,precio_dia
-GCV421,Toyota,Hilux,2018,Sí,SUV,40000
-GFD436,Fiat,Cronnos,2018,No,SUV,35000
-NJF834,Ford,Mustang,2022,Sí,SUV,50000
-GFD654,Peugeot,208,2021,Sí,Deportivo,40000
-ASC215,Chevrolet,Onix,2019,Sí,Sedan,25000
+patente,marca,modelo,año,disponible,tipo,precio_dia,imagen
+NJF834,Chevrolet,Onix,2018,Sí,Sedan,25000,NJF834.jpg
+ASC215,Fiat,Cronos,2017,Sí,SUV,35000,ASC215.jpg
+NBV345,Chevrolet,Camaro,2022,Sí,Deportivo,60000,NBV345.jpg

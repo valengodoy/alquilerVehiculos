@@ -43,7 +43,7 @@ else:
             with cols[idx % 3]:
                 st.markdown("<div class='card'>", unsafe_allow_html=True)
                     
-                #st.image(row['imagen'], use_container_width=True)
+                st.image(f"imagenes/{row['imagen']}", use_container_width=True)
                     
                 if not row['disponible']:
                     st.markdown("No disponible")
