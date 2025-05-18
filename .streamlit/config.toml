@@ -1,0 +1,6 @@
+[theme]
+primaryColor = "#cc0000"               # para botones y acentos
+backgroundColor = "#000000"           # Fondo principal 
+secondaryBackgroundColor = "#cc0000"  # Fondo del sidebar
+textColor = "#ffffff"                 # Texto blanco
+font = "sans serif"
