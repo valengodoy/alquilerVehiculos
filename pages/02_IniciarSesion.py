@@ -34,6 +34,7 @@ def verificar_credenciales(email, contraseña):
 
     st.success(f"¡Bienvenido, {usuario['nombre']}! 👋")
     st.session_state['session_state'] = 'logged'
+    st.session_state["usuario_email"] = email
     
     
 
