@@ -1,5 +1,7 @@
 import streamlit as st
+import pandas as pd
 
+RUTA_CSV = "data/usuarios.csv"
 
 def obtener_usuario_actual():
     if 'usuario_email' not in st.session_state:
