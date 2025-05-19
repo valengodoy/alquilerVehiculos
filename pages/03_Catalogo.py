@@ -4,6 +4,8 @@ import pandas as pd
 st.set_page_config(layout="wide")
 st.title("Catálogo de Autos")
 
+query_params = st.query_params
+
 catalogo = pd.read_csv('data/vehiculos.csv')
     
 if catalogo.empty:
@@ -42,8 +44,18 @@ else:
         for idx, row in catalogo_filtrado.iterrows():
             with cols[idx % 3]:
                 st.image(f"imagenes/{row['imagen']}", use_container_width=True)
-                    
-                if row['disponible'] == 'No':
-                    st.warning("No disponible")
 
                 st.error(f"**{row['marca']} {row['modelo']} {row['año']} {row['tipo']} 💲{row['precio_dia']}**") #Use st.error unicamente para que se marque con color rojo
+
+                if row['disponible'] == 'No':
+                    st.warning("No disponible")
+                else:
+                    if st.button('Realizar reserva', key=f"{row['patente']}"):
+                        st.session_state["id"] = row['patente']
+                        st.session_state["marca"] = row['marca']
+                        st.session_state["modelo"] = row['modelo']
+                        st.session_state["año"] = row['año']
+                        st.session_state["tipo"] = row['tipo']
+                        st.session_state["imagen"] = row['imagen']
+                        st.switch_page('pages/07_RealizarReserva.py')
+                        st.rerun()
