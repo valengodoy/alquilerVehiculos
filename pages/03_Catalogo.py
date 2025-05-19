@@ -21,7 +21,7 @@ else:
 
     disponible = st.checkbox('Disponible')
         
-    filtro = (catalogo['precio_dia'] >= precio_min) & (catalogo['precio_dia'] <= precio_max)
+    filtro = (catalogo['precio_dia'] >= precio_min) & (catalogo['precio_dia'] <= precio_max) & (catalogo['eliminado'] == 'No')
 
     if marca:
         filtro &= catalogo['marca'].isin(marca)
@@ -41,11 +41,9 @@ else:
         cols = st.columns(3)
         for idx, row in catalogo_filtrado.iterrows():
             with cols[idx % 3]:
-                st.markdown("<div class='card'>", unsafe_allow_html=True)
-                    
                 st.image(f"imagenes/{row['imagen']}", use_container_width=True)
                     
-                if not row['disponible']:
-                    st.markdown("No disponible")
+                if row['disponible'] == 'No':
+                    st.warning("No disponible")
 
-                st.markdown(f"**{row['marca']} {row['modelo']} {row['año']} {row['tipo']} 💲{row['precio_dia']}**")
+                st.error(f"**{row['marca']} {row['modelo']} {row['año']} {row['tipo']} 💲{row['precio_dia']}**") #Use st.error unicamente para que se marque con color rojo

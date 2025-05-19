@@ -1,4 +1,4 @@
 patente,marca,modelo,año,disponible,tipo,precio_dia,imagen,eliminado
 NJF834,Chevrolet,Onix,2018,Sí,Sedan,25000,NJF834.jpg,No
 ASC215,Fiat,Cronos,2017,Sí,SUV,35000,ASC215.jpg,No
-NBV345,Chevrolet,Camaro,2022,Sí,Deportivo,60000,NBV345.jpg,No
+NBV345,Chevrolet,Camaro,2022,No,Deportivo,60000,NBV345.jpg,No
