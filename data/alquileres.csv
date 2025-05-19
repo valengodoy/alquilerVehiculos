@@ -1,2 +1,2 @@
-id_reserva,usuario_id,patente,fecha_inicio,fecha_fin,estado, costo_dia, costo_total
-1,valen@gmail.com,ASC215,20/05/2025,21/05/2025,pendiente,3000,40000
+id_reserva,usuario_id,patente,fecha_inicio,fecha_fin,estado,costo_dia,costo_total
+ASC215,usuario1@gmail.com,ASC215,2025-05-23,2025-05-24,pendiente,35000,70000

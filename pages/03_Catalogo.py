@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from functions.usuarios import obtener_usuario_actual
 
 st.set_page_config(layout="wide")
 st.title("Catálogo de Autos")
@@ -36,7 +37,9 @@ else:
 
     catalogo_filtrado = catalogo[filtro]
 
-        
+    if obtener_usuario_actual() == None:
+        st.info('Inicie sesion para poder realizar una reserva')
+    
     if catalogo_filtrado.empty:
         st.info("🚫 No se encontraron autos que coincidan con la búsqueda.")
     else:
@@ -49,7 +52,7 @@ else:
 
                 if row['disponible'] == 'No':
                     st.warning("No disponible")
-                else:
+                elif obtener_usuario_actual() != None:
                     if st.button('Realizar reserva', key=f"{row['patente']}"):
                         st.session_state["id"] = row['patente']
                         st.session_state["marca"] = row['marca']
@@ -57,5 +60,6 @@ else:
                         st.session_state["año"] = row['año']
                         st.session_state["tipo"] = row['tipo']
                         st.session_state["imagen"] = row['imagen']
+                        st.session_state["precio_dia"] = row['precio_dia']
                         st.switch_page('pages/07_RealizarReserva.py')
                         st.rerun()
