@@ -7,14 +7,14 @@ import os
 CARPETA_IMAGENES = "imagenes"
 
 st.set_page_config(
-    page_title=' Registar Vehículo', page_icon='🚗',layout='centered')
+    page_title=' Registrar Vehículo', page_icon='🚗',layout='centered')
 
 
 st.title("Registrar Vehículo 🚗")
 
 
 if not es_empleado_valido(): #logueado, sea empleado, este activo y no bloqueado
-    st.error("⚠️ Debes iniciar sesión como empleado para registrar un vehículo.")
+    st.error("⚠️ No tiene permiso para acceder a esta sección.")
     st.stop()
 
 patente = st.text_input("Patente")
@@ -26,7 +26,7 @@ tipo = st.selectbox("Tipo de vehículo", ["SUV", "Sedan", "Deportivo"])
 precio_dia = st.text_input("Precio por día")
 foto = st.file_uploader("Agregue una foto del vehículo", type=["jpg", "jpeg", "png"])
 
-if st.button("Registar Vehículo"):
+if st.button("Registrar Vehículo"):
     if not validar_patente(patente):
         st.error("La patente no tiene un formato válido")
     elif existe_patente(patente):
