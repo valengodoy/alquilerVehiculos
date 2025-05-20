@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+from functions.reserva import cargar_reservas
+from datetime import date
 
 RUTA_CSV = "data/usuarios.csv"
 
@@ -26,3 +28,15 @@ def es_empleado_valido():
         not usuario.get("bloqueado") and
         usuario.get("es_admin")
     )
+    
+def tiene_reserva(email):
+    df_reservas = cargar_reservas()  # función que carga todas las reservas
+    
+    # Filtrar reservas que están activas ahora (estado activo o pendiente)
+    reservas_activas = df_reservas[
+            (df_reservas["usuario_id"] == email) & 
+            (df_reservas["estado"].isin(["activo", "pendiente"]))
+        ]
+
+    return reservas_activas.empty
+    

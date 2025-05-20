@@ -1,11 +1,12 @@
 import streamlit as st
 from datetime import date
 import pandas as pd
-from functions.usuarios import obtener_usuario_actual
+from functions.usuarios import obtener_usuario_actual, tiene_reserva
 from functions.reserva import *
 from functions.vehiculos import esta_alquilado
 
-st.set_page_config(page_title="Realizar reserva", page_icon="🚗")
+st.set_page_config(page_title="Realizar reserva", page_icon="🚗", layout='centered')
+st.title("Realizar reserva 🚗")
 
 patente = st.session_state.get('id', None)
 marca = st.session_state.get('marca', None)
@@ -17,6 +18,16 @@ precio_dia = st.session_state.get('precio_dia', None)
 
 user = obtener_usuario_actual()
 
+#Genera nuevo id para la reserva
+def obtener_nuevo_id(df):
+    if df.empty:
+        return 1
+    else:
+        return df["id_reserva"].max() + 1
+
+RUTA_CSV = "data/alquileres.csv"
+df = pd.read_csv(RUTA_CSV)
+
 if user != None:
     if patente:
         st.write(f"Reserva para: {patente}")
@@ -27,21 +38,26 @@ if user != None:
     
         desde = st.date_input("Reserva desde:", min_value=date.today(), max_value=date(2030,12,1))
         hasta = st.date_input("Hasta:", min_value=date.today(), max_value=date(2030,12,1))
-    
+        
         if st.button('Confirmar reserva'):
             #Condicion de las fechas
             if (desde >= hasta) | (desde == date.today()) | (hasta == date.today()):
                 st.error('La fecha introducida no es valida ❌')
+            #Condicion si el usuario tiene una reserva
+            elif tiene_reserva(user.get("email")):
+                st.error('Ya tienes una reserva realizada ❌')
             #Condicion si esta alquilado, falta verificar que funcione
             elif esta_alquilado(patente):
                 st.error('El vehiculo ya tiene una reserva realizada en ese periodo de tiempo ❌')
-            #Falta condicion de si el usuario ya tiene una reserva
             else:
-                #La reserva se guarda correctamente, pero deja 1 sola vez, SOLUCIONAR ESTO
+                #Se guarda la reserva
                 diferencia = (hasta - desde)
+                desde = desde.strftime("%d/%m/%Y")
+                hasta = hasta.strftime("%d/%m/%Y")
+                nuevo_id = obtener_nuevo_id(df)
                 nuevo = {
                     #Tengo que hacer un ID contable para las reservas y que no sea la patente lo que se guarda
-                    "id_reserva": patente.upper(),
+                    "id_reserva": nuevo_id,
                     "usuario_id": user.get("email"),
                     "patente": patente,
                     "fecha_inicio": desde,

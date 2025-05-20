@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 from functions.usuarios import obtener_usuario_actual
 
-st.set_page_config(layout="wide")
-st.title("Catálogo de Autos")
+st.set_page_config(page_title='Catalogo', page_icon='🚗',layout='wide')
+st.title("Catalogo 🚗")
 
 query_params = st.query_params
 
