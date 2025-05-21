@@ -30,13 +30,12 @@ def es_empleado_valido():
     )
     
 def tiene_reserva(email):
-    df_reservas = cargar_reservas()  # función que carga todas las reservas
-    
+    df_reservas = pd.read_csv('data/alquileres.csv')
     # Filtrar reservas que están activas ahora (estado activo o pendiente)
     reservas_activas = df_reservas[
             (df_reservas["usuario_id"] == email) & 
             (df_reservas["estado"].isin(["activo", "pendiente"]))
         ]
 
-    return reservas_activas.empty
+    return not reservas_activas.empty
     

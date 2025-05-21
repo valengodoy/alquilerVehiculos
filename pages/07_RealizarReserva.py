@@ -56,7 +56,6 @@ if user != None:
                 hasta = hasta.strftime("%d/%m/%Y")
                 nuevo_id = obtener_nuevo_id(df)
                 nuevo = {
-                    #Tengo que hacer un ID contable para las reservas y que no sea la patente lo que se guarda
                     "id_reserva": nuevo_id,
                     "usuario_id": user.get("email"),
                     "patente": patente,
