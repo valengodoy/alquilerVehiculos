@@ -19,3 +19,10 @@ if __name__ == "__main__":
     if 'session_state' not in st.session_state:
         st.session_state['session_state'] = 'no_logged'
     main()
+    if st.session_state['session_state'] == 'logged':
+        cerrar_sesion = st.button('Cerrar Sesión')
+        if cerrar_sesion:
+            st.session_state['session_state'] = 'no_logged'
+            st.session_state["usuario_email"] = None
+            st.rerun()
+    
