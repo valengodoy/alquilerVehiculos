@@ -1,10 +1,6 @@
 import streamlit as st
 
-def main():
-    st.set_page_config(page_title="QuadraSoft - Alquiler de Autos", page_icon="🚗")
-
-    st.title("🚘 QuadraSoft - Alquiler de Autos")
-    st.markdown("""
+st.markdown("""
     Bienvenido a tu plataforma de alquiler de vehículos.  
     Usa el menú lateral para:
     - 📝 Registrarte  
@@ -12,17 +8,5 @@ def main():
     - 🚗 Ver el catálogo
 
     ¡Comenzá tu viaje hoy mismo!
-    """)
-
-
-if __name__ == "__main__":
-    if 'session_state' not in st.session_state:
-        st.session_state['session_state'] = 'no_logged'
-    main()
-    if st.session_state['session_state'] == 'logged':
-        cerrar_sesion = st.button('Cerrar Sesión')
-        if cerrar_sesion:
-            st.session_state['session_state'] = 'no_logged'
-            st.session_state["usuario_email"] = None
-            st.rerun()
-    
+    """
+)

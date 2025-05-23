@@ -32,26 +32,27 @@ def verificar_credenciales(email, contraseña):
         st.error("Esta cuenta se encuentra bloqueada.")
         return
 
-    st.success(f"¡Bienvenido, {usuario['nombre']}! 👋")
     st.session_state['session_state'] = 'logged'
     st.session_state["usuario_email"] = email
+    st.rerun()
     
     
-
 # Interfaz
 st.title("Iniciar sesión 🔐")
 
 with st.form("login_form"):
     email = st.text_input("Correo electrónico")
     contraseña = st.text_input("Contraseña", type="password")
-    
-    iniciar = st.form_submit_button("Iniciar sesión")
-    recuperar = st.form_submit_button("Recuperar Contraseña")
+    cols = st.columns([2, 1, 1, 2])  # Margen izquierdo, botón 1, botón 2, margen derecho
+    with cols[0]:
+        iniciar = st.form_submit_button("Iniciar sesión")
 
+    with cols[3]:
+        recuperar = st.form_submit_button("Recuperar Contraseña")
     if iniciar:
         if not email or not contraseña:
             st.error("Debes completar todos los campos.")
         else:
             verificar_credenciales(email, contraseña)
     if recuperar:
-        st.switch_page("pages/_RecuperarContraseña.py")
+        st.warning('Para recuperar tu contraseña, debes ir a la opcion "Cambiar Contraseña" del panel lateral')
