@@ -6,7 +6,7 @@ from datetime import date
 RUTA_CSV = "data/usuarios.csv"
 
 def obtener_usuario_actual():
-    if 'usuario_email' not in st.session_state:
+    if st.session_state['session_state'] == 'no_logged':
         return None
     email = st.session_state['usuario_email']
 
