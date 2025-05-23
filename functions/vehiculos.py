@@ -80,3 +80,24 @@ def eliminar_vehiculo(patente):
     df.to_csv("data/vehiculos.csv", index=False)
     
     return True
+
+def esta_alquilado_fechas(patente, desde, hasta):
+    df_reservas = cargar_reservas()
+
+    df_reservas["fecha_inicio"] = pd.to_datetime(df_reservas["fecha_inicio"].str.strip(), format="%d/%m/%Y").dt.date
+    df_reservas["fecha_fin"] = pd.to_datetime(df_reservas["fecha_fin"].str.strip(), format="%d/%m/%Y").dt.date
+
+    # Filtrar por patente y estado
+    reservas_filtradas = df_reservas[
+        (df_reservas["patente"].str.upper() == patente.upper()) &
+        (df_reservas["estado"].isin(["activo", "pendiente"]))
+    ]
+
+    # Verificar si hay solapamiento de fechas
+    for _, fila in reservas_filtradas.iterrows():
+        inicio = fila["fecha_inicio"]
+        fin = fila["fecha_fin"]
+        if desde <= fin and hasta >= inicio:
+            return True
+
+    return False

@@ -3,7 +3,7 @@ from datetime import date
 import pandas as pd
 from functions.usuarios import obtener_usuario_actual, tiene_reserva
 from functions.reserva import *
-from functions.vehiculos import esta_alquilado
+from functions.vehiculos import esta_alquilado_fechas
 
 st.set_page_config(page_title="Realizar reserva", page_icon="🚗", layout='centered')
 st.title("Realizar reserva 🚗")
@@ -40,14 +40,13 @@ if user != None:
         hasta = st.date_input("Hasta:", min_value=date.today(), max_value=date(2030,12,1))
         
         if st.button('Confirmar reserva'):
-            #Condicion de las fechas
-            if (desde >= hasta) | (desde == date.today()) | (hasta == date.today()):
+            st.markdown(desde)
+            st.markdown(hasta)
+            if (desde >= hasta) | (desde == date.today()) | (hasta == date.today()): #Condicion de las fechas
                 st.error('La fecha introducida no es valida ❌')
-            #Condicion si el usuario tiene una reserva
-            elif tiene_reserva(user.get("email")):
+            elif tiene_reserva(user.get("email")): #Condicion si el usuario tiene una reserva
                 st.error('Ya tienes una reserva realizada ❌')
-            #Condicion si esta alquilado, falta verificar que funcione
-            elif esta_alquilado(patente):
+            elif esta_alquilado_fechas(patente,desde,hasta): #Condicion si el periodo de tiempo no incluye algun dia, en el que el auto este alquilado
                 st.error('El vehiculo ya tiene una reserva realizada en ese periodo de tiempo ❌')
             else:
                 #Se guarda la reserva
@@ -63,7 +62,7 @@ if user != None:
                     "fecha_fin": hasta,
                     "estado": 'pendiente',
                     "costo_dia": precio_dia,
-                    "costo_total": (diferencia.days + 1) * precio_dia
+                    "costo_total": diferencia.days * precio_dia
                 }
                 registrar_reserva(nuevo)
                 st.success('Reserva del vehiculo realizada correctamente ✅')
