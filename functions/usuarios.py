@@ -38,4 +38,3 @@ def tiene_reserva(email):
         ]
 
     return not reservas_activas.empty
-    

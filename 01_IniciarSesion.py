@@ -11,7 +11,6 @@ def verificar_credenciales(email, contraseña):
         return
 
     df = pd.read_csv(RUTA_CSV)
-
     usuario = df[df["email"] == email]
 
     if usuario.empty:
@@ -34,6 +33,7 @@ def verificar_credenciales(email, contraseña):
 
     st.session_state['session_state'] = 'logged'
     st.session_state["usuario_email"] = email
+    st.session_state["mostrar_bienvenida"] = True 
     st.rerun()
     
     
@@ -48,11 +48,14 @@ with st.form("login_form"):
         iniciar = st.form_submit_button("Iniciar sesión")
 
     with cols[3]:
-        recuperar = st.form_submit_button("Recuperar Contraseña")
+        recuperar = st.form_submit_button("Olvidé mi contraseña")
     if iniciar:
         if not email or not contraseña:
             st.error("Debes completar todos los campos.")
         else:
             verificar_credenciales(email, contraseña)
     if recuperar:
-        st.warning('Para recuperar tu contraseña, debes ir a la opcion "Cambiar Contraseña" del panel lateral')
+        st.warning('Si olvidaste tu contrseña, debes ir a la opcion "Cambiar Contraseña" del panel lateral')
+if st.session_state.get("mostrar_bienvenida"):
+        st.success("¡Bienvenido/a al sistema!")
+        del st.session_state["mostrar_bienvenida"]
