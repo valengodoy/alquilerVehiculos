@@ -101,3 +101,8 @@ def esta_alquilado_fechas(patente, desde, hasta):
             return True
 
     return False
+
+def obtener_auto(patente):
+    df = cargar_todos_vehiculos()
+    auto = df[df["patente"] == patente]
+    return auto.iloc[0].to_dict()

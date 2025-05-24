@@ -38,8 +38,6 @@ if user != None:
         hasta = st.date_input("Hasta:", min_value=date.today(), max_value=date(2030,12,1))
         
         if st.button('Confirmar reserva'):
-            st.markdown(desde)
-            st.markdown(hasta)
             if (desde >= hasta) | (desde == date.today()) | (hasta == date.today()): #Condicion de las fechas
                 st.error('La fecha introducida no es valida ❌')
             elif tiene_reserva(user.get("email")): #Condicion si el usuario tiene una reserva
