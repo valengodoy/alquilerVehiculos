@@ -87,13 +87,12 @@ def esta_alquilado_fechas(patente, desde, hasta):
     df_reservas["fecha_inicio"] = pd.to_datetime(df_reservas["fecha_inicio"].str.strip(), format="%d/%m/%Y").dt.date
     df_reservas["fecha_fin"] = pd.to_datetime(df_reservas["fecha_fin"].str.strip(), format="%d/%m/%Y").dt.date
 
-    # Filtrar por patente y estado
     reservas_filtradas = df_reservas[
         (df_reservas["patente"].str.upper() == patente.upper()) &
         (df_reservas["estado"].isin(["activo", "pendiente"]))
     ]
 
-    # Verificar si hay solapamiento de fechas
+  
     for _, fila in reservas_filtradas.iterrows():
         inicio = fila["fecha_inicio"]
         fin = fila["fecha_fin"]
@@ -106,3 +105,22 @@ def obtener_auto(patente):
     df = cargar_todos_vehiculos()
     auto = df[df["patente"] == patente]
     return auto.iloc[0].to_dict()
+
+
+def actualizar_disponibilidad_por_mantenimiento():
+    hoy = date.today()
+    df_vehiculos = cargar_vehiculos() 
+    for i, row in df_vehiculos.iterrows():
+        fecha_mantenimiento = row.get("fecha_mantenimiento")
+        if pd.notna(fecha_mantenimiento):
+
+            if isinstance(fecha_mantenimiento, str):
+                try:
+                    fecha_mantenimiento = pd.to_datetime(fecha_mantenimiento.strip(), format="%d/%m/%Y").date()
+                except:
+                    continue 
+
+            if fecha_mantenimiento == hoy and not esta_alquilado(row["patente"]):
+                df_vehiculos.at[i, "disponible"] = False
+               
+    guardar_vehiculo(df_vehiculos)

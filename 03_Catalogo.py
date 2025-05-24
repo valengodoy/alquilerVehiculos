@@ -1,9 +1,12 @@
 import streamlit as st
 import pandas as pd
 from functions.usuarios import obtener_usuario_actual
+from functions.vehiculos import actualizar_disponibilidad_por_mantenimiento
 
 realizar_reserva = st.Page("07_RealizarReserva.py", title="Realizar Reserva", icon="🤑")
 
+
+actualizar_disponibilidad_por_mantenimiento()
 query_params = st.query_params
 
 catalogo = pd.read_csv('data/vehiculos.csv')
@@ -32,7 +35,7 @@ else:
         filtro &= catalogo['tipo'].isin(tipo)
             
     if disponible:  
-        filtro &= catalogo['disponible'] == "Sí"
+        filtro &= catalogo['disponible'] == True
 
     catalogo_filtrado = catalogo[filtro]
 

@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
-from functions.reserva import cargar_reservas
-from datetime import date
+import random
+import smtplib
+from email.message import EmailMessage
+
 
 RUTA_CSV = "data/usuarios.csv"
 
@@ -18,6 +20,21 @@ def obtener_usuario_actual():
         return None
     
     return usuario.iloc[0].to_dict()
+
+def es_admin(email):
+    try:
+        df = pd.read_csv(RUTA_CSV)
+        usuario = df[df['email'].str.lower() == email.lower()]
+        if not usuario.empty and usuario.iloc[0]['es_admin'] == True:
+            return True
+        else:
+            return False
+    except Exception as e:
+        print(f"Error al verificar si es admin: {e}")
+        return False
+    
+
+
 
 def es_empleado_valido():
     usuario = obtener_usuario_actual()
@@ -38,3 +55,29 @@ def tiene_reserva(email):
         ]
 
     return not reservas_activas.empty
+
+
+
+
+
+def enviar_codigo_verificacion(destinatario_email, codigo):
+    remitente = "proyectquadrasoft@gmail.com"  
+    app_password = "vtam jppv mqqz ukri"
+
+    msg = EmailMessage()
+    msg['Subject'] = 'Código de verificación - QuadraSoft'
+    msg['From'] = remitente
+    msg['To'] = destinatario_email
+    msg.set_content(f"Tu código de verificación es: {codigo}")
+
+    try:
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+            smtp.login(remitente, app_password)
+            smtp.send_message(msg)
+        return True
+    except Exception as e:
+        st.error(f"Error al enviar el correo: {e}")
+        return False
+
+def generar_codigo():
+    return str(random.randint(100000, 999999))

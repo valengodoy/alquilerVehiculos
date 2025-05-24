@@ -1,9 +1,12 @@
 import streamlit as st
 from functions.usuarios import es_empleado_valido
-from functions.vehiculos import existe_patente, cargar_vehiculos, guardar_vehiculo, esta_alquilado
+from functions.vehiculos import existe_patente, cargar_vehiculos, guardar_vehiculo, esta_alquilado, actualizar_disponibilidad_por_mantenimiento
+
 
 
 st.title("Modificar Datos de Vehículo")
+
+actualizar_disponibilidad_por_mantenimiento()
 
 if not es_empleado_valido():
     st.error("⚠️ No tiene permiso para acceder a esta sección.")

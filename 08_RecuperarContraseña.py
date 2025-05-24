@@ -1,33 +1,11 @@
 import streamlit as st
-import smtplib
-import random
 import pandas as pd
-from email.message import EmailMessage
 import re
+from functions.usuarios import generar_codigo, enviar_codigo_verificacion
+
 
 CSV_PATH = 'data/usuarios.csv'
 
-def enviar_codigo_verificacion(destinatario_email, codigo):
-    remitente = "proyectquadrasoft@gmail.com"  
-    app_password = "vtam jppv mqqz ukri"
-
-    msg = EmailMessage()
-    msg['Subject'] = 'Código de verificación - QuadraSoft'
-    msg['From'] = remitente
-    msg['To'] = destinatario_email
-    msg.set_content(f"Tu código de verificación es: {codigo}")
-
-    try:
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-            smtp.login(remitente, app_password)
-            smtp.send_message(msg)
-        return True
-    except Exception as e:
-        st.error(f"Error al enviar el correo: {e}")
-        return False
-
-def generar_codigo():
-    return str(random.randint(100000, 999999))
 
 def cargar_usuarios():
     return pd.read_csv(CSV_PATH)
