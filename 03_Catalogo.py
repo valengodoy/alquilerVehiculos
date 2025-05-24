@@ -52,7 +52,7 @@ else:
                 if row['disponible'] == 'No':
                     st.warning("No disponible")
                 elif obtener_usuario_actual() != None:
-                    if st.button('Seleccionar Vehículo', key=f"{row['patente']}"):
+                    if st.button('Reservar', key=f"{row['patente']}"):
                         st.session_state["id"] = row['patente']
                         st.session_state["marca"] = row['marca']
                         st.session_state["modelo"] = row['modelo']
@@ -60,4 +60,4 @@ else:
                         st.session_state["tipo"] = row['tipo']
                         st.session_state["imagen"] = row['imagen']
                         st.session_state["precio_dia"] = row['precio_dia']
-                        st.page_link(realizar_reserva, label="Realizar Reserva", icon="🤑")
+                        st.switch_page(realizar_reserva)
