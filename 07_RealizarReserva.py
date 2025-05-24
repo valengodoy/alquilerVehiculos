@@ -3,8 +3,9 @@ from datetime import date
 import pandas as pd
 from functions.usuarios import obtener_usuario_actual, tiene_reserva
 from functions.reserva import *
-from functions.vehiculos import esta_alquilado_fechas
+from functions.vehiculos import esta_alquilado_fechas,actualizar_disponibilidad_por_mantenimiento
 
+actualizar_disponibilidad_por_mantenimiento()
 
 patente = st.session_state.get('id', None)
 marca = st.session_state.get('marca', None)

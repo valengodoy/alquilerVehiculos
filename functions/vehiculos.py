@@ -47,6 +47,24 @@ def registrar_vehiculo(vehiculo):
     guardar_vehiculo(df)
 
 
+def actualizar_disponibilidad_por_mantenimiento():
+    hoy = date.today()
+    df_vehiculos = cargar_vehiculos() 
+    for i, row in df_vehiculos.iterrows():
+        fecha_mantenimiento = row.get("fecha_mantenimiento")
+        if pd.notna(fecha_mantenimiento):
+
+            if isinstance(fecha_mantenimiento, str):
+                try:
+                    fecha_mantenimiento = pd.to_datetime(fecha_mantenimiento.strip(), format="%d/%m/%Y").date()
+                except:
+                    continue 
+
+            if fecha_mantenimiento == hoy and not esta_alquilado(row["patente"]):
+                df_vehiculos.at[i, "disponible"] = False
+               
+    guardar_vehiculo(df_vehiculos)
+
 
 
 archivo_alquileres = "data/alquileres.csv"
