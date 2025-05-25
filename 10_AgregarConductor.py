@@ -1,9 +1,6 @@
 import streamlit as st
 from datetime import date
-import pandas as pd
-from functions.usuarios import obtener_usuario_actual, tiene_reserva
-from functions.reserva import *
-from functions.vehiculos import esta_alquilado_fechas
+from functions.reserva import agregar_conductor
 
 
 id_reserva = st.session_state.get('id_reserva', None)
@@ -22,7 +19,7 @@ if id_reserva:
         elif not licencia:
             st.error("El conductor debe tener licencia de conducir para asignarlo a su reserva")
         else:
-            #AGREGARLO EN LA BASE DE DATOS
+            agregar_conductor(id_reserva,nombreApellido,edad)
             st.success("El conductor fue asignado a su reserva")
     
 else:

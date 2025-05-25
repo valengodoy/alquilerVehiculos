@@ -60,8 +60,11 @@ def actualizar_disponibilidad_por_mantenimiento():
                 except:
                     continue 
 
-            if fecha_mantenimiento == hoy and not esta_alquilado(row["patente"]):
+            if fecha_mantenimiento == hoy:
                 df_vehiculos.at[i, "disponible"] = False
+                
+            if fecha_mantenimiento != hoy:
+                df_vehiculos.at[i, "disponible"] = True
                
     guardar_vehiculo(df_vehiculos)
 

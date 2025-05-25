@@ -51,7 +51,7 @@ else:
 
                 st.error(f"**{row['marca']} {row['modelo']} {row['año']} {row['tipo']} 💲{row['precio_dia']}**") #Use st.error unicamente para que se marque con color rojo
 
-                if row['disponible'] == 'No':
+                if row['disponible'] == False:
                     st.warning("No disponible")
                 elif obtener_usuario_actual() != None:
                     if st.button('Reservar', key=f"{row['patente']}"):
