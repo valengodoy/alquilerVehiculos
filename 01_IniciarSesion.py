@@ -91,6 +91,7 @@ if st.session_state.get("autenticando_admin"):
                 st.session_state["mostrar_bienvenida"] = True
                 st.session_state['codigo_verificado'] = True
                 del st.session_state['autenticando_admin']
+                st.session_state['codigo_enviado'] = False
                 st.rerun()
             else:
                 st.error("Código incorrecto. Intenta otra vez.")
