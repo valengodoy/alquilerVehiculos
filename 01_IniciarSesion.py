@@ -63,8 +63,8 @@ with st.form("login_form"):
         st.warning('Si olvidaste tu contraseña, debes ir a la opción "Cambiar Contraseña" del panel lateral')
 
     
-    if st.session_state.get("autenticando_admin"):
-        st.title("Autenticación en dos pasos para administradores 2️⃣")
+if st.session_state.get("autenticando_admin"):
+    st.title("Autenticación en dos pasos para administradores 2️⃣")
 
     if 'codigo_enviado' not in st.session_state:
         st.session_state['codigo_enviado'] = False
