@@ -18,9 +18,8 @@ else:
 
 with st.form("login_form"):
     if correos_registrados:
-        #Es para pruebas, sino iría:
-        #email = st.text_input("Correo electrónico")
-        email = st.selectbox("Selecciona tu correo electrónico", correos_registrados)
+        email = st.text_input("Correo electrónico")
+        #email = st.selectbox("Selecciona tu correo electrónico", correos_registrados)
     else:
         st.warning("No hay usuarios registrados.")
         email = ""
