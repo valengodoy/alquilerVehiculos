@@ -1,0 +1,4 @@
+id_tarjeta,usuario_id,nombre_usuario,numero_tarjeta,vencimiento,cvv,saldo
+1,1,Kevin Amarilla,12345,06/28,33,2500
+2,3,valentina,23456,06/27,58,3000
+3,5,usuarioUno,76549,05/29,654,80000

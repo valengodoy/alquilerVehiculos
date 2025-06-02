@@ -23,7 +23,7 @@ if user != None:
         
         nombre_conductor = reserva.get("nombre_conductor")
         if not (pd.isna(nombre_conductor) or str(nombre_conductor).strip() == ""):
-            st.info(f"Informacion del conductor: {nombre_conductor} de {int(reserva.get("edad_conductor"))} años.")
+            st.info(f"Informacion del conductor: {nombre_conductor} de {int(reserva.get('edad_conductor'))} años.")
             
         st.info(f"Reserva desde el {reserva.get('fecha_inicio')} hasta el {reserva.get('fecha_fin')}. Costo total: 💲{reserva.get('costo_total')}")
         
@@ -35,6 +35,11 @@ if user != None:
             pagarReserva = st.button("Pagar reserva")
         with cols[4]:
             cancelar = st.button("Cancelar Reserva")
+
+        #Boton PagarReserva
+        if pagarReserva:
+          st.session_state["reserva_a_pagar"] = reserva.to_dict()  # Guardar la reserva seleccionada
+          st.switch_page("11_pagarReserva")  # Cambiar a la pantalla de pago
             
         #Boton cancelar
         if cancelar:
