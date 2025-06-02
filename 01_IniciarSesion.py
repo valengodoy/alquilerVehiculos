@@ -18,9 +18,8 @@ else:
 
 with st.form("login_form"):
     if correos_registrados:
-        #Es para pruebas, sino iría:
-        #email = st.text_input("Correo electrónico")
-        email = st.selectbox("Selecciona tu correo electrónico", correos_registrados)
+        email = st.text_input("Correo electrónico")
+        #email = st.selectbox("Selecciona tu correo electrónico", correos_registrados)
     else:
         st.warning("No hay usuarios registrados.")
         email = ""
@@ -63,8 +62,8 @@ with st.form("login_form"):
         st.warning('Si olvidaste tu contraseña, debes ir a la opción "Cambiar Contraseña" del panel lateral')
 
     
-    if st.session_state.get("autenticando_admin"):
-        st.title("Autenticación en dos pasos para administradores 2️⃣")
+if st.session_state.get("autenticando_admin"):
+    st.title("Autenticación en dos pasos para administradores 2️⃣")
 
     if 'codigo_enviado' not in st.session_state:
         st.session_state['codigo_enviado'] = False
@@ -91,6 +90,7 @@ with st.form("login_form"):
                 st.session_state["mostrar_bienvenida"] = True
                 st.session_state['codigo_verificado'] = True
                 del st.session_state['autenticando_admin']
+                st.session_state['codigo_enviado'] = False
                 st.rerun()
             else:
                 st.error("Código incorrecto. Intenta otra vez.")
