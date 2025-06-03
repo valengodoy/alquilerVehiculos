@@ -35,7 +35,7 @@ def tiene_reserva(email):
     # Filtrar reservas que están activas ahora (estado activo o pendiente)
     reservas_activas = df_reservas[
             (df_reservas["usuario_id"] == email) & 
-            (df_reservas["estado"].isin(["activo", "pendiente"]))
+            (df_reservas["estado"].isin(["activo", "pendiente", "PAGADO"]))
         ]
 
     return not reservas_activas.empty
