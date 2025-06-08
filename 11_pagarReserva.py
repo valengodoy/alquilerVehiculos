@@ -3,6 +3,8 @@ import pandas as pd
 import os
 from datetime import datetime
 import re
+import uuid
+
 
 
 # Rutas de archivos
@@ -34,7 +36,7 @@ alquiler_seleccionado = st.session_state["reserva_a_pagar"]
 
 st.title("Pago de alquiler de autos")
 
-nombre = st.text_input("Nombre del usuario")
+nombre = st.text_input("Nombre del Titular")
 numero_tarjeta = st.text_input("Número de tarjeta")
 vencimiento = st.text_input("Fecha de vencimiento (MM/AA)")
 cvv = st.text_input("CVV")
@@ -67,7 +69,7 @@ def es_nombre_valido(nombre):
 if nombre and numero_tarjeta and vencimiento and cvv:
     errores = []
     if not es_nombre_valido(nombre):
-        errores.append("El nombre ingresado no es valido")
+        errores.append("El nombre del titular ingresado no es valido")
     if not es_numero_tarjeta_valido(numero_tarjeta):
         errores.append("El número de tarjeta debe tener entre 5 y 8 dígitos numéricos.")
     if not es_vencimiento_valido(vencimiento):
@@ -89,7 +91,17 @@ if nombre and numero_tarjeta and vencimiento and cvv:
    # else:
    #    usuario_id = usuario.iloc[0]["email"].strip().lower()
    #   # usamos el email como ID para buscar alquileres
-    usuario_id = nombre.strip()
+   # usuario_id = nombre.strip()
+    usuario = df_usuarios[
+        df_usuarios["nombre"].astype(str).str.strip().str.lower() == nombre.strip().lower()
+    ]
+
+    if usuario.empty:
+       st.error("Nombre del titular incorrecto.")
+       st.stop()
+    else:
+       usuario_id = usuario.iloc[0]["email"].strip().lower()
+
 
     # Verificamos que el alquiler pertenezca al usuario autenticado
     if alquiler_seleccionado["usuario_id"].strip().lower() != usuario_id.strip().lower():
@@ -194,6 +206,8 @@ if nombre and numero_tarjeta and vencimiento and cvv:
 
                                
                                 nuevo_id = len(df_pagos) + 1
+                                numero_transaccion = str(uuid.uuid4())
+
                                
 
                                 nuevo_pago = pd.DataFrame([{
@@ -216,7 +230,35 @@ if nombre and numero_tarjeta and vencimiento and cvv:
                                     ] = "PAGADO"
                                 df_alquileres.to_csv(RUTA_ALQUILERES, index=False)
 
-                                st.success(f"Pago exitoso. Nuevo saldo: ${nuevo_saldo:.2f}")
+                                # Mostrar comprobante de pago al usuario
+                                st.success("✅ ¡Pago realizado con éxito!")
+
+                                st.subheader("🧾 Comprobante de Pago")
+
+                                
+                                pagos=({
+                                    "numero_transaccion": numero_transaccion,
+                                    "Método de Pago": ["Tarjeta"],
+                                    "Fecha de Pago": [datetime.today().strftime("%d/%m/%Y")],
+                                    "Nombre del Usuario": [nombre],
+                                    "Número de Tarjeta": [f"**** **** **** {str(numero_tarjeta)[-4:]}"],
+                                    "Monto Pagado": [f"${monto:,.2f}"],
+
+                                })
+
+
+                                # Convertimos dict a DataFrame
+                                df_pagos = pd.DataFrame(pagos)
+
+                                # Reset index para evitar que aparezca el índice como columna (opcional aquí)
+                                df_pagos = df_pagos.reset_index(drop=True)
+
+                                # Mostrar en Streamlit sin índice
+                                st.dataframe(df_pagos, hide_index=True)
+                                
+                            
+
+                               
                      else:
                         st.error("No hay historial de pagos, asegúrese de haber seleccionado un alquiler válido.")
 

@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import os
 
+from functions.usuarios import es_empleado_valido
+
 RUTA_ALQUILERES = "data/alquileres.csv"
 
 st.title("📄 Historial de Reservas")
@@ -28,4 +30,9 @@ historial_usuario = df_alquileres[df_alquileres["usuario_id"] == usuario_email]
 if historial_usuario.empty:
     st.info("No tienes reservas registradas.")
 else:
-    st.dataframe(historial_usuario)
+    historial_usuario = historial_usuario.drop(columns=["id_reserva","usuario_id","edad_conductor"])
+    historial_usuario = historial_usuario.reset_index(drop=True)
+    st.dataframe(historial_usuario, hide_index=True)
+
+
+

@@ -39,7 +39,8 @@ if user != None:
         #Boton PagarReserva
         if pagarReserva:
             pagina_pagar_reserva = st.Page("11_pagarReserva.py", title="Pagar reserva", icon="💸")
-            st.session_state["reserva_a_pagar"] = reserva["id_reserva"]  # Guardar la reserva seleccionada
+
+            st.session_state["reserva_a_pagar"] = reserva # Guardar la reserva seleccionada
             st.switch_page(pagina_pagar_reserva)  # Cambiar a la pantalla de pago
             
         #Boton cancelar

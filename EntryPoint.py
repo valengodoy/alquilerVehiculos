@@ -23,6 +23,7 @@ if __name__ == "__main__":
     mi_reserva = st.Page("09_MiReserva.py", title="Mi reserva", icon="🚗")
     agregar_conductor = st.Page("10_AgregarConductor.py", title="Agregar conductor", icon="⚙️")
     pagar_reserva = st.Page("11_pagarReserva.py", title="Pagar reserva", icon="💸")
+    verHistorialReserva = st.Page("12_verHistorialReserva.py",title="Historial de Reservas", icon="🚗")
     recuperar_contraseña = st.Page("08_RecuperarContraseña.py", title="Cambiar Contraseña", icon="🔑")
 
     cerrar_sesion = st.Page(logout, title="Cerrar sesión", icon=":material/logout:")
@@ -30,6 +31,7 @@ if __name__ == "__main__":
     registrar_vehiculo = st.Page("04_RegistrarVehiculo.py", title="Registrar vehículo", icon="🛻")
     modificar_vehiculo = st.Page("05_ModificarDatosVehiculos.py", title="Modificar vehículo", icon="🛠️")
     eliminar_vehiculo = st.Page("06_EliminarVehiculo.py", title="Eliminar vehículo", icon="❌")
+    verListadoVehiculos = st.Page("13_verListadoVehiculos.py", title="Listado de Vehiculos", icon="🚗")
     
     
     
@@ -46,7 +48,7 @@ if __name__ == "__main__":
                 "Salir de tu cuenta": [cerrar_sesion],
                 "Inicio": [inicio],
                 "Maneja tu cuenta": [iniciar_sesion, registrar_usuario, recuperar_contraseña],
-                "Funciones de administrador": [registrar_vehiculo, modificar_vehiculo, eliminar_vehiculo],
+                "Funciones de administrador": [registrar_vehiculo, modificar_vehiculo, eliminar_vehiculo, verListadoVehiculos],
             }
         )
     elif st.session_state['session_state'] == 'logged':
@@ -55,7 +57,7 @@ if __name__ == "__main__":
                 "Salir de tu cuenta": [cerrar_sesion],
                 "Inicio": [inicio],
                 "Maneja tu cuenta": [iniciar_sesion, registrar_usuario, recuperar_contraseña],
-                "Reservas": [ver_catalogo, realizar_reserva, mi_reserva, agregar_conductor, pagar_reserva],
+                "Reservas": [ver_catalogo, realizar_reserva, mi_reserva, agregar_conductor, pagar_reserva, verHistorialReserva],
             }
         )
     

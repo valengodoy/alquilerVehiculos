@@ -53,7 +53,7 @@ df_vehiculos["estado_actual"] = estados
 
 # Mostrar tabla con estado
 st.subheader("Vehículos registrados con estado actual")
-st.dataframe(df_vehiculos.reset_index(drop=True))
+st.dataframe(df_vehiculos.reset_index(drop=True), hide_index=True)
 
 # Mostrar resumen
 st.markdown(f"**Total de vehículos activos:** {len(df_vehiculos)}")
