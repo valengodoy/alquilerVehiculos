@@ -41,18 +41,20 @@ def tiene_reserva(email):
     return not reservas_activas.empty
 
 
-
-
-
-def enviar_codigo_verificacion(destinatario_email, codigo):
+def enviar_codigo_verificacion(destinatario_email, codigo, es_contraseña_temporal=False):
     remitente = "proyectquadrasoft@gmail.com"  
     app_password = "vtam jppv mqqz ukri"
 
     msg = EmailMessage()
-    msg['Subject'] = 'Código de verificación - QuadraSoft'
     msg['From'] = remitente
     msg['To'] = destinatario_email
-    msg.set_content(f"Tu código de verificación es: {codigo}")
+
+    if es_contraseña_temporal:
+        msg['Subject'] = 'Contraseña temporal - QuadraSoft'
+        msg.set_content(f"Tu contraseña temporal es: {codigo}")
+    else:
+        msg['Subject'] = 'Código de verificación - QuadraSoft'
+        msg.set_content(f"Tu código de verificación es: {codigo}")
 
     try:
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
@@ -62,6 +64,7 @@ def enviar_codigo_verificacion(destinatario_email, codigo):
     except Exception as e:
         st.error(f"Error al enviar el correo: {e}")
         return False
+
 
 def generar_codigo():
     return str(random.randint(100000, 999999))
