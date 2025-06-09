@@ -2,8 +2,10 @@ import streamlit as st
 from datetime import date
 import pandas as pd
 from functions.usuarios import obtener_usuario_actual, tiene_reserva
-from functions.reserva import obtener_reserva_email, cancelar_reserva
+from functions.reserva import obtener_reserva_email, cancelar_reserva, actualizar_estado
 from functions.vehiculos import obtener_auto
+
+actualizar_estado()
 
 user = obtener_usuario_actual()
 

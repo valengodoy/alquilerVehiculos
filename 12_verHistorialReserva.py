@@ -3,6 +3,9 @@ import pandas as pd
 import os
 
 from functions.usuarios import es_empleado_valido
+from functions.reserva import actualizar_estado
+
+actualizar_estado()
 
 RUTA_ALQUILERES = "data/alquileres.csv"
 

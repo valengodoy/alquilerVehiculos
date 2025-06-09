@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import streamlit as st
+from datetime import date
 
 archivo_alquileres = "data/alquileres.csv"
 
@@ -41,3 +42,27 @@ def agregar_conductor(id, nombre, edad):
     df_reservas.at[idx, "edad_conductor"] = edad
                
     guardar_reserva(df_reservas)
+    
+def actualizar_estado():
+    hoy = date.today()
+    df = cargar_reservas() 
+    for i, row in df.iterrows():
+        fecha_inicio = row.get("fecha_inicio")
+        fecha_fin = row.get("fecha_fin")
+        
+        fecha_inicio = pd.to_datetime(fecha_inicio.strip(), format="%d/%m/%Y").date()
+        fecha_fin = pd.to_datetime(fecha_fin.strip(), format="%d/%m/%Y").date()
+        
+        #Si la reserva empezo y no esta pago, se cancela
+        if (fecha_inicio <= hoy) & (row.get("estado") == "pendiente"):
+            df.at[i, "estado"] = "cancelado"
+        
+        #Si la reserva empezo y esta pago, se cambia a activo        
+        if (fecha_inicio <= hoy) & (row.get("estado") == "pagado"):
+            df.at[i, "estado"] = "activo"
+            
+        #Si la reserva finalizo
+        if (fecha_fin < hoy) & (row.get("estado") == "activo"):
+            df.at[i, "estado"] = "finalizado"
+               
+    guardar_reserva(df)

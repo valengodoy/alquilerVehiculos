@@ -112,7 +112,7 @@ def esta_alquilado_fechas(patente, desde, hasta):
     # Filtrar por patente y estado
     reservas_filtradas = df_reservas[
         (df_reservas["patente"].str.upper() == patente.upper()) &
-        (df_reservas["estado"].isin(["activo", "pendiente"]))
+        (df_reservas["estado"].isin(["activo", "pendiente", "pagado"]))
     ]
 
     # Verificar si hay solapamiento de fechas

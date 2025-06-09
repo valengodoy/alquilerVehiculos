@@ -1,8 +1,8 @@
 id_reserva,usuario_id,patente,fecha_inicio,fecha_fin,estado,costo_dia,costo_total,nombre_conductor,edad_conductor
-2,usuario2@gmail.com,NJF834,22/05/2025,23/05/2025,pendiente,25000,50000,Jorge,23.0
-3,usuario3@gmail.com,ASC215,25/05/2025,27/05/2025,cancelado,35000,70000,,
-4,usuario1@gmail.com,ASC215,31/05/2025,12/06/2025,pagado,35000,420000,dasdas,22.0
-5,usuario4@gmail.com,NBV345,04/06/2025,07/06/2025,pendiente,60000,180000,Pedro,21.0
+2,usuario2@gmail.com,NJF834,22/05/2025,23/05/2025,cancelado,25000,50000,Jorge,23.0
+3,usuario3@gmail.com,ASC215,25/05/2025,27/05/2025,cancelado,35000,70000,,	
+4,usuario1@gmail.com,ASC215,31/05/2025,12/06/2025,activo,35000,420000,dasdas,22.0
+5,usuario4@gmail.com,NBV345,04/06/2025,07/06/2025,cancelado,60000,180000,Pedro,21.0
 6,joha@gmail.com,NJF834,10/06/2025,12/06/2025,pendiente,25000,50000,johana,25.0
-7,joha@gmail.com,ASC215,8/06/2025,9/06/2025,pendiente,20000,4000,joha,22.0
-8,valen@gmail.com,NJF834,20/06/2029,21/06/2029,cancelado,25000,25000,,
+7,joha@gmail.com,ASC215,08/06/2025,09/06/2025,cancelado,20000,4000,joha,22.0
+8,valen@gmail.com,NJF834,20/06/2029,21/06/2029,cancelado,25000,25000,,	
