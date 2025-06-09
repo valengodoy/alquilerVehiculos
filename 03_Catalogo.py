@@ -82,6 +82,8 @@ else:
 
                     st.error(f"**{row['marca']} {row['modelo']} {row['año']} {row['tipo']} 💲{row['precio_dia']}**") #Use st.error unicamente para que se marque con color rojo
 
+                    st.info(f"Politica de cancelacion: {row['reembolso']}")
+                    
                     if row['disponible'] == False:
                         st.warning("No disponible")
                     elif obtener_usuario_actual() != None:
@@ -93,4 +95,5 @@ else:
                             st.session_state["tipo"] = row['tipo']
                             st.session_state["imagen"] = row['imagen']
                             st.session_state["precio_dia"] = row['precio_dia']
+                            st.session_state["reembolso"] = row['reembolso']
                             st.switch_page(realizar_reserva)

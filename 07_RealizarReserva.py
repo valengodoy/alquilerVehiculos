@@ -14,6 +14,7 @@ año = st.session_state.get('año', None)
 tipo = st.session_state.get('tipo', None)
 imagen = st.session_state.get('imagen', None)
 precio_dia = st.session_state.get('precio_dia', None)
+reembolso = st.session_state.get('reembolso', None)
 
 user = obtener_usuario_actual()
 
@@ -33,7 +34,7 @@ if user != None:
     
         st.image(f"imagenes/{imagen}", width=500)
 
-        st.markdown(f"{marca} {modelo} {año} {tipo}")
+        st.markdown(f"{marca} {modelo} {año} {tipo}. Politica de cancelacion: {reembolso}")
     
         desde = st.date_input("Reserva desde:", min_value=date.today() + timedelta(days=1), max_value=date.today() + timedelta(days=14))
         hasta = st.date_input("Hasta:", min_value=date.today() + timedelta(days=1), max_value=date.today() + timedelta(days=14))
