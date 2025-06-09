@@ -1,5 +1,5 @@
 import streamlit as st
-from datetime import date
+from datetime import date, timedelta
 import pandas as pd
 from functions.usuarios import obtener_usuario_actual, tiene_reserva
 from functions.reserva import *
@@ -35,8 +35,8 @@ if user != None:
 
         st.markdown(f"{marca} {modelo} {año} {tipo}")
     
-        desde = st.date_input("Reserva desde:", min_value=date.today(), max_value=date(2030,12,1))
-        hasta = st.date_input("Hasta:", min_value=date.today(), max_value=date(2030,12,1))
+        desde = st.date_input("Reserva desde:", min_value=date.today() + timedelta(days=1), max_value=date.today() + timedelta(days=14))
+        hasta = st.date_input("Hasta:", min_value=date.today() + timedelta(days=1), max_value=date.today() + timedelta(days=14))
         
         df_filtrado = df[(df["patente"] == patente) & (df["estado"].isin(["activo", "pendiente", "pagado"]))]
         st.info("El vehiculo tiene reservas en las siguientes fechas:")

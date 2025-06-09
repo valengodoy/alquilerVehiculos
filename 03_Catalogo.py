@@ -24,9 +24,9 @@ else:
             step=1000
     )
 
-    disponible = st.checkbox('Disponible')
+    disponible = st.checkbox('Disponible para alquilar')
     
-    st.subheader("Filtrar por fechas de disponibilidad")
+    st.markdown("Filtrar por fechas de disponibilidad: ")
 
     manana = date.today() + timedelta(days=1)
 
