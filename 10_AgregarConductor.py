@@ -14,9 +14,11 @@ if id_reserva:
     edad = hoy.year - fecha_nac_conductor.year - ((hoy.month, hoy.day) < (fecha_nac_conductor.month, fecha_nac_conductor.day)) 
     
     if st.button("Agregar conductor"):
-        if edad < 18:
+        if (not dni) or (not nombreApellido):
+            st.error("Debe rellenar todos los campos")
+        elif edad < 18:
             st.error("El conductor debe ser mayor a 18 años para poder asignarlo a su reserva")
-        if conductor_ya_asignado(dni):
+        elif conductor_ya_asignado(dni):
             st.error("El conductor ya esta asignado a otra reserva")
         else:
             agregar_conductor(id_reserva,nombreApellido,edad,dni)
