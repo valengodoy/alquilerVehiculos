@@ -41,7 +41,8 @@ if user != None:
         df_filtrado = df[(df["patente"] == patente) & (df["estado"].isin(["activo", "pendiente", "pagado"]))]
         st.info("El vehiculo tiene reservas en las siguientes fechas:")
         for i, row in df_filtrado.iterrows():
-            st.markdown(f"{row.get("fecha_inicio")} a {row.get("fecha_fin")}")
+            st.markdown(f"{row.get('fecha_inicio')} a {row.get('fecha_fin')}")
+
         
         if st.button('Confirmar reserva'):
             if (desde >= hasta) | (desde == date.today()) | (hasta == date.today()): #Condicion de las fechas
