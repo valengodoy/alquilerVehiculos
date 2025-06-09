@@ -8,3 +8,4 @@ id_reserva,usuario_id,patente,fecha_inicio,fecha_fin,estado,costo_dia,costo_tota
 8,valen@gmail.com,NJF834,20/06/2029,21/06/2029,cancelado,25000,25000,,	
 9,usuario4@gmail.com,PPP222,18/06/2025,20/06/2025,cancelado,10000,20000,,
 10,usuario4@gmail.com,ASC215,18/06/2025,26/06/2025,cancelado,35000,280000,,
+11,valen@gmail.com,NBV345,26/06/2025,28/06/2025,cancelado,60000,120000,,

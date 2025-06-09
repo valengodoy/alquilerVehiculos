@@ -2,4 +2,3 @@ patente,marca,modelo,año,disponible,tipo,precio_dia,imagen,eliminado,fecha_alta
 NJF834,Chevrolet,Onix,2018,True,Sedan,25000,NJF834.jpg,No,20/05/2025,20/6/2025
 ASC215,Fiat,Cronos,2017,True,SUV,35000,ASC215.jpg,No,21/05/2025,13/08/2025
 NBV345,Chevrolet,Camaro,2022,True,Deportivo,60000,NBV345.jpg,No,23/05/2025,11/06/2025
-PPP222,peugeot,304,2015,True,SUV,10000,PPP222.jpg,No,2025-06-09,2030-06-09

@@ -85,42 +85,44 @@ with st.form("login_form"):
                 else:
                     st.error("Error al enviar el correo. Intenta nuevamente.")
 
-# Verificación adicional para admins
+
 if st.session_state.get("autenticando_admin"):
+
+
+    if st.session_state.get("codigo_enviado_admin", False) and "codigo_generado_admin" not in st.session_state:
+        st.session_state["codigo_enviado_admin"] = False
+
     st.title("Autenticación en dos pasos para administradores 2️⃣")
 
-    if 'codigo_enviado' not in st.session_state:
-        st.session_state['codigo_enviado'] = False
-        st.session_state['codigo_verificado'] = False
+    if 'codigo_enviado_admin' not in st.session_state:
+        st.session_state['codigo_enviado_admin'] = False
+        st.session_state['codigo_verificado_admin'] = False
 
-    if not st.session_state['codigo_enviado']:
+    if not st.session_state['codigo_enviado_admin']:
         if st.button("Enviar código de verificación"):
             codigo = generar_contraseña_temporal(6)
-            st.session_state['codigo_generado'] = codigo
+            st.session_state['codigo_generado_admin'] = codigo
             correo = st.session_state["usuario_email"]
             enviado = enviar_codigo_verificacion(correo, codigo)
             if enviado:
                 st.success(f"Código enviado a {correo}")
-                st.session_state['codigo_enviado'] = True
+                st.session_state['codigo_enviado_admin'] = True
                 st.rerun()
             else:
                 st.error("Error al enviar el código, intenta nuevamente.")
     else:
         codigo_ingresado = st.text_input("Ingresa el código recibido por email", key="codigo_admin")
         if st.button("Verificar código"):
-            if codigo_ingresado == st.session_state.get('codigo_generado'):
+            if codigo_ingresado == st.session_state.get('codigo_generado_admin'):
                 st.success("Código verificado. Acceso autorizado.")
                 st.session_state['session_state'] = 'logged'
                 st.session_state["mostrar_bienvenida"] = True
-                # Limpiar flags de autenticación
-                del st.session_state['autenticando_admin']
-                del st.session_state['codigo_enviado']
-                del st.session_state['codigo_generado']
+                for key in ["autenticando_admin", "codigo_enviado_admin", "codigo_generado_admin"]:
+                    st.session_state.pop(key, None)
                 st.rerun()
             else:
                 st.error("Código incorrecto. Intenta otra vez.")
 
-# Mensaje de bienvenida si corresponde
 if st.session_state.get("mostrar_bienvenida"):
     st.success("¡Bienvenido/a al sistema!")
     del st.session_state["mostrar_bienvenida"]
