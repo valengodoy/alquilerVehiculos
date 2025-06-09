@@ -22,6 +22,7 @@ año = st.text_input("Año")
 disponible = st.selectbox("Está disponible?", ["Sí", "No"])
 disponible_bool = True if disponible == "Sí" else False
 tipo = st.selectbox("Tipo de vehículo", ["SUV", "Sedan", "Deportivo"])
+reembolso = st.selectbox("Política de cancelación", ["Total", "Parcial (20%)", "Sin reembolso"])
 fecha_mantenimiento = st.date_input("Fecha de mantenimiento", min_value=date.today(), max_value=date(2040, 1, 1))
 precio_dia = st.text_input("Precio por día")
 foto = st.file_uploader("Agregue una foto del vehículo", type=["jpg", "jpeg", "png"])
@@ -31,7 +32,7 @@ if st.button("Registrar Vehículo"):
         st.error("La patente no tiene un formato válido")
     elif existe_patente(patente):
         st.error("La patente ya se encuentra cargada en el sistema")
-    elif not all([patente, marca, modelo, año, tipo, precio_dia, foto, fecha_mantenimiento]):
+    elif not all([patente, marca, modelo, año, tipo, precio_dia, foto, fecha_mantenimiento, reembolso]):
         st.error("Debe completar todos los campos")
     elif not año.isdigit() or int(año) < 1900 or int(año) > date.today().year:
         st.error("El año debe ser un número válido entre 1900 y el año actual")
@@ -57,7 +58,8 @@ if st.button("Registrar Vehículo"):
             "imagen": nombre_archivo,
             "fecha_alta": date.today(),
             "fecha_mantenimiento": fecha_mantenimiento,
-            "eliminado": "No"
+            "eliminado": "No",
+            "reembolso": reembolso
         }
         registrar_vehiculo(nuevo)
         st.success("Vehiculo registrado con exito ✅")

@@ -40,7 +40,7 @@ if st.session_state.vehiculo_buscado:
     tipo = st.text_input("Tipo", value=vehiculo["tipo"])
     marca = st.text_input("Marca", value=vehiculo["marca"])
     modelo = st.text_input("Modelo", value=vehiculo["modelo"])
-
+    reembolso = st.selectbox("Política de cancelación", ["Total", "Parcial (20%)", "Sin reembolso"])
     disponible_actual = str(vehiculo["disponible"]).lower() == "true"
     disponible_legible = "Sí" if disponible_actual else "No"
     seleccion_disponible = st.selectbox("Disponible", ["Sí", "No"], index=["Sí", "No"].index(disponible_legible))
@@ -58,6 +58,8 @@ if st.session_state.vehiculo_buscado:
             cambios["marca"] = marca
         if modelo != vehiculo["modelo"]:
             cambios["modelo"] = modelo
+        if reembolso != vehiculo["reembolso"]:
+            cambios["reembolso"] = reembolso
 
         if nuevo_disponible and esta_alquilado(st.session_state.patente_actual):
             st.error("❌ El vehículo tiene un alquiler activo actualmente. No puede marcarse como disponible.")
