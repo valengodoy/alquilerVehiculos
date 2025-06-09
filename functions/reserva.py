@@ -20,7 +20,7 @@ def guardar_reserva(df):
 
 def obtener_reserva_email(email):
     df = cargar_reservas()
-    reserva = df[df["usuario_id"] == email]
+    reserva = df[(df["usuario_id"] == email) & (df["estado"]).isin(["pendiente", "pagado", "activo"])]
     return reserva.iloc[0].to_dict()
 
 def cancelar_reserva(id):
