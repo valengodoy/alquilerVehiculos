@@ -33,13 +33,14 @@ def cancelar_reserva(id):
 
     return True
 
-def agregar_conductor(id, nombre, edad):
+def agregar_conductor(id, nombre, edad, dni):
     df_reservas = pd.read_csv(archivo_alquileres)
     
     idx = df_reservas[df_reservas["id_reserva"].astype(str) == str(id)].index[0]
     
     df_reservas.at[idx, "nombre_conductor"] = nombre
     df_reservas.at[idx, "edad_conductor"] = edad
+    df_reservas.at[idx, "dni_conductor"] = dni
                
     guardar_reserva(df_reservas)
     
@@ -66,3 +67,12 @@ def actualizar_estado():
             df.at[i, "estado"] = "finalizado"
                
     guardar_reserva(df)
+
+def conductor_ya_asignado(dni):
+    df_reservas = pd.read_csv('data/alquileres.csv')
+    # Filtrar reservas que están activas ahora (estado activo o pendiente)
+    reservas_activas = df_reservas[
+            (df_reservas["dni_conductor"] == dni)
+        ]
+
+    return not reservas_activas.empty
