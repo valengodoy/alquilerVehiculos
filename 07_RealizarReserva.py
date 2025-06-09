@@ -38,6 +38,11 @@ if user != None:
         desde = st.date_input("Reserva desde:", min_value=date.today(), max_value=date(2030,12,1))
         hasta = st.date_input("Hasta:", min_value=date.today(), max_value=date(2030,12,1))
         
+        df = df[(df["patente"] == patente) & (df["estado"].isin(["activo", "pendiente", "pagado"]))]
+        st.info("El vehiculo tiene reservas en las siguientes fechas:")
+        for i, row in df.iterrows():
+            st.markdown(f"{row.get("fecha_inicio")} a {row.get("fecha_fin")}")
+        
         if st.button('Confirmar reserva'):
             if (desde >= hasta) | (desde == date.today()) | (hasta == date.today()): #Condicion de las fechas
                 st.error('La fecha introducida no es valida ❌')

@@ -227,7 +227,7 @@ if nombre and numero_tarjeta and vencimiento and cvv:
                                 df_alquileres.loc[
                                    df_alquileres["id_reserva"] == alquiler_seleccionado["id_reserva"],
                                       "estado"
-                                    ] = "PAGADO"
+                                    ] = "pagado"
                                 df_alquileres.to_csv(RUTA_ALQUILERES, index=False)
 
                                 # Mostrar comprobante de pago al usuario

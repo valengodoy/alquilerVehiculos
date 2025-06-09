@@ -85,7 +85,7 @@ def esta_alquilado(patente):
     # Filtrar reservas que están activas ahora (estado activo o pendiente)
     reservas_activas = df_reservas[
         (df_reservas["patente"].str.upper() == patente.upper()) &
-        (df_reservas["estado"].isin(["activo", "pendiente"])) &
+        (df_reservas["estado"].isin(["activo", "pendiente", "pagado"])) &
         (df_reservas["fecha_fin"] >= hoy)
     ]
 
