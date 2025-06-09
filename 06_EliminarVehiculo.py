@@ -19,6 +19,6 @@ if st.button("Eliminar Vehículo"):
     else:
         exito = eliminar_vehiculo(patente)
         if exito:
-            st.success("✅ Vehículo eliminado lógicamente.")
+            st.success("✅ Vehículo eliminado correctamente.")
         else:
             st.error("❌ No se pudo eliminar el vehículo.")

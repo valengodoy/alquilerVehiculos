@@ -83,3 +83,5 @@ if st.session_state.vehiculo_buscado:
             st.success("✅ Vehículo modificado correctamente.")
         else:
             st.info("ℹ️ No se modificó ningún dato.")
+        st.session_state.vehiculo_buscado = False
+        st.session_state.patente_actual = ""

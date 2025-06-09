@@ -12,6 +12,7 @@ def cargar_vehiculos():
     if not os.path.exists(archivo_vehiculos):
         return pd.DataFrame(columns=["patente","marca","modelo","año","disponible","tipo","precio_dia", "imagen", "eliminado"])
     df = pd.read_csv(archivo_vehiculos)
+    df["eliminado"] = df["eliminado"].fillna("No") 
     df = df[df["eliminado"].str.lower() == "no"]
     return df
 
