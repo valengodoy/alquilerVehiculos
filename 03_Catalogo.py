@@ -419,8 +419,9 @@ elif st.session_state.paso == 3:
                 agregar_conductor(id_reserva, nombreApellido, edad, dni)
                 st.success("✅ El conductor fue asignado a su reserva registrada")
 
-            st.session_state.paso = 0
-            st.session_state.pop('id_reserva', None)
-            st.rerun()
+                st.session_state.paso = 0
+                st.session_state.pop('id_reserva', None)
+                if st.button("Volver al catalógo"):
+                    st.rerun()
 
 
