@@ -30,9 +30,7 @@ if user != None:
         st.info(f"Reserva desde el {reserva.get('fecha_inicio')} hasta el {reserva.get('fecha_fin')}. Costo total: 💲{reserva.get('costo_total')}")
         
         #Botones de gestion
-        cols = st.columns([2,1,2,1,2])
-        with cols[0]:
-            cancelar = st.button("Cancelar Reserva")
+        cancelar = st.button("Cancelar Reserva")
 
         #Boton cancelar
         if cancelar:
@@ -41,7 +39,26 @@ if user != None:
                 st.error("La reserva no se puede cancelar por que el aquiler esta en progreso ❌")
             else:
                 cancelar_reserva(reserva.get("id_reserva"))
-                st.success("Tu reserva ha sido cancelada")
+                costo = reserva.get('costo_total')
+                df_pagos = pd.read_csv("data/pagos.csv")
+                df_tarjetas = pd.read_csv("data/tarjetas.csv")
+                pago_reserva = df_pagos[df_pagos['alquiler_id'] == reserva.get('id_reserva')]
+                numero_tarjeta = pago_reserva['numero_tarjeta']
+                tarjeta = df_tarjetas[df_tarjetas['numero_tarjeta'] == numero_tarjeta]
+                saldo = float(tarjeta.iloc[0]["saldo"])
+                if(auto.get('reembolso') == "Total"):
+                    saldo = saldo + costo
+                    st.success(f'Se ha cancelado la reserva y se le ha reembolsado un total de ${costo}')
+                elif(auto.get('reembolso') == "Parcial(20%)"):
+                    saldo = saldo + costo * 0.20
+                    st.success(f'Se ha cancelado la reserva y se ha reembolsado un total de ${costo * 0.20}')
+                else:
+                    st.success(f'Se ha cancelado la reserva sin ningun reembolso')
+                    
+                df_tarjetas.loc[(df_tarjetas["numero_tarjeta"]) == numero_tarjeta,
+                                "saldo"] = saldo
+                df_tarjetas.to_csv("data/tarjetas.csv", index=False)
+                    
                
     else:
         st.error('No tiene ninguna reserva ahora mismo ❌')
