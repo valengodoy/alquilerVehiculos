@@ -41,6 +41,9 @@ numero_tarjeta = st.text_input("Número de tarjeta")
 vencimiento = st.text_input("Fecha de vencimiento (MM/AA)")
 cvv = st.text_input("CVV")
 
+#mensaje informativo 
+st.info("ℹ️ Una vez completados todos los campos de la tarjeta, presiona Enter para continuar.")
+
 
 # Validaciones básicas
 def es_numero_tarjeta_valido(numero):
@@ -63,7 +66,7 @@ def es_cvv_valido(cvv):
     return cvv.isdigit() and len(cvv) in [3, 4]
 
 def es_nombre_valido(nombre):
-    return bool(nombre.strip()) and all(c.isalpha() or c.isspace() for c in nombre)
+    return bool(nombre.strip()) and all(c.isalnum() or c.isspace() for c in nombre)
 
 
 if nombre and numero_tarjeta and vencimiento and cvv:
