@@ -39,7 +39,7 @@ if __name__ == "__main__":
         pg = st.navigation(
             {
                 "Inicio": [inicio],
-                "Maneja tu cuenta": [iniciar_sesion, registrar_usuario, recuperar_contraseña],
+                "Maneja tu cuenta": [iniciar_sesion, registrar_usuario],
                 "Reservas": [ver_catalogo],
             }
         )
@@ -47,7 +47,7 @@ if __name__ == "__main__":
         pg = st.navigation({
                 "Salir de tu cuenta": [cerrar_sesion],
                 "Inicio": [inicio],
-                "Maneja tu cuenta": [iniciar_sesion, registrar_usuario, recuperar_contraseña],
+                "Maneja tu cuenta": [recuperar_contraseña],
                 "Funciones de administrador": [registrar_vehiculo, modificar_vehiculo, eliminar_vehiculo, verListadoVehiculos],
             }
         )
@@ -56,7 +56,7 @@ if __name__ == "__main__":
             {
                 "Salir de tu cuenta": [cerrar_sesion],
                 "Inicio": [inicio],
-                "Maneja tu cuenta": [iniciar_sesion, registrar_usuario, recuperar_contraseña],
+                "Maneja tu cuenta": [recuperar_contraseña],
                 "Reservas": [ver_catalogo, realizar_reserva, mi_reserva, agregar_conductor, pagar_reserva, verHistorialReserva],
             }
         )

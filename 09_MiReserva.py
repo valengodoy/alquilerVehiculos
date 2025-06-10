@@ -20,7 +20,7 @@ if user != None:
         auto = obtener_auto(reserva.get("patente"))
         
         #Muestro info de la reserva
-        st.error(f"**{auto.get('marca')} {auto.get('modelo')} {auto.get('año')} {auto.get('tipo')} 💲{auto.get('precio_dia')}**")
+        st.error(f"**{auto.get('marca')} {auto.get('modelo')} {auto.get('año')} {auto.get('tipo')} 💲{auto.get('precio_dia')}. Politica de cancelacion: {auto.get('reembolso')}**")
         st.image(f"imagenes/{auto.get('imagen')}", use_container_width=True)
         
         nombre_conductor = reserva.get("nombre_conductor")
