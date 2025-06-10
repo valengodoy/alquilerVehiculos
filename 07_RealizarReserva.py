@@ -36,8 +36,8 @@ if user != None:
 
         st.markdown(f"{marca} {modelo} {año} {tipo}. Politica de cancelacion: {reembolso}")
     
-        desde = st.date_input("Reserva desde:", min_value=date.today() + timedelta(days=1), max_value=date.today() + timedelta(days=14))
-        hasta = st.date_input("Hasta:", min_value=date.today() + timedelta(days=1), max_value=date.today() + timedelta(days=14))
+        desde = st.date_input("Reserva desde:", min_value=date.today() + timedelta(days=1))
+        hasta = st.date_input("Hasta:", min_value=desde + timedelta(days=1), max_value=desde + timedelta(days=14))
         
         df_filtrado = df[(df["patente"] == patente) & (df["estado"].isin(["activo", "pendiente", "pagado"]))]
         st.info("El vehiculo tiene reservas en las siguientes fechas:")
