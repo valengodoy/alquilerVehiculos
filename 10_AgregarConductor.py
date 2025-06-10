@@ -16,6 +16,8 @@ if id_reserva:
     if st.button("Agregar conductor"):
         if (not dni) or (not nombreApellido):
             st.error("Debe rellenar todos los campos")
+        elif (len(dni) < 7) or (len(dni) > 8) or (not dni.isdigit()):
+            st.error("El DNI ingresado no es valido")
         elif edad < 18:
             st.error("El conductor debe ser mayor a 18 años para poder asignarlo a su reserva")
         elif conductor_ya_asignado(dni):
