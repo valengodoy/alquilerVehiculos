@@ -43,7 +43,7 @@ if user != None:
                 df_pagos = pd.read_csv("data/pagos.csv")
                 df_tarjetas = pd.read_csv("data/tarjetas.csv")
                 pago_reserva = df_pagos[df_pagos['alquiler_id'] == reserva.get('id_reserva')]
-                numero_tarjeta = pago_reserva['numero_tarjeta']
+                numero_tarjeta = pago_reserva['numero_tarjeta'].iloc[0]
                 tarjeta = df_tarjetas[df_tarjetas['numero_tarjeta'] == numero_tarjeta]
                 saldo = float(tarjeta.iloc[0]["saldo"])
                 if(auto.get('reembolso') == "Total"):
