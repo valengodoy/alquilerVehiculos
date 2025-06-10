@@ -19,10 +19,7 @@ if __name__ == "__main__":
     iniciar_sesion = st.Page("01_IniciarSesion.py", title="Inicia sesión", icon=":material/login:")
     registrar_usuario = st.Page("02_Registrarse.py", title="Registrate", icon=":material/person_add:")
     ver_catalogo = st.Page("03_Catalogo.py", title="Ver catálogo", icon="🚗")
-    realizar_reserva = st.Page("07_RealizarReserva.py", title="Realizar Reserva", icon="🤑")
     mi_reserva = st.Page("09_MiReserva.py", title="Mi reserva", icon="🚗")
-    agregar_conductor = st.Page("10_AgregarConductor.py", title="Agregar conductor", icon="⚙️")
-    pagar_reserva = st.Page("11_pagarReserva.py", title="Pagar reserva", icon="💸")
     verHistorialReserva = st.Page("12_verHistorialReserva.py",title="Historial de Reservas", icon="🚗")
     recuperar_contraseña = st.Page("08_RecuperarContraseña.py", title="Cambiar Contraseña", icon="🔑")
 
@@ -56,8 +53,8 @@ if __name__ == "__main__":
             {
                 "Salir de tu cuenta": [cerrar_sesion],
                 "Inicio": [inicio],
-                "Maneja tu cuenta": [recuperar_contraseña],
-                "Reservas": [ver_catalogo, realizar_reserva, mi_reserva, agregar_conductor, pagar_reserva, verHistorialReserva],
+                "Maneja tu cuenta": [iniciar_sesion, recuperar_contraseña],
+                "Reservas": [ver_catalogo, mi_reserva, verHistorialReserva],
             }
         )
     

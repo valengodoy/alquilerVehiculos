@@ -32,19 +32,8 @@ if user != None:
         #Botones de gestion
         cols = st.columns([2,1,2,1,2])
         with cols[0]:
-            agregarConductor = st.button("Agregar conductor")
-        with cols[2]:
-            pagarReserva = st.button("Pagar reserva")
-        with cols[4]:
             cancelar = st.button("Cancelar Reserva")
 
-        #Boton PagarReserva
-        if pagarReserva:
-            pagina_pagar_reserva = st.Page("11_pagarReserva.py", title="Pagar reserva", icon="💸")
-
-            st.session_state["reserva_a_pagar"] = reserva # Guardar la reserva seleccionada
-            st.switch_page(pagina_pagar_reserva)  # Cambiar a la pantalla de pago
-            
         #Boton cancelar
         if cancelar:
             inicio = pd.to_datetime(reserva["fecha_inicio"], format="%d/%m/%Y").date()
@@ -53,15 +42,7 @@ if user != None:
             else:
                 cancelar_reserva(reserva.get("id_reserva"))
                 st.success("Tu reserva ha sido cancelada")
-        
-        #Boton agregar conductor
-        if agregarConductor:
-            if not (pd.isna(nombre_conductor) or str(nombre_conductor).strip() == ""):
-                st.info("La reserva ya tiene conductor asignado")
-            else:
-                pagina_agregar_conductor = st.Page("10_AgregarConductor.py", title="Agregar conductor", icon="⚙️")
-                st.session_state["id_reserva"] = reserva["id_reserva"]
-                st.switch_page(pagina_agregar_conductor)                  
+               
     else:
         st.error('No tiene ninguna reserva ahora mismo ❌')
 else:

@@ -4,3 +4,4 @@ id_tarjeta,usuario_id,nombre_usuario,numero_tarjeta,vencimiento,cvv,saldo
 3,5,usuarioUno,76549,05/29,654,500000
 4,11,johana,65432,08/28,456,100000
 5,12,pao1,76543,07/29,55,40000
+6,14,valen,89101,01/31,111,9700000
