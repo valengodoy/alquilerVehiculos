@@ -61,8 +61,8 @@ if st.session_state.vehiculo_buscado:
         if reembolso != vehiculo["reembolso"]:
             cambios["reembolso"] = reembolso
 
-        if nuevo_disponible and esta_alquilado(st.session_state.patente_actual):
-            st.error("❌ El vehículo tiene un alquiler activo actualmente. No puede marcarse como disponible.")
+        if not nuevo_disponible and esta_alquilado(st.session_state.patente_actual):
+            st.error("❌ El vehículo tiene un alquiler activo o pendiente. No puede marcarse como no disponible.")
             st.stop()
         elif nuevo_disponible != disponible_actual:
             cambios["disponible"] = "Sí" if nuevo_disponible else "No"

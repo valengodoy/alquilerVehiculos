@@ -44,7 +44,7 @@ if __name__ == "__main__":
         pg = st.navigation({
                 "Salir de tu cuenta": [cerrar_sesion],
                 "Inicio": [inicio],
-                "Maneja tu cuenta": [recuperar_contraseña],
+                "Maneja tu cuenta": [iniciar_sesion, recuperar_contraseña],
                 "Funciones de administrador": [registrar_vehiculo, modificar_vehiculo, eliminar_vehiculo, verListadoVehiculos],
             }
         )

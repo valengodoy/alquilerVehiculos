@@ -146,7 +146,7 @@ elif st.session_state.paso == 1:
                     "patente": vehiculo['patente'],
                     "fecha_inicio": desde_str,
                     "fecha_fin": hasta_str,
-                    "estado": 'nopagado',
+                    "estado": 'pendiente',
                     "costo_dia": vehiculo['precio_dia'],
                     "costo_total": diferencia * vehiculo['precio_dia']
                 }
@@ -154,13 +154,11 @@ elif st.session_state.paso == 1:
                 st.session_state["id_reserva"] = nuevo_id
                 registrar_reserva(nuevo)
                 st.info('ℹ️ Reserva pendiente - Asignar conductor y Realizar pago para registrar su reserva')
-                # Volver al catálogo para nuevas reservas
                 st.session_state.paso = 2
                 st.rerun()
 
 
 elif st.session_state.paso == 2:
-
 
     # Rutas de archivos
     RUTA_USUARIOS = "data/usuarios.csv"
@@ -178,6 +176,7 @@ elif st.session_state.paso == 2:
 
     df_usuarios, df_alquileres, df_tarjetas = cargar_datos()
 
+    # Verificar si se recibió una reserva desde otra página
     if "reserva_a_pagar" not in st.session_state:
         st.error("No se seleccionó ninguna reserva para pagar.")
         st.stop()
@@ -251,24 +250,23 @@ elif st.session_state.paso == 2:
             (df_tarjetas["vencimiento"].astype(str).str.strip() == vencimiento.strip()) &
             (df_tarjetas["cvv"].astype(int) == int(cvv.strip()))
         ]
-
         if tarjeta.empty:
             st.error("Datos de tarjeta incorrectos.")
         else:
-            alquileres_nopagado = df_alquileres[
+            alquileres_pendientes = df_alquileres[
                 (df_alquileres["usuario_id"].astype(str) == usuario_id) &
-                (df_alquileres["estado"].str.lower() == "nopagado")
+                (df_alquileres["estado"].str.lower() == "pendiente")
             ]
 
-            if alquileres_nopagado.empty:
-                st.info("No hay alquileres esperando pago para este usuario.")
+            if alquileres_pendientes.empty:
+                st.info("No hay alquileres pendientes para este usuario.")
             else:
-                opciones = alquileres_nopagado.apply(
+                opciones = alquileres_pendientes.apply(
                     lambda row: f"Monto: ${row['costo_total']}", axis=1
                 ).tolist()
                 seleccion = st.selectbox("Monto total a pagar", opciones)
                 index_seleccion = opciones.index(seleccion)
-                alquiler_seleccionado = alquileres_nopagado.iloc[index_seleccion]
+                alquiler_seleccionado = alquileres_pendientes.iloc[index_seleccion]
 
                 monto = float(alquiler_seleccionado["costo_total"])
                 saldo = float(tarjeta.iloc[0]["saldo"])
@@ -314,10 +312,12 @@ elif st.session_state.paso == 2:
                             st.error("Este alquiler ya fue pagado. No es posible pagar nuevamente.")
                         else:
                             df_tarjetas = pd.read_csv(RUTA_TARJETAS)
+
                             tarjeta_usuario = df_tarjetas[
                                 (df_tarjetas["nombre_usuario"].astype(str) == nombre) &
                                 (df_tarjetas["numero_tarjeta"].astype(str) == str(numero_tarjeta))
                             ]
+
                             if tarjeta_usuario.empty:
                                 st.error("No se encontró la tarjeta.")
                             else:
@@ -354,50 +354,37 @@ elif st.session_state.paso == 2:
                                         df_alquileres["id_reserva"] == alquiler_seleccionado["id_reserva"],
                                         "estado"
                                     ] = "pagado"
-                                    
                                     df_alquileres.to_csv(RUTA_ALQUILERES, index=False)
-
-                                    df_alquileres.loc[df_alquileres["id_reserva"] ==  alquiler_seleccionado["id_reserva"], "estado"] = "pendiente"
-
-
-                                    df_alquileres.to_csv(RUTA_ALQUILERES, index=False)
-
-
-                        
 
                                     st.success("✅ ¡Pago realizado con éxito!")
-                                    st.subheader("🧾 Comprobante de Pago")
-                                
 
+                                    st.subheader("🧾 Comprobante de Pago")
 
                                     pagos = {
-                                            "numero_transaccion": numero_transaccion,
-                                            "Método de Pago": ["Tarjeta"],
-                                            "Fecha de Pago": [datetime.today().strftime("%d/%m/%Y")],
-                                            "Nombre del Usuario": [nombre],
-                                            "Número de Tarjeta": [f"**** **** **** {str(numero_tarjeta)[-4:]}"],
-                                            "Monto Pagado": [f"${monto:,.2f}"]
-                                        }
+                                        "numero_transaccion": numero_transaccion,
+                                        "Método de Pago": ["Tarjeta"],
+                                        "Fecha de Pago": [datetime.today().strftime("%d/%m/%Y")],
+                                        "Nombre del Usuario": [nombre],
+                                        "Número de Tarjeta": [f"**** **** **** {str(numero_tarjeta)[-4:]}"],
+                                        "Monto Pagado": [f"${monto:,.2f}"],
+                                    }
 
                                     df_pagos = pd.DataFrame(pagos)
                                     df_pagos = df_pagos.reset_index(drop=True)
                                     st.dataframe(df_pagos, hide_index=True)
 
-            
-                                    
                                     st.session_state.paso = 3
                                     if st.button("continuar"):
                                         st.rerun()
-                        
-
                     else:
                         st.error("No hay historial de pagos, asegúrese de haber seleccionado un alquiler válido.")
-                   
 
+
+
+                    
 
 elif st.session_state.paso == 3:
-
-        
+     
     id_reserva = st.session_state.get("id_reserva")
 
     if id_reserva:
