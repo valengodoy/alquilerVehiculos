@@ -37,69 +37,71 @@ if st.session_state.paso == 0:
         )
         
         
-
-        st.subheader("🗓️ Fechas de disponibilidad:")
-        manana = date.today() + timedelta(days=1)
-        fecha_desde = st.date_input("Desde", min_value=manana)
-        fecha_hasta = st.date_input("Hasta", min_value=fecha_desde + timedelta(days=1), max_value=fecha_desde + timedelta(days=14))
+        filtrarfechas = st.checkbox("Filtrar por disponibilidad entre fechas")
+        if filtrarfechas:
+            st.subheader("🗓️ Fechas de disponibilidad:")
+            manana = date.today() + timedelta(days=1)
+            fecha_desde = st.date_input("Desde", min_value=manana)
+            fecha_hasta = st.date_input("Hasta", min_value=fecha_desde + timedelta(days=1), max_value=fecha_desde + timedelta(days=14))
 
         # Validaciones
-        if fecha_desde < manana:
-            st.error("La fecha de inicio debe ser como mínimo mañana.")
-        elif fecha_hasta <= fecha_desde:
-            st.error("La reserva debe durar al menos un día.")
-        elif (fecha_hasta - fecha_desde).days > 14:
-            st.error("La duración máxima de reserva es de 14 días.")
-        else:
-            st.success(f"Reservas disponibles desde {fecha_desde} hasta {fecha_hasta}")
+            if fecha_desde < manana:
+                st.error("La fecha de inicio debe ser como mínimo mañana.")
+            elif fecha_hasta <= fecha_desde:
+                st.error("La reserva debe durar al menos un día.")
+            elif (fecha_hasta - fecha_desde).days > 14:
+                st.error("La duración máxima de reserva es de 14 días.")
+            else:
+                st.success(f"Reservas disponibles desde {fecha_desde} hasta {fecha_hasta}")
+                
+        filtro = (catalogo['precio_dia'] >= precio_min) & (catalogo['precio_dia'] <= precio_max) & (catalogo['eliminado'] == 'No')
 
-            filtro = (catalogo['precio_dia'] >= precio_min) & (catalogo['precio_dia'] <= precio_max) & (catalogo['eliminado'] == 'No')
-
-            if marca:
-                filtro &= catalogo['marca'].isin(marca)
-            if tipo:
-                filtro &= catalogo['tipo'].isin(tipo)
+        if marca:
+            filtro &= catalogo['marca'].isin(marca)
+        if tipo:
+            filtro &= catalogo['tipo'].isin(tipo)
             
 
-            catalogo_filtrado = catalogo[filtro]
+        catalogo_filtrado = catalogo[filtro]
 
+        if filtrarfechas:
             vehiculos_disponibles_fechas = []
             for idx, row in catalogo_filtrado.iterrows():
                 patente = row['patente']
                 if not esta_alquilado_fechas(patente, fecha_desde, fecha_hasta):
-                    vehiculos_disponibles_fechas.append(idx)
+                        vehiculos_disponibles_fechas.append(idx)
             catalogo_filtrado = catalogo_filtrado.loc[vehiculos_disponibles_fechas]
 
-            if obtener_usuario_actual() is None:
-                st.subheader('Inicie sesión para poder realizar una reserva')
+        if obtener_usuario_actual() is None:
+            st.subheader('Inicie sesión para poder realizar una reserva')
 
-            if catalogo_filtrado.empty:
-                st.error("🚫 No se encontraron autos que coincidan con la búsqueda.")
-            else:
-                cols = st.columns(3)
-                for idx, row in catalogo_filtrado.iterrows():
-                    with cols[idx % 3]:
-                        st.image(f"imagenes/{row['imagen']}", use_container_width=True)
-                        st.error(f"**{row['marca']} {row['modelo']} {row['año']} {row['tipo']} 💲{row['precio_dia']}**")
-                        st.info(f"Política de cancelación: {row['reembolso']}")
+        if catalogo_filtrado.empty:
+            st.error("🚫 No se encontraron autos que coincidan con la búsqueda.")
+        else:
+            cols = st.columns(3)
+            for idx, row in catalogo_filtrado.iterrows():
+                with cols[idx % 3]:
+                    st.image(f"imagenes/{row['imagen']}", use_container_width=True)
+                    st.error(f"**{row['marca']} {row['modelo']} {row['año']} {row['tipo']} 💲{row['precio_dia']}**")
+                    st.info(f"Política de cancelación: {row['reembolso']}")
 
-                        if row['disponible'] is False:
-                            st.warning("No disponible")
-                        elif obtener_usuario_actual() is not None:
-                            if st.button('Reservar', key=f"reservar_{row['patente']}"):
-                                # Guardar datos de vehículo en session_state para el siguiente paso
-                                st.session_state['vehiculo_seleccionado'] = {
-                                    "patente": row['patente'],
-                                    "marca": row['marca'],
-                                    "modelo": row['modelo'],
-                                    "año": row['año'],
-                                    "tipo": row['tipo'],
-                                    "imagen": row['imagen'],
-                                    "precio_dia": row['precio_dia'],
-                                    "reembolso": row['reembolso']
-                                }
-                                st.session_state.paso = 1
-                                st.rerun()
+                    if row['disponible'] is False:
+                        st.warning("No disponible")
+                    elif obtener_usuario_actual() is not None:
+                        if st.button('Reservar', key=f"reservar_{row['patente']}"):
+                            # Guardar datos de vehículo en session_state para el siguiente paso
+                            st.session_state['vehiculo_seleccionado'] = {
+                                "patente": row['patente'],
+                                "marca": row['marca'],
+                                "modelo": row['modelo'],
+                                "año": row['año'],
+                                "tipo": row['tipo'],
+                                "imagen": row['imagen'],
+                                "precio_dia": row['precio_dia'],
+                                "reembolso": row['reembolso']
+                            }
+                            st.session_state.paso = 1
+                            st.rerun()
 
 elif st.session_state.paso == 1:
 
