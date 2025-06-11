@@ -71,7 +71,6 @@ def actualizar_estado():
 def conductor_ya_asignado(dni):
     df_reservas = pd.read_csv('data/alquileres.csv')
 
-    # Normalizar tipo y limpiar espacios en la columna
     df_reservas["dni_conductor"] = df_reservas["dni_conductor"].astype(str).str.strip()
     dni = str(dni).strip()
 
