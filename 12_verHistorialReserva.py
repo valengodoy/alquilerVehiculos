@@ -5,9 +5,6 @@ import os
 from functions.usuarios import es_empleado_valido
 from functions.reserva import actualizar_estado
 
-st.session_state.paginaActual = "HistorialReserva"    
-st.session_state.paginaAnterior = "HistorialReserva"
-
 actualizar_estado()
 
 st.session_state.paso = 0

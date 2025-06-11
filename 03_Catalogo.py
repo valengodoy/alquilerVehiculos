@@ -8,12 +8,8 @@ import uuid
 import re
 import os
 
-st.session_state.paginaActual = "Catalogo"
-
-if "paso" not in st.session_state or st.session_state.paginaAnterior != st.session_state.paginaActual:
+if "paso" not in st.session_state:
     st.session_state.paso = 0
-   
-st.session_state.paginaAnterior = "Catalogo"
 
 actualizar_disponibilidad_por_mantenimiento()
 

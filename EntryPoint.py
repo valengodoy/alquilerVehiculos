@@ -2,8 +2,7 @@ import streamlit as st
 from functions.usuarios import es_empleado_valido
 
 def logout():
-    st.session_state.paginaActual = "CerrarSesion"    
-    st.session_state.paginaAnterior = "CerrarSesion"
+    st.session_state.paso = 0
     st.markdown("<br><br>", unsafe_allow_html=True)  # Espaciado superior
     st.write("### ¿Querés salir del sistema?")
     if st.button("🔓 Cerrar Sesión", use_container_width=True):
