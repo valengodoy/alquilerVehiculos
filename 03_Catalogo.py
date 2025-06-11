@@ -156,10 +156,13 @@ elif st.session_state.paso == 1:
                     "costo_dia": vehiculo['precio_dia'],
                     "costo_total": diferencia * vehiculo['precio_dia']
                 }
+                st.info("En caso de salir de la pagina Reservar deberá comenzar el proceso nuevamente")
                 st.session_state["id_reserva"] = nuevo_id
                 st.info('ℹ️ Reserva pendiente - Asignar conductor y Realizar pago para registrar su reserva')
                 st.session_state.paso = 2
-                st.rerun()
+                if st.button("Dirigirme al pago"):
+                    st.rerun()
+
 
 
 elif st.session_state.paso == 2:
@@ -260,7 +263,7 @@ elif st.session_state.paso == 2:
                 realizar = st.button("Realizar pago")
             with cols[3]:
                 cancelar = st.button("Cancelar")
-
+            st.info("En caso de salir de la pagina Pagar Reserva deberá comenzar el proceso nuevamente")
             st.warning("Si oprime cancelar, volverá al catálogo")
             if cancelar:
                 st.warning("Operación cancelada. No se realizó ningún pago.")
@@ -326,9 +329,8 @@ elif st.session_state.paso == 2:
                             df_pagos = pd.DataFrame(pagos)
                             df_pagos = df_pagos.reset_index(drop=True)
                             st.dataframe(df_pagos, hide_index=True)
-
                             st.session_state.paso = 3
-                            if st.button("Continuar"):
+                            if st.button("Dirigirme a Agregar Conductor"):
                                 st.rerun()
                     
 
@@ -341,9 +343,10 @@ elif st.session_state.paso == 3:
     nombreApellido = st.text_input("Nombre y apellido del conductor")
     fecha_nac_conductor = st.date_input("Fecha de nacimiento del conductor", min_value=date(1900, 1, 1), max_value=date.today())
     st.warning("Recuerde que sin licencia de conducir el conductor no podrá retirar el auto")
+    st.info("En caso de salir de la pagina Agregar Conductor sin finalizar deberá comenzar el proceso nuevamente")
     hoy = date.today()
     edad = hoy.year - fecha_nac_conductor.year - ((hoy.month, hoy.day) < (fecha_nac_conductor.month, fecha_nac_conductor.day)) 
-        
+      
     if st.button("Agregar conductor"):
         if (not dni) or (not nombreApellido):
             st.error("Debe rellenar todos los campos")
@@ -361,16 +364,13 @@ elif st.session_state.paso == 3:
 
             #Guardo reserva en el CSV
             registrar_reserva(reserva)
-            
             #Guardo pago en el CSV
             df = pd.read_csv("data/pagos.csv")
             df = pd.concat([df, pd.DataFrame([st.session_state['nuevo_pago']])], ignore_index=True)
             df.to_csv("data/pagos.csv", index=False)
-            
             st.success("✅ El conductor fue asignado a su reserva registrada")
-
             st.session_state.paso = 0
-            if st.button("Volver al catalógo"):
+            if st.button("Finalizar"):
                 st.rerun()
 
 

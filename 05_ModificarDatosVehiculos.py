@@ -43,7 +43,7 @@ if st.session_state.vehiculo_buscado:
     reembolso = st.selectbox("Política de cancelación", ["Total", "Parcial (20%)", "Sin reembolso"])
     disponible_actual = str(vehiculo["disponible"]).lower() == "true"
     disponible_legible = "Sí" if disponible_actual else "No"
-    seleccion_disponible = st.selectbox("Disponible", ["Sí", "No"], index=["Sí", "No"].index(disponible_legible))
+    seleccion_disponible = st.selectbox("Disponible por mantenimiento", ["Sí", "No"], index=["Sí", "No"].index(disponible_legible))
     nuevo_disponible = True if seleccion_disponible == "Sí" else False
 
     precio = st.text_input("Precio", value=str(vehiculo["precio_dia"]))
@@ -64,9 +64,9 @@ if st.session_state.vehiculo_buscado:
         if not nuevo_disponible and esta_alquilado(st.session_state.patente_actual):
             st.error("❌ El vehículo tiene un alquiler activo o pendiente. No puede marcarse como no disponible.")
             st.stop()
-        elif nuevo_disponible != disponible_actual:
+        elif (nuevo_disponible != disponible_actual):
             cambios["disponible"] = "Sí" if nuevo_disponible else "No"
-
+ 
         if precio != str(vehiculo["precio_dia"]):
             try:
                 precio_float = float(precio)

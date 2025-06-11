@@ -24,14 +24,13 @@ def guardar_vehiculo(df):
 
 #carga TODOS, los eliminados tambien 
 def cargar_todos_vehiculos():
-    return pd.read_csv("data/vehiculos.csv")
+    return pd.read_csv(archivo_vehiculos)
 
 
 
 def existe_patente(patente):
     df = cargar_vehiculos()
-    df_activos = df[df["eliminado"].str.lower() == "no"]
-    return not df_activos[df_activos["patente"].str.upper() == patente.upper()].empty
+    return not df[df["patente"].str.upper() == patente.upper()].empty
 
 
 
@@ -43,14 +42,14 @@ def validar_patente(patente):
 
 
 def registrar_vehiculo(vehiculo): 
-    df = cargar_vehiculos()
+    df = cargar_todos_vehiculos()
     df = pd.concat([df, pd.DataFrame([vehiculo])], ignore_index=True)
     guardar_vehiculo(df)
 
 
 def actualizar_disponibilidad_por_mantenimiento():
     hoy = date.today()
-    df_vehiculos = cargar_vehiculos() 
+    df_vehiculos = cargar_todos_vehiculos()
     for i, row in df_vehiculos.iterrows():
         fecha_mantenimiento = row.get("fecha_mantenimiento")
         if pd.notna(fecha_mantenimiento):
@@ -94,7 +93,7 @@ def esta_alquilado(patente):
 
 
 def eliminar_vehiculo(patente):
-    df = pd.read_csv("data/vehiculos.csv")
+    df = pd.read_csv(archivo_vehiculos)
     idx = df[df["patente"].str.upper() == patente.upper()].index
     if len(idx) == 0:
         return False  
@@ -102,6 +101,8 @@ def eliminar_vehiculo(patente):
     df.to_csv("data/vehiculos.csv", index=False)
     
     return True
+
+
 
 def esta_alquilado_fechas(patente, desde, hasta):
     df_reservas = cargar_reservas()
