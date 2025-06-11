@@ -22,14 +22,19 @@ if user != None:
         auto = obtener_auto(reserva.get("patente"))
         
         #Muestro info de la reserva
-        st.error(f"**{auto.get('marca')} {auto.get('modelo')} {auto.get('año')} {auto.get('tipo')} 💲{auto.get('precio_dia')}. Politica de cancelacion: {auto.get('reembolso')}**")
+        st.subheader(f"🚘Patente {auto.get('patente')}")
         st.image(f"imagenes/{auto.get('imagen')}", use_container_width=True)
-        
+        st.subheader(f"🔖 Marca {auto.get('marca')}, modelo {auto.get('modelo')} {auto.get('tipo')} ")
+        st.subheader(f"💲 Precio por dia {auto.get('precio_dia')}")
+        st.subheader(f"💰 Politica de cancelacion: reembolso {auto.get('reembolso')}")
+
+
         nombre_conductor = reserva.get("nombre_conductor")
         if not (pd.isna(nombre_conductor) or str(nombre_conductor).strip() == ""):
-            st.info(f"Informacion del conductor: {nombre_conductor} de {int((reserva.get('edad_conductor')))} años.")
+            st.info(f"🕴🏻 Informacion del conductor: {nombre_conductor} de {int((reserva.get('edad_conductor')))} años.")
             
-        st.info(f"Reserva desde el {reserva.get('fecha_inicio')} hasta el {reserva.get('fecha_fin')}. Costo total: 💲{reserva.get('costo_total')}")
+        st.info(f"Reserva desde el {reserva.get('fecha_inicio')} hasta el {reserva.get('fecha_fin')}") 
+        st.subheader(f"Costo total pagado: 💲{reserva.get('costo_total')}")
         
         #Botones de gestion
         cancelar = st.button("Cancelar Reserva")

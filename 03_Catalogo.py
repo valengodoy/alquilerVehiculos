@@ -28,6 +28,7 @@ if st.session_state.paso == 0:
         marca = st.multiselect('Marca del vehiculo', ['Toyota', 'Fiat', 'Volkswagen', 'Renault', 'Chevrolet', 'Ford'])
         st.subheader("🚗 Tipo de vehículo")
         tipo = st.multiselect('Tipo de vehiculo', ['SUV', 'Sedan', 'Deportivo'])
+        st.subheader("💲Precio")
         precio_min, precio_max = st.slider(
             "Rango de precio",
             min_value=0,
