@@ -7,6 +7,8 @@ from functions.reserva import actualizar_estado
 
 actualizar_estado()
 
+st.session_state.paso = 0
+
 RUTA_ALQUILERES = "data/alquileres.csv"
 
 st.title("📄 Historial de Reservas")

@@ -7,6 +7,8 @@ import re
 
 CSV_PATH = 'data/usuarios.csv'
 
+st.session_state.paso = 0
+
 def enviar_codigo_verificacion(destinatario_email, codigo):
     remitente = "proyectquadrasoft@gmail.com"  
     app_password = "vtam jppv mqqz ukri"

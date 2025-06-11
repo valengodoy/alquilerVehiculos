@@ -8,7 +8,7 @@ from datetime import date
 CARPETA_IMAGENES = "imagenes"
 
 
-st.title("Registrar Vehículo 🚗")
+st.title("Registrar Vehículo 📝🚗")
 
 
 if not es_empleado_valido(): #logueado, sea empleado, este activo y no bloqueado
