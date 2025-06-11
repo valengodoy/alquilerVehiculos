@@ -5,6 +5,9 @@ import random
 import string
 from functions.usuarios import es_admin, enviar_codigo_verificacion
 
+st.session_state.paginaActual = "IniciarSesion"    
+st.session_state.paginaAnterior = "IniciarSesion"
+
 # Ruta al archivo CSV
 RUTA_CSV = "data/usuarios.csv"
 

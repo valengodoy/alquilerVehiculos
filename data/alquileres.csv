@@ -16,4 +16,4 @@ id_reserva,usuario_id,patente,fecha_inicio,fecha_fin,estado,costo_dia,costo_tota
 16,val@gmail.com,NBV345,18/06/2025,19/06/2025,cancelado,60000,60000,valentina godoy,20.0,46285473
 17,val@gmail.com,NBV345,18/06/2025,19/06/2025,nopagado,60000,60000,,,
 18,valen@gmail.com,NJF834,19/06/2025,20/06/2025,cancelado,25000,25000,dasdasda,25.0,52352352
-19,valen@gmail.com,ASC215,13/06/2025,14/06/2025,pagado,35000,35000,gfdgdfgfd,37.0,54353535
+19,valen@gmail.com,ASC215,13/06/2025,14/06/2025,cancelado,35000,35000,gfdgdfgfd,37.0,54353535

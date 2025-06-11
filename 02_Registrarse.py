@@ -3,6 +3,9 @@ import pandas as pd
 from datetime import date
 import os
 
+st.session_state.paginaActual = "Registro"    
+st.session_state.paginaAnterior = "Registro"
+
 # Ruta al archivo CSV
 RUTA_CSV = "data/usuarios.csv"
 

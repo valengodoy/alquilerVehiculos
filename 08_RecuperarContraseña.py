@@ -5,6 +5,9 @@ import pandas as pd
 from email.message import EmailMessage
 import re
 
+st.session_state.paginaActual = "CambioContraseña"    
+st.session_state.paginaAnterior = "CambioContraseña"
+
 CSV_PATH = 'data/usuarios.csv'
 
 def enviar_codigo_verificacion(destinatario_email, codigo):

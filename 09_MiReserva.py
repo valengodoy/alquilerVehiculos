@@ -5,6 +5,9 @@ from functions.usuarios import obtener_usuario_actual, tiene_reserva
 from functions.reserva import obtener_reserva_email, cancelar_reserva, actualizar_estado
 from functions.vehiculos import obtener_auto
 
+st.session_state.paginaActual = "Mireserva"    
+st.session_state.paginaAnterior = "Mireserva"
+
 actualizar_estado()
 
 user = obtener_usuario_actual()
