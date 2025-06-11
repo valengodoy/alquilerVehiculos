@@ -346,8 +346,8 @@ elif st.session_state.paso == 3:
     if st.button("Agregar conductor"):
         if (not dni) or (not nombreApellido):
             st.error("Debe rellenar todos los campos")
-        elif not dni.isdigit() or len(dni) < 7 or len(dni) > 8:
-            st.error("El DNI ingresado no es valido. Debe ser un numero de 7 u 8 digitos.")
+        elif not dni.isdigit() or len(dni) != 8:
+            st.error("El DNI ingresado no es valido. Debe ser un numero de 8 digitos.")
         elif edad < 18:
             st.error("El conductor debe ser mayor a 18 años para poder asignarlo a su reserva")
         elif conductor_ya_asignado(dni):
