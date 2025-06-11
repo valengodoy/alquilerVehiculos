@@ -22,11 +22,15 @@ catalogo = pd.read_csv('data/vehiculos.csv')
 
 
 if st.session_state.paso == 0:
+    st.title("Catálago 🗂️")
 
     if catalogo.empty:
         st.warning("⚠️ El catálogo está vacío.")
     else:
+        st.subheader("Filtrar por")
+        st.subheader("🔖 Marca")
         marca = st.multiselect('Marca del vehiculo', ['Toyota', 'Fiat', 'Volkswagen', 'Renault', 'Chevrolet', 'Ford'])
+        st.subheader("🚗 Tipo de vehículo")
         tipo = st.multiselect('Tipo de vehiculo', ['SUV', 'Sedan', 'Deportivo'])
         precio_min, precio_max = st.slider(
             "Rango de precio",
@@ -35,9 +39,10 @@ if st.session_state.paso == 0:
             value=(0, 150000),
             step=1000
         )
-        disponible = st.checkbox('Disponible para alquilar')
+        
+        
 
-        st.markdown("Filtrar por fechas de disponibilidad: ")
+        st.subheader("🗓️ Fechas de disponibilidad:")
         manana = date.today() + timedelta(days=1)
         fecha_desde = st.date_input("Desde", min_value=manana)
         fecha_hasta = st.date_input("Hasta", min_value=fecha_desde + timedelta(days=1), max_value=fecha_desde + timedelta(days=14))
@@ -58,8 +63,7 @@ if st.session_state.paso == 0:
                 filtro &= catalogo['marca'].isin(marca)
             if tipo:
                 filtro &= catalogo['tipo'].isin(tipo)
-            if disponible:
-                filtro &= catalogo['disponible'] == True
+            
 
             catalogo_filtrado = catalogo[filtro]
 
@@ -71,10 +75,10 @@ if st.session_state.paso == 0:
             catalogo_filtrado = catalogo_filtrado.loc[vehiculos_disponibles_fechas]
 
             if obtener_usuario_actual() is None:
-                st.info('Inicie sesión para poder realizar una reserva')
+                st.subheader('Inicie sesión para poder realizar una reserva')
 
             if catalogo_filtrado.empty:
-                st.info("🚫 No se encontraron autos que coincidan con la búsqueda.")
+                st.error("🚫 No se encontraron autos que coincidan con la búsqueda.")
             else:
                 cols = st.columns(3)
                 for idx, row in catalogo_filtrado.iterrows():
@@ -115,10 +119,10 @@ elif st.session_state.paso == 1:
         st.session_state.paso = 0
         st.rerun()
     else:
-        st.header("Realizar reserva")
-        st.write(f"Reserva para: {vehiculo['patente']}")
+        st.header("📥 Realizar reserva")
+        st.subheader(f"Reserva para: {vehiculo['patente']}")
         st.image(f"imagenes/{vehiculo['imagen']}", width=500)
-        st.markdown(f"{vehiculo['marca']} {vehiculo['modelo']} {vehiculo['año']} {vehiculo['tipo']}. Política de cancelación: {vehiculo['reembolso']}")
+        st.subheader(f"{vehiculo['marca']} {vehiculo['modelo']} {vehiculo['año']} {vehiculo['tipo']}. Política de cancelación: {vehiculo['reembolso']}")
 
         desde = st.date_input("Reserva desde:", min_value=date.today() + timedelta(days=1))
         hasta = st.date_input("Hasta:", min_value=desde + timedelta(days=1), max_value=desde + timedelta(days=14))
@@ -127,7 +131,7 @@ elif st.session_state.paso == 1:
         RUTA_CSV = "data/alquileres.csv"
         df = pd.read_csv(RUTA_CSV)
         df_filtrado = df[(df["patente"] == vehiculo['patente']) & (df["estado"].isin(["activo", "pendiente", "pagado"]))]
-        st.info("El vehículo tiene reservas en las siguientes fechas:")
+        st.markdown("El vehículo tiene reservas en las siguientes fechas:")
         for i, row in df_filtrado.iterrows():
             st.markdown(f"{row.get('fecha_inicio')} a {row.get('fecha_fin')}")
 
@@ -179,7 +183,7 @@ elif st.session_state.paso == 2:
 
     alquiler_seleccionado = st.session_state["reserva_a_pagar"]
     
-    st.title("Pago de alquiler de autos")
+    st.title("💵 Pago de alquiler de autos")
 
     nombre = st.text_input("Nombre del Titular")
     numero_tarjeta = st.text_input("Número de tarjeta")
@@ -245,22 +249,24 @@ elif st.session_state.paso == 2:
         if tarjeta.empty:
             st.error("Datos de tarjeta incorrectos.")
         else:
-            st.info(f"Monto a pagar: {alquiler_seleccionado["costo_total"]}")
+            st.info(f"Monto a pagar: {alquiler_seleccionado['costo_total']}")
                 
             monto = float(alquiler_seleccionado["costo_total"])
             saldo = float(tarjeta.iloc[0]["saldo"])
 
             tipo_tarjeta = st.selectbox("Seleccione el tipo de tarjeta", ["crédito", "débito"])
 
-            col1, col2 = st.columns(2)
-            with col1:
+            cols = st.columns([2, 1, 1, 2])
+            with cols[0]:
                 realizar = st.button("Realizar pago")
-            with col2:
+            with cols[3]:
                 cancelar = st.button("Cancelar")
 
+            st.warning("Si oprime cancelar, volverá al catálogo")
             if cancelar:
                 st.warning("Operación cancelada. No se realizó ningún pago.")
                 st.session_state.paso = 0
+                st.rerun()
                 
             if realizar:
                 if os.path.exists(RUTA_PAGOS):
@@ -309,18 +315,18 @@ elif st.session_state.paso == 2:
 
                             st.subheader("🧾 Comprobante de Pago")
 
-    #                        pagos = {
-    #                            "numero_transaccion": numero_transaccion,
-    #                            "Método de Pago": ["Tarjeta"],
-    #                            "Fecha de Pago": [datetime.today().strftime("%d/%m/%Y")],
-    #                            "Nombre del Usuario": [nombre],
-    #                            "Número de Tarjeta": [f"**** **** **** {str(numero_tarjeta)[-4:]}"],
-    #                            "Monto Pagado": [f"${monto:,.2f}"],
-    #                        }
-    #
-    #                        df_pagos = pd.DataFrame(pagos)
-    #                        df_pagos = df_pagos.reset_index(drop=True)
-    #                        st.dataframe(df_pagos, hide_index=True)
+                            pagos = {
+                                "numero_transaccion": numero_transaccion,
+                                "Método de Pago": ["Tarjeta"],
+                                "Fecha de Pago": [datetime.today().strftime("%d/%m/%Y")],
+                                "Nombre del Usuario": [nombre],
+                                "Número de Tarjeta": [f"**** **** **** {str(numero_tarjeta)[-4:]}"],
+                                "Monto Pagado": [f"${monto:,.2f}"],
+                            }
+    
+                            df_pagos = pd.DataFrame(pagos)
+                            df_pagos = df_pagos.reset_index(drop=True)
+                            st.dataframe(df_pagos, hide_index=True)
 
                             st.session_state.paso = 3
                             if st.button("Continuar"):
@@ -329,6 +335,7 @@ elif st.session_state.paso == 2:
 
 elif st.session_state.paso == 3:
     
+    st.title("🕴🏻Agregar conductor")
     reserva = st.session_state['reserva_a_pagar']
 
     dni = st.text_input("Documento del conductor")

@@ -15,7 +15,7 @@ def obtener_nuevo_id(df):
     else:
         return df["id"].max() + 1
 
-def registrar_usuario(nombre, email, contraseña, fecha_nac):
+def registrar_usuario(nombre, email, contraseña, fecha_nac, dni):
     # Calcular edad
     hoy = date.today()
     edad = hoy.year - fecha_nac.year - ((hoy.month, hoy.day) < (fecha_nac.month, fecha_nac.day))
@@ -35,11 +35,16 @@ def registrar_usuario(nombre, email, contraseña, fecha_nac):
         st.error("La contraseña debe tener al menos 8 caracteres y contener al menos un número.")
         return
 
+    # Validar Dni
+    if not dni.isdigit() or len(dni) != 8:
+        st.error("El DNI debe contener exactamente 8 dígitos numéricos.")
+        return
+    
     # Cargar CSV
     if os.path.exists(RUTA_CSV):
         df = pd.read_csv(RUTA_CSV)
     else:
-        df = pd.DataFrame(columns=["id", "nombre", "email", "contraseña", "activo", "bloqueado", "edad", "es_admin"])
+        df = pd.DataFrame(columns=["id", "nombre", "email", "contraseña", "activo", "bloqueado", "edad", "es_admin", "dni"])
 
     # Validar que el correo no esté registrado
     if email in df["email"].values:
@@ -58,7 +63,8 @@ def registrar_usuario(nombre, email, contraseña, fecha_nac):
         "activo": True,
         "bloqueado": False,
         "edad": edad,
-        "es_admin": False
+        "es_admin": False,
+        "dni": dni
     }
 
     # Agregar y guardar
@@ -74,6 +80,7 @@ with st.form("registro_form"):
     nombre = st.text_input("Nombre completo")
     email = st.text_input("Correo electrónico")
     contraseña = st.text_input("Contraseña", type="password")
+    dni = st.text_input("Dni")
     fecha_nac = st.date_input("Fecha de nacimiento", min_value=date(1900, 1, 1), max_value=date.today())
     
     submit = st.form_submit_button("Registrarse")
@@ -82,4 +89,4 @@ with st.form("registro_form"):
         if not nombre or not email or not contraseña:
             st.error("Todos los campos son obligatorios.")
         else:
-            registrar_usuario(nombre, email, contraseña, fecha_nac)
+            registrar_usuario(nombre, email, contraseña, fecha_nac, dni)

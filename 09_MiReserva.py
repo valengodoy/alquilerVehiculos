@@ -5,9 +5,8 @@ from functions.usuarios import obtener_usuario_actual, tiene_reserva
 from functions.reserva import obtener_reserva_email, cancelar_reserva, actualizar_estado
 from functions.vehiculos import obtener_auto
 
-st.session_state.paginaActual = "Mireserva"    
-st.session_state.paginaAnterior = "Mireserva"
 
+st.session_state.paso = 0
 actualizar_estado()
 
 user = obtener_usuario_actual()
@@ -28,7 +27,7 @@ if user != None:
         
         nombre_conductor = reserva.get("nombre_conductor")
         if not (pd.isna(nombre_conductor) or str(nombre_conductor).strip() == ""):
-            st.info(f"Informacion del conductor: {nombre_conductor} de {(reserva.get('edad_conductor'))} años.")
+            st.info(f"Informacion del conductor: {nombre_conductor} de {int((reserva.get('edad_conductor')))} años.")
             
         st.info(f"Reserva desde el {reserva.get('fecha_inicio')} hasta el {reserva.get('fecha_fin')}. Costo total: 💲{reserva.get('costo_total')}")
         

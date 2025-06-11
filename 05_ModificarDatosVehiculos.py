@@ -4,7 +4,7 @@ from functions.vehiculos import existe_patente, cargar_vehiculos, guardar_vehicu
 from functions.vehiculos import existe_patente, cargar_vehiculos, guardar_vehiculo, esta_alquilado, actualizar_disponibilidad_por_mantenimiento
 
 
-st.title("Modificar Datos de Vehículo")
+st.title("Modificar Datos de Vehículo ✏️")
 
 actualizar_disponibilidad_por_mantenimiento()
 
