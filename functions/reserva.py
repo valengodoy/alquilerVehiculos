@@ -70,10 +70,14 @@ def actualizar_estado():
 
 def conductor_ya_asignado(dni):
     df_reservas = pd.read_csv('data/alquileres.csv')
-    # Filtrar reservas que están activas ahora (estado activo o pendiente)
+
+    # Normalizar tipo y limpiar espacios en la columna
+    df_reservas["dni_conductor"] = df_reservas["dni_conductor"].astype(str).str.strip()
+    dni = str(dni).strip()
+
     reservas_activas = df_reservas[
-            (df_reservas["dni_conductor"] == dni) &
-            (df_reservas["estado"]).isin(["pendiente", "pagado", "activo"])
-        ]
+        (df_reservas["dni_conductor"] == dni) &
+        (df_reservas["estado"]).isin(["pendiente", "pagado", "activo"])
+    ]
 
     return not reservas_activas.empty
