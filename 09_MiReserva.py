@@ -25,7 +25,7 @@ if user != None:
         
         nombre_conductor = reserva.get("nombre_conductor")
         if not (pd.isna(nombre_conductor) or str(nombre_conductor).strip() == ""):
-            st.info(f"Informacion del conductor: {nombre_conductor} de {(reserva.get('edad_conductor'))} años.")
+            st.info(f"Informacion del conductor: {nombre_conductor} de {int((reserva.get('edad_conductor')))} años.")
             
         st.info(f"Reserva desde el {reserva.get('fecha_inicio')} hasta el {reserva.get('fecha_fin')}. Costo total: 💲{reserva.get('costo_total')}")
         

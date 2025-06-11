@@ -242,22 +242,24 @@ elif st.session_state.paso == 2:
         if tarjeta.empty:
             st.error("Datos de tarjeta incorrectos.")
         else:
-            st.info(f"Monto a pagar: {alquiler_seleccionado["costo_total"]}")
+            st.info(f"Monto a pagar: {alquiler_seleccionado['costo_total']}")
                 
             monto = float(alquiler_seleccionado["costo_total"])
             saldo = float(tarjeta.iloc[0]["saldo"])
 
             tipo_tarjeta = st.selectbox("Seleccione el tipo de tarjeta", ["crédito", "débito"])
 
-            col1, col2 = st.columns(2)
-            with col1:
+            cols = st.columns([2, 1, 1, 2])
+            with cols[0]:
                 realizar = st.button("Realizar pago")
-            with col2:
+            with cols[3]:
                 cancelar = st.button("Cancelar")
 
+            st.warning("Si oprime cancelar, volverá al catálogo")
             if cancelar:
                 st.warning("Operación cancelada. No se realizó ningún pago.")
                 st.session_state.paso = 0
+                st.rerun()
                 
             if realizar:
                 if os.path.exists(RUTA_PAGOS):
@@ -306,18 +308,18 @@ elif st.session_state.paso == 2:
 
                             st.subheader("🧾 Comprobante de Pago")
 
-    #                        pagos = {
-    #                            "numero_transaccion": numero_transaccion,
-    #                            "Método de Pago": ["Tarjeta"],
-    #                            "Fecha de Pago": [datetime.today().strftime("%d/%m/%Y")],
-    #                            "Nombre del Usuario": [nombre],
-    #                            "Número de Tarjeta": [f"**** **** **** {str(numero_tarjeta)[-4:]}"],
-    #                            "Monto Pagado": [f"${monto:,.2f}"],
-    #                        }
-    #
-    #                        df_pagos = pd.DataFrame(pagos)
-    #                        df_pagos = df_pagos.reset_index(drop=True)
-    #                        st.dataframe(df_pagos, hide_index=True)
+                            pagos = {
+                                "numero_transaccion": numero_transaccion,
+                                "Método de Pago": ["Tarjeta"],
+                                "Fecha de Pago": [datetime.today().strftime("%d/%m/%Y")],
+                                "Nombre del Usuario": [nombre],
+                                "Número de Tarjeta": [f"**** **** **** {str(numero_tarjeta)[-4:]}"],
+                                "Monto Pagado": [f"${monto:,.2f}"],
+                            }
+    
+                            df_pagos = pd.DataFrame(pagos)
+                            df_pagos = df_pagos.reset_index(drop=True)
+                            st.dataframe(df_pagos, hide_index=True)
 
                             st.session_state.paso = 3
                             if st.button("Continuar"):
