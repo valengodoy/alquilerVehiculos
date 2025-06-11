@@ -3,10 +3,8 @@ import smtplib
 import random
 import pandas as pd
 from email.message import EmailMessage
+from functions.usuarios import obtener_usuario_actual
 import re
-
-st.session_state.paginaActual = "CambioContraseña"    
-st.session_state.paginaAnterior = "CambioContraseña"
 
 CSV_PATH = 'data/usuarios.csv'
 
@@ -53,10 +51,11 @@ st.title("🔐 Recuperar contraseña")
 if 'codigo_enviado' not in st.session_state:
     st.session_state.codigo_enviado = False
 
-correo = st.text_input("Correo electrónico")
+user = obtener_usuario_actual()
+correo = user.get('email')
 
 if not st.session_state.codigo_enviado:
-    if st.button("Enviar código"):
+    if st.button(f"Enviar código al mail {user.get('email')}"):
         df = cargar_usuarios()
         if correo in df['email'].values:
             codigo = generar_codigo()
