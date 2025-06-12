@@ -50,6 +50,11 @@ def registrar_usuario(nombre, email, contraseña, fecha_nac, dni):
     if email in df["email"].values:
         st.error("El correo electrónico ingresado ya está en uso.")
         return
+    
+    # Validar que el DNI no esté registrado
+    if float(dni) in df["dni"].values:
+        st.error("El DNI ingresado esta registrado en otra cuenta.")
+        return
 
     # Generar nuevo ID
     nuevo_id = obtener_nuevo_id(df)
