@@ -56,8 +56,8 @@ if st.button("Registrar Vehículo"):
             "tipo": tipo,
             "precio_dia": precio_dia,
             "imagen": nombre_archivo,
-            "fecha_alta": date.today(),
-            "fecha_mantenimiento": fecha_mantenimiento,
+            "fecha_alta": date.today().strftime('%d/%m/%Y'),
+            "fecha_mantenimiento": fecha_mantenimiento.strftime('%d/%m/%Y'),
             "eliminado": "No",
             "reembolso": reembolso
         }
