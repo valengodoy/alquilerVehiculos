@@ -43,7 +43,7 @@ if st.session_state.vehiculo_buscado:
     reembolso = st.selectbox("Política de cancelación", ["Total", "Parcial (20%)", "Sin reembolso"])
     disponible_actual = str(vehiculo["disponible"]).lower() == "true"
     disponible_legible = "Sí" if disponible_actual else "No"
-    seleccion_disponible = st.selectbox("Disponible por mantenimiento", ["Sí", "No"], index=["Sí", "No"].index(disponible_legible))
+    seleccion_disponible = st.selectbox("Esta disponible para alquilar?", ["Sí", "No"], index=["Sí", "No"].index(disponible_legible))
     fecha_mantenimiento = st.date_input("Fecha de mantenimiento", min_value=date.today(), max_value=date(2040, 1, 1))
     nuevo_disponible = True if seleccion_disponible == "Sí" else False
 

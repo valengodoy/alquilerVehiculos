@@ -187,7 +187,7 @@ elif st.session_state.paso == 2:
     
     st.title("💵 Pago de alquiler de autos")
 
-    nombre = st.text_input("Nombre del Titular")
+    nombre = st.text_input("Nombre de usuario del Titular")
     numero_tarjeta = st.text_input("Número de tarjeta")
     vencimiento = st.text_input("Fecha de vencimiento (MM/AA)")
     cvv = st.text_input("CVV")

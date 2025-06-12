@@ -82,7 +82,7 @@ def registrar_usuario(nombre, email, contraseña, fecha_nac, dni):
 st.title("Registro de usuario 📝")
 
 with st.form("registro_form"):
-    nombre = st.text_input("Nombre completo")
+    nombre = st.text_input("Nombre de usuario")
     email = st.text_input("Correo electrónico")
     contraseña = st.text_input("Contraseña", type="password")
     dni = st.text_input("Dni")

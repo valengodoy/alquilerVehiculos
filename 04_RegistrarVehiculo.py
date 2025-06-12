@@ -19,7 +19,7 @@ patente = st.text_input("Patente")
 marca = st.text_input("Marca")
 modelo = st.text_input("Modelo")
 año = st.text_input("Año")
-disponible = st.selectbox("Está disponible por mantenimiento?", ["Sí", "No"])
+disponible = st.selectbox("Está disponible para alquilar?", ["Sí", "No"])
 disponible_bool = True if disponible == "Sí" else False
 tipo = st.selectbox("Tipo de vehículo", ["SUV", "Sedan", "Deportivo"])
 reembolso = st.selectbox("Política de cancelación", ["Total", "Parcial (20%)", "Sin reembolso"])
