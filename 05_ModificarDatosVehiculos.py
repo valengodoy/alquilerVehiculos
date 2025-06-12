@@ -1,7 +1,7 @@
 import streamlit as st
+from datetime import date
 from functions.usuarios import es_empleado_valido
-from functions.vehiculos import existe_patente, cargar_vehiculos, guardar_vehiculo, esta_alquilado
-from functions.vehiculos import existe_patente, cargar_vehiculos, guardar_vehiculo, esta_alquilado, actualizar_disponibilidad_por_mantenimiento
+from functions.vehiculos import existe_patente, cargar_todos_vehiculos, guardar_vehiculo, esta_alquilado, actualizar_disponibilidad_por_mantenimiento
 
 
 st.title("Modificar Datos de Vehículo ✏️")
@@ -31,7 +31,7 @@ if st.button("Buscar Vehiculo"):
         st.session_state.patente_actual = patente
 
 if st.session_state.vehiculo_buscado:
-    df = cargar_vehiculos()
+    df = cargar_todos_vehiculos()
     idx = df[df["patente"].str.upper() == st.session_state.patente_actual].index[0]
     vehiculo = df.loc[idx]
 
@@ -44,6 +44,7 @@ if st.session_state.vehiculo_buscado:
     disponible_actual = str(vehiculo["disponible"]).lower() == "true"
     disponible_legible = "Sí" if disponible_actual else "No"
     seleccion_disponible = st.selectbox("Disponible por mantenimiento", ["Sí", "No"], index=["Sí", "No"].index(disponible_legible))
+    fecha_mantenimiento = st.date_input("Fecha de mantenimiento", min_value=date.today(), max_value=date(2040, 1, 1))
     nuevo_disponible = True if seleccion_disponible == "Sí" else False
 
     precio = st.text_input("Precio", value=str(vehiculo["precio_dia"]))
@@ -60,12 +61,14 @@ if st.session_state.vehiculo_buscado:
             cambios["modelo"] = modelo
         if reembolso != vehiculo["reembolso"]:
             cambios["reembolso"] = reembolso
+        if cambios != vehiculo["fecha_mantenimiento"]:
+            cambios["fecha_mantenimiento"] = fecha_mantenimiento
 
         if not nuevo_disponible and esta_alquilado(st.session_state.patente_actual):
             st.error("❌ El vehículo tiene un alquiler activo o pendiente. No puede marcarse como no disponible.")
             st.stop()
         elif (nuevo_disponible != disponible_actual):
-            cambios["disponible"] = "Sí" if nuevo_disponible else "No"
+           cambios["disponible"] = nuevo_disponible
  
         if precio != str(vehiculo["precio_dia"]):
             try:
