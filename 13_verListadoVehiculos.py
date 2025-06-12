@@ -16,10 +16,8 @@ def cargar_datos():
 st.title("Listado completo de vehículos (Administrador)")
 
 # Cargar datos
-df_vehiculos, df_alquileres = cargar_datos()
-
-# Filtrar solo vehículos no eliminados
-df_vehiculos = df_vehiculos[df_vehiculos["eliminado"].str.lower() == "no"].copy()
+df_vehiculos = pd.read_csv(RUTA_VEHICULOS)
+df_alquileres = pd.read_csv(RUTA_ALQUILERES)
 
 # Obtener fecha actual para verificar alquiler en curso
 hoy = datetime.today().date()
