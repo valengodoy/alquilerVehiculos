@@ -1,2 +1,2 @@
 id_reserva,usuario_id,patente,fecha_inicio,fecha_fin,estado,costo_dia,costo_total,nombre_conductor,edad_conductor,dni_conductor
-1,usuario@gmail.com,NJF834,09/06/2025,13/06/2025,activo,25000,125000,conductor,20,12345678
+1,usuario@gmail.com,NJF834,09/06/2025,20/06/2025,activo,25000,300000,conductor,20,12345678

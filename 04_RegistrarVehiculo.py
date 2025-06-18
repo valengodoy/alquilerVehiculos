@@ -28,12 +28,12 @@ precio_dia = st.text_input("Precio por día")
 foto = st.file_uploader("Agregue una foto del vehículo", type=["jpg", "jpeg", "png"])
 
 if st.button("Registrar Vehículo"):
-    if not validar_patente(patente):
+    if not all([patente, marca, modelo, año, tipo, precio_dia, foto, fecha_mantenimiento, reembolso]):
+        st.error("Debe completar todos los campos")
+    elif not validar_patente(patente):
         st.error("La patente no tiene un formato válido")
     elif existe_patente(patente):
         st.error("La patente ya se encuentra cargada en el sistema")
-    elif not all([patente, marca, modelo, año, tipo, precio_dia, foto, fecha_mantenimiento, reembolso]):
-        st.error("Debe completar todos los campos")
     elif not año.isdigit() or int(año) < 1900 or int(año) > date.today().year:
         st.error("El año debe ser un número válido entre 1900 y el año actual")
     elif not precio_dia.replace('.', '', 1).isdigit() or float(precio_dia) <= 0:
