@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import random
 import smtplib
+import os
 from email.message import EmailMessage
 
 RUTA_CSV = "data/usuarios.csv"
@@ -20,7 +21,7 @@ def obtener_usuario_actual():
     
     return usuario.iloc[0].to_dict()
 
-def es_empleado_valido():
+def es_admin_valido():
     usuario = obtener_usuario_actual()
     return (
         st.session_state.get('session_state') == 'logged' and
@@ -80,3 +81,29 @@ def es_admin(email):
     except Exception as e:
         print(f"Error al verificar si es admin: {e}")
         return False
+    
+
+def cargar_usuarios_sin_elimin():
+    if not os.path.exists(RUTA_CSV):
+        return pd.DataFrame(columns=["id","nombre","email","contraseña","activo","bloqueado","edad","es_admin","dni","es_empleado","eliminado"])
+    df = pd.read_csv(RUTA_CSV)
+    df["eliminado"] = df["eliminado"].fillna("False").astype(str)
+    df = df[df["eliminado"].str.lower() == "false"]
+    return df
+
+
+
+#carga TODOS, los eliminados tambien 
+def cargar_todos_usuarios():
+    return pd.read_csv(RUTA_CSV)
+
+
+
+
+def existe_usuario(user):
+    df = cargar_usuarios_sin_elimin()
+    return not df[df["email"].str.upper() == user.upper()].empty
+
+
+def guardar_usuario(df):
+    df.to_csv(RUTA_CSV, index=False)

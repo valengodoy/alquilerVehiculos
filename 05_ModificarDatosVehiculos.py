@@ -1,6 +1,6 @@
 import streamlit as st
 from datetime import date
-from functions.usuarios import es_empleado_valido
+from functions.usuarios import es_admin_valido
 from functions.vehiculos import existe_patente, cargar_todos_vehiculos, guardar_vehiculo, esta_alquilado, actualizar_disponibilidad_por_mantenimiento
 
 
@@ -8,7 +8,7 @@ st.title("Modificar Datos de Vehículo ✏️")
 
 actualizar_disponibilidad_por_mantenimiento()
 
-if not es_empleado_valido():
+if not es_admin_valido():
     st.error("⚠️ No tiene permiso para acceder a esta sección.")
     st.stop()
 

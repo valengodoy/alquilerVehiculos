@@ -1,10 +1,10 @@
 import streamlit as st
 from functions.vehiculos import eliminar_vehiculo, existe_patente, esta_alquilado
-from functions.usuarios import es_empleado_valido
+from functions.usuarios import es_admin_valido
 
 st.title("Eliminar Vehículo 🗑️")
 
-if not es_empleado_valido():
+if not es_admin_valido():
     st.error("⚠️ No tiene permiso para acceder a esta sección.")
     st.stop()
 

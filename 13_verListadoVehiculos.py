@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from functions.usuarios import es_empleado_valido
+from functions.usuarios import es_admin_valido
 
 # Rutas de archivos
 RUTA_VEHICULOS = "data/vehiculos.csv"

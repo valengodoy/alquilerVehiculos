@@ -1,5 +1,5 @@
 import streamlit as st
-from functions.usuarios import es_empleado_valido
+from functions.usuarios import es_admin_valido
 
 def logout():
     st.session_state.paso = 0
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     modificar_vehiculo = st.Page("05_ModificarDatosVehiculos.py", title="Modificar vehículo", icon="🛠️")
     eliminar_vehiculo = st.Page("06_EliminarVehiculo.py", title="Eliminar vehículo", icon="❌")
     verListadoVehiculos = st.Page("13_verListadoVehiculos.py", title="Listado de Vehiculos", icon="🚗")
-    
+    editarMisDatos = st.Page("14_EditarMisDatos.py", title="Editar Mis Datos", icon="✏️")
     
     
     if st.session_state['session_state'] == 'no_logged':
@@ -41,7 +41,7 @@ if __name__ == "__main__":
                 "Reservas": [ver_catalogo],
             }
         )
-    elif es_empleado_valido():
+    elif es_admin_valido():
         pg = st.navigation({
                 "Salir de tu cuenta": [cerrar_sesion],
                 "Inicio": [inicio],
@@ -54,7 +54,7 @@ if __name__ == "__main__":
             {
                 "Inicio": [inicio],
                 "Salir de tu cuenta": [cerrar_sesion],
-                "Maneja tu cuenta": [recuperar_contraseña],
+                "Maneja tu cuenta": [recuperar_contraseña, editarMisDatos],
                 "Reservas": [ver_catalogo, mi_reserva, verHistorialReserva],
             }
         )
