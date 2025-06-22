@@ -85,7 +85,7 @@ def es_admin(email):
 
 def cargar_usuarios_sin_elimin():
     if not os.path.exists(RUTA_CSV):
-        return pd.DataFrame(columns=["id","nombre","email","contraseña","activo","bloqueado","edad","es_admin","dni","es_empleado","eliminado"])
+        return pd.DataFrame(columns=["id","nombre","email","contraseña","activo","bloqueado","edad","fecha_nac","es_admin","dni","es_empleado","eliminado"])
     df = pd.read_csv(RUTA_CSV)
     df["eliminado"] = df["eliminado"].fillna("False").astype(str)
     df = df[df["eliminado"].str.lower() == "false"]

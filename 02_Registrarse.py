@@ -68,6 +68,7 @@ def registrar_usuario(nombre, email, contraseña, fecha_nac, dni):
         "activo": True,
         "bloqueado": False,
         "edad": edad,
+        "fecha_nac": fecha_nac,
         "es_admin": False,
         "dni": dni
     }
