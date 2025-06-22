@@ -107,3 +107,29 @@ def existe_usuario(user):
 
 def guardar_usuario(df):
     df.to_csv(RUTA_CSV, index=False)
+
+
+
+def es_empleado(email):
+    try:
+        df = pd.read_csv(RUTA_CSV)
+        usuario = df[df['email'].astype(str).str.lower() == email.lower()]
+        if not usuario.empty and str(usuario.iloc[0]['es_empleado']).lower() == "true":
+            return True
+        else:
+            return False
+    except Exception as e:
+        print(f"Error al verificar si es empleado: {e}")
+        return False
+    
+
+
+def eliminar_empleado(mail):
+    df = pd.read_csv(RUTA_CSV)
+    idx = df[df["email"].str.upper() == mail.upper()].index
+    if len(idx) == 0:
+        return False  
+    df.at[idx[0], "eliminado"] = "True"
+    df.to_csv(RUTA_CSV, index=False)
+    
+    return True

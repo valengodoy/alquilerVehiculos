@@ -122,7 +122,3 @@ if st.session_state.get("autenticando_admin"):
                 st.rerun()
             else:
                 st.error("Código incorrecto. Intenta otra vez.")
-
-if st.session_state.get("mostrar_bienvenida"):
-    st.success("¡Bienvenido/a al sistema!")
-    del st.session_state["mostrar_bienvenida"]
