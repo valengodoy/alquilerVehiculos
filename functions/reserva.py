@@ -80,3 +80,14 @@ def conductor_ya_asignado(dni):
     ]
 
     return not reservas_activas.empty
+
+
+def calcular_monto_reembolso(row):
+    costo = row["costo_total"]
+    tipo = str(row["reembolso"]).lower()
+    if tipo == "total":
+        return costo
+    elif "parcial(20%)" in tipo:
+       return costo * 0.20
+    else:
+        return 0
