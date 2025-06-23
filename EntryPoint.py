@@ -33,7 +33,7 @@ if __name__ == "__main__":
     editarMisDatos = st.Page("14_EditarMisDatos.py", title="Editar Mis Datos", icon="✏️")
     eliminarEmpleado = st.Page("15_EliminarEmpleado.py", title="Eliminar Cuenta De Empleados", icon="🗑️")
     verEstadisticas = st.Page("16_VerEstadisticas.py", title=" Ver estadisticas de ingresos", icon="📊")
-    registrar_empleado = st.Page("17_RegistrarEmpleado.py", title="Registratrar nuevo empleado", icon=":material/person_add:")
+    registrar_empleado = st.Page("17_RegistrarEmpleado.py", title="Registrar nuevo empleado", icon=":material/person_add:")
     ver_empleados = st.Page("18_VerEmpleados.py", title="Ver empleados registrados", icon="👨‍🏭")
     
     if st.session_state['session_state'] == 'no_logged':
