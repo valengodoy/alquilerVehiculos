@@ -34,6 +34,7 @@ if __name__ == "__main__":
     eliminarEmpleado = st.Page("15_EliminarEmpleado.py", title="Eliminar Cuenta De Empleados", icon="🗑️")
     verEstadisticas = st.Page("16_VerEstadisticas.py", title=" Ver estadisticas de ingresos", icon="📊")
     registrar_empleado = st.Page("17_RegistrarEmpleado.py", title="Registratrar nuevo empleado", icon=":material/person_add:")
+    ver_empleados = st.Page("18_VerEmpleados.py", title="Ver empleados registrados", icon="👨‍🏭")
     
     if st.session_state['session_state'] == 'no_logged':
         pg = st.navigation(
@@ -49,7 +50,7 @@ if __name__ == "__main__":
                 "Salir de tu cuenta": [cerrar_sesion],
                 "Maneja tu cuenta": [recuperar_contraseña],
                 "Gestionar Vehículos": [registrar_vehiculo, modificar_vehiculo, eliminar_vehiculo],
-                "Gestionar Empleados": [registrar_empleado, eliminarEmpleado],
+                "Gestionar Empleados": [registrar_empleado, ver_empleados, eliminarEmpleado],
                 "Ver listados y estadísticas":  [verListadoVehiculos, verEstadisticas],
             }
         )
