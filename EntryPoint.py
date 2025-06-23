@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     cerrar_sesion = st.Page(logout, title="Cerrar sesión", icon=":material/logout:")
 
-    registrar_vehiculo = st.Page("04_RegistrarVehiculo.py", title="Registrar vehículo", icon="🛻")
+    registrar_vehiculo = st.Page("04_RegistrarVehiculo.py", title="Registrar vehículo", icon="📝")
     modificar_vehiculo = st.Page("05_ModificarDatosVehiculos.py", title="Modificar vehículo", icon="🛠️")
     eliminar_vehiculo = st.Page("06_EliminarVehiculo.py", title="Eliminar vehículo", icon="❌")
     verListadoVehiculos = st.Page("13_verListadoVehiculos.py", title="Listado de Vehiculos", icon="🚗")
@@ -35,6 +35,7 @@ if __name__ == "__main__":
     verEstadisticas = st.Page("16_VerEstadisticas.py", title=" Ver estadisticas de ingresos", icon="📊")
     registrar_empleado = st.Page("17_RegistrarEmpleado.py", title="Registrar nuevo empleado", icon=":material/person_add:")
     ver_empleados = st.Page("18_VerEmpleados.py", title="Ver empleados registrados", icon="👨‍🏭")
+    verReservas = st.Page("19_VerReservasAdmin.py", title="Ver reservas registradas", icon="📝")
     
     if st.session_state['session_state'] == 'no_logged':
         pg = st.navigation(
@@ -51,7 +52,7 @@ if __name__ == "__main__":
                 "Maneja tu cuenta": [recuperar_contraseña],
                 "Gestionar Vehículos": [registrar_vehiculo, modificar_vehiculo, eliminar_vehiculo],
                 "Gestionar Empleados": [registrar_empleado, ver_empleados, eliminarEmpleado],
-                "Ver listados y estadísticas":  [verListadoVehiculos, verEstadisticas],
+                "Ver listados y estadísticas":  [verListadoVehiculos, verEstadisticas, verReservas],
             }
         )
     elif es_empleado(st.session_state['usuario_email']):
