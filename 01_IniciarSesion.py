@@ -5,15 +5,12 @@ import random
 import string
 from functions.usuarios import es_admin, enviar_codigo_verificacion
 
-# Ruta al archivo CSV
 RUTA_CSV = "data/usuarios.csv"
 
-# Función para generar una contraseña temporal
 def generar_contraseña_temporal(longitud=10):
     caracteres = string.ascii_letters + string.digits
     return ''.join(random.choices(caracteres, k=longitud))
 
-# Interfaz
 st.title("Iniciar sesión 🔐")
 
 if os.path.exists(RUTA_CSV):
@@ -24,29 +21,24 @@ else:
     correos_registrados = []
 
 with st.form("login_form"):
-    if correos_registrados:
-        email = st.text_input("Correo electrónico")
-    else:
+    email = st.text_input("Correo electrónico") if correos_registrados else ""
+    if not correos_registrados:
         st.warning("No hay usuarios registrados.")
-        email = ""
 
     contraseña = st.text_input("Contraseña", type="password")
 
     cols = st.columns([2, 1, 1, 2])
-    with cols[0]:
-        iniciar = st.form_submit_button("Iniciar sesión")
-    with cols[3]:
-        recuperar = st.form_submit_button(
-            "Olvidé mi contraseña",
-            disabled=st.session_state.get("autenticando_admin", False)
-        )
+    iniciar = cols[0].form_submit_button("Iniciar sesión")
+    recuperar = cols[3].form_submit_button(
+        "Olvidé mi contraseña",
+        disabled=st.session_state.get("autenticando_admin", False)
+    )
 
     if iniciar:
         if not email or not contraseña:
             st.error("Debes completar todos los campos.")
         else:
             usuario = df[df["email"] == email]
-
             if usuario.empty:
                 st.error("Correo electrónico no registrado.")
             else:
@@ -60,12 +52,10 @@ with st.form("login_form"):
                 elif es_admin(email):
                     st.session_state["usuario_email"] = email
                     st.session_state["autenticando_admin"] = True
-                    st.session_state["mostrar_bienvenida"] = False
                     st.rerun()
                 else:
-                    st.session_state['session_state'] = 'logged'
                     st.session_state["usuario_email"] = email
-                    st.session_state["mostrar_bienvenida"] = True
+                    st.session_state["session_state"] = "logged"
                     st.rerun()
 
     if recuperar:
@@ -85,9 +75,7 @@ with st.form("login_form"):
                 else:
                     st.error("Error al enviar el correo. Intenta nuevamente.")
 
-
 if st.session_state.get("autenticando_admin"):
-
 
     if st.session_state.get("codigo_enviado_admin", False) and "codigo_generado_admin" not in st.session_state:
         st.session_state["codigo_enviado_admin"] = False
@@ -115,12 +103,9 @@ if st.session_state.get("autenticando_admin"):
         if st.button("Verificar código"):
             if codigo_ingresado == st.session_state.get('codigo_generado_admin'):
                 st.success("Código verificado. Acceso autorizado.")
-                st.session_state['session_state'] = 'logged'
-                st.session_state["mostrar_bienvenida"] = True
+                st.session_state["session_state"] = "logged"
                 for key in ["autenticando_admin", "codigo_enviado_admin", "codigo_generado_admin"]:
                     st.session_state.pop(key, None)
                 st.rerun()
             else:
                 st.error("Código incorrecto. Intenta otra vez.")
-
-
