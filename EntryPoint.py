@@ -60,6 +60,7 @@ if __name__ == "__main__":
          pg = st.navigation({
                 "Inicio": [inicio],
                 "Salir de tu cuenta": [cerrar_sesion],
+                "Ver listados y estadísticas":  [verReservas]
             }
         )
     elif st.session_state['session_state'] == 'logged':
