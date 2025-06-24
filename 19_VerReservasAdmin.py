@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from functions.usuarios import es_admin, es_empleado
+from datetime import date
 
 RUTA_RESERVAS = "data/alquileres.csv"
 
@@ -10,18 +11,16 @@ reservas = pd.read_csv(RUTA_RESERVAS)
 
 
 if es_empleado(st.session_state['usuario_email']):
-    filtrar = st.checkbox("Filtrar por fecha")
-
-    if filtrar:
-        fecha = st.date_input("Seleccione una fecha para ver las reservas que empiezan ese dia:")
+    fecha = date.today()
     
-        fecha_str = fecha.strftime("%d/%m/%Y")
+    fecha_str = fecha.strftime("%d/%m/%Y")
 
-        reservas = reservas[reservas["fecha_inicio"] == fecha_str]
+    reservas = reservas[reservas["fecha_inicio"] == fecha_str]
 
     if reservas.empty:
-        st.info("No hay reservas que comiencen ese dia.")
+        st.info("No hay reservas que comiencen hoy.")
     else:
+        st.subheader("Reservas registradas para el dia de hoy:")
         st.dataframe(reservas.reset_index(drop=True), hide_index=True)
         
         
