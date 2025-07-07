@@ -1,2 +1,2 @@
-id_reserva,usuario_id,patente,fecha_inicio,fecha_fin,estado,costo_dia,costo_total,nombre_conductor,edad_conductor,dni_conductor
-1,usuario@gmail.com,NJF834,23/06/2025,30/06/2025,activo,25000,300000,conductor,20,12345678
+id_reserva,usuario_id,patente,fecha_inicio,fecha_fin,estado,costo_dia,costo_total,nombre_conductor,edad_conductor,dni_conductor,alquiler_virtual
+1,usuario@gmail.com,NJF834,23/06/2025,30/06/2025,activo,25000,300000,conductor,20,12345678,True

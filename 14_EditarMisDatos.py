@@ -1,6 +1,6 @@
 import streamlit as st
 from datetime import date, datetime
-from functions.usuarios import existe_usuario, cargar_usuarios_sin_elimin, guardar_usuario
+from functions.usuarios import existe_usuario, cargar_usuarios_sin_elimin, guardar_usuario, es_empleado
 
 
 st.title("✏️ Editar Mis Datos")
@@ -23,6 +23,11 @@ gmail = st.text_input("Email", value=user["email"])
 dni = st.text_input("DNI", value=user["dni"])
 fecha_nac_guardada = datetime.strptime(str(user["fecha_nac"]), "%d/%m/%Y").date()
 fecha_nac = st.date_input("Fecha de nacimiento", value=fecha_nac_guardada, min_value=date(1900, 1, 1), max_value=date.today(), )
+if es_empleado(email):
+    SUCURSALES = ["La Plata", "Capital", "Córdoba"]
+    indice_sucursal = SUCURSALES.index(user["sucursal"])
+    sucursal = st.selectbox("Sucursal", SUCURSALES, index=indice_sucursal)
+
 
 if st.button("Editar Datos"):
     cambios = {}
@@ -58,6 +63,9 @@ if st.button("Editar Datos"):
             st.stop()
         else:
             cambios["dni"] = dni
+    if es_empleado(email):
+        if sucursal != user["sucursal"]:
+            cambios["sucursal"] = sucursal
 
     if cambios:
         for campo, nuevo_valor in cambios.items():

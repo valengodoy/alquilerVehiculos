@@ -154,7 +154,8 @@ elif st.session_state.paso == 1:
                     "fecha_fin": hasta_str,
                     "estado": 'pendiente',
                     "costo_dia": vehiculo['precio_dia'],
-                    "costo_total": diferencia * vehiculo['precio_dia']
+                    "costo_total": diferencia * vehiculo['precio_dia'],
+                    "alquiler_virtual": True
                 }
                 st.info("En caso de salir de la pagina Reservar deberá comenzar el proceso nuevamente")
                 st.session_state["id_reserva"] = nuevo_id

@@ -7,7 +7,7 @@ archivo_alquileres = "data/alquileres.csv"
 
 def cargar_reservas():
     if not os.path.exists(archivo_alquileres):
-        return pd.DataFrame(columns=["id_reserva","usuario_id","patente","fecha_inicio","fecha_fin","estado","costo_dia","costo_total","nombre_conductor","edad_conductor"])
+        return pd.DataFrame(columns=["id_reserva","usuario_id","patente","fecha_inicio","fecha_fin","estado","costo_dia","costo_total","nombre_conductor","edad_conductor", "dni_conductor", "alquiler_virtual"])
     return pd.read_csv(archivo_alquileres)
 
 def registrar_reserva(reserva): 

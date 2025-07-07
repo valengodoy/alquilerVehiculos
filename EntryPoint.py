@@ -61,6 +61,7 @@ if __name__ == "__main__":
          pg = st.navigation({
                 "Inicio": [inicio],
                 "Salir de tu cuenta": [cerrar_sesion],
+                "Maneja tu cuenta": [editarMisDatos],
                 "Ver listados y estadísticas":  [verReservas]
             }
         )
