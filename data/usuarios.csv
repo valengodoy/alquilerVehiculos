@@ -2,6 +2,7 @@ id,nombre,email,contraseña,activo,bloqueado,edad,fecha_nac,es_admin,dni,es_empl
 1,usuario,usuario@gmail.com,usuario123,True,False,48,18/08/1976,False,12345678,False,,False
 2,admin,vgodoy.info@gmail.com,admin123,True,False,20,22/11/2004,True,23456789,False,,False
 3,adminKevin,amarelak15@gmail.com,Password12,True,False,22,06/06/2003,True,12345679,False,,False
-4,empleado1,mailEmpleado@gmail.com,passemp1,True,False,92,05/06/1933,False,99999999,True,Capital,False
-5,empleado2,empleado123@gmail.com,passemp2,True,False,47,23/06/1978,False,66666666,True,Córdoba,False
+4,empleado1,mailEmpleado@gmail.com,passemp1,True,False,92,05/06/1933,False,99999999,True,CABA,False
+5,empleado2,empleado123@gmail.com,passemp2,True,False,47,23/06/1978,False,66666666,True,Rosario,False
 6,julian,juliantabbita@gmail.com,julian123,True,False,20,28/11/2004,False,46269444,True,La Plata,False
+7,user,user@gmail.com,user1234,True,False,20,06/07/2003,False,23456780,False,,False

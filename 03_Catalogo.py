@@ -125,6 +125,7 @@ elif st.session_state.paso == 1:
 
         desde = st.date_input("Reserva desde:", min_value=date.today() + timedelta(days=1))
         hasta = st.date_input("Hasta:", min_value=desde + timedelta(days=1), max_value=desde + timedelta(days=14))
+        sucursal = st.selectbox('Sucursal', ['CABA','La Plata','Rosario'])
 
         # Mostrar reservas activas para ese vehículo
         RUTA_CSV = "data/alquileres.csv"
@@ -155,7 +156,8 @@ elif st.session_state.paso == 1:
                     "estado": 'pendiente',
                     "costo_dia": vehiculo['precio_dia'],
                     "costo_total": diferencia * vehiculo['precio_dia'],
-                    "alquiler_virtual": True
+                    "alquiler_virtual": True,
+                    "sucursal": sucursal
                 }
                 st.info("En caso de salir de la pagina Reservar deberá comenzar el proceso nuevamente")
                 st.session_state["id_reserva"] = nuevo_id

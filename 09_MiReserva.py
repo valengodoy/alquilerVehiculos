@@ -24,7 +24,7 @@ if user != None:
         #Muestro info de la reserva
         st.subheader(f"🚘Patente {auto.get('patente')}")
         st.image(f"imagenes/{auto.get('imagen')}", use_container_width=True)
-        st.subheader(f"🔖 Marca {auto.get('marca')}, modelo {auto.get('modelo')} {auto.get('tipo')} ")
+        st.subheader(f"🔖 Marca {auto.get('marca')}, modelo {auto.get('modelo')} {auto.get('tipo')}. Sucursal {reserva.get('sucursal')}")
         st.subheader(f"💲 Precio por dia {auto.get('precio_dia')}")
         st.subheader(f"💰 Politica de cancelacion: reembolso {auto.get('reembolso')}")
 

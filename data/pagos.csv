@@ -1,2 +1,3 @@
 id,alquiler_id,metodo_pago,fecha_pago,estado,nombre_usuario,numero_tarjeta,monto_pagado
 1,1,tarjeta,08/06/2025,exitoso,usuario,56789,300000.0
+2,2,tarjeta,07/07/2025,exitoso,user,78910,25000.0
