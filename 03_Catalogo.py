@@ -189,6 +189,12 @@ elif st.session_state.paso == 2:
     alquiler_seleccionado = st.session_state["reserva_a_pagar"]
     
     st.title("💵 Pago de alquiler de autos")
+    
+    vehiculo = st.session_state.get('vehiculo_seleccionado', None)
+    
+    st.subheader(f"Reserva para: {vehiculo['patente']}")
+    st.image(f"imagenes/{vehiculo['imagen']}", width=500)
+    st.subheader(f"{vehiculo['marca']} {vehiculo['modelo']} {vehiculo['año']} {vehiculo['tipo']}. Política de cancelación: {vehiculo['reembolso']}")
 
     nombre = st.text_input("Nombre de usuario del Titular")
     numero_tarjeta = st.text_input("Número de tarjeta")
@@ -340,6 +346,13 @@ elif st.session_state.paso == 2:
 elif st.session_state.paso == 3:
     
     st.title("🕴🏻Agregar conductor")
+    
+    vehiculo = st.session_state.get('vehiculo_seleccionado', None)
+    
+    st.subheader(f"Reserva para: {vehiculo['patente']}")
+    st.image(f"imagenes/{vehiculo['imagen']}", width=500)
+    st.subheader(f"{vehiculo['marca']} {vehiculo['modelo']} {vehiculo['año']} {vehiculo['tipo']}. Política de cancelación: {vehiculo['reembolso']}")
+    
     reserva = st.session_state['reserva_a_pagar']
 
     dni = st.text_input("Documento del conductor")
