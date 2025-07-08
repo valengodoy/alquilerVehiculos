@@ -9,7 +9,6 @@ st.title("Reservas registradas en el sistema")
 
 reservas = pd.read_csv(RUTA_RESERVAS)
 
-
 if es_empleado(st.session_state['usuario_email']):
     fecha = date.today()
     
@@ -19,14 +18,25 @@ if es_empleado(st.session_state['usuario_email']):
     
     sucursal = user.get('sucursal')
 
-    reservas = reservas[(reservas['fecha_inicio'] == fecha_str) &
-                        (reservas['sucursal'] == sucursal)]
+    reservasPagadas = reservas[(reservas['fecha_inicio'] == fecha_str) &
+                               (reservas['sucursal'] == sucursal)]
 
-    if reservas.empty:
+    if reservasPagadas.empty:
         st.info(f"No hay reservas que comiencen hoy en {sucursal}.")
     else:
         st.subheader(f"Reservas registradas para el dia de hoy en {sucursal}:")
-        st.dataframe(reservas.reset_index(drop=True), hide_index=True)
+        st.dataframe(reservasPagadas.reset_index(drop=True), hide_index=True)
+    
+    reservasEmpezadas = reservas[(reservas['fecha_inicio'] <= fecha_str) &
+                                 (reservas['sucursal'] == sucursal) &
+                                 (reservas['fecha_fin'] >= fecha_str) &
+                                 (reservas['estado'] == 'activo')]
+    
+    if reservasEmpezadas.empty:
+        st.info(f"No hay reservas en progreso en {sucursal}.")
+    else:
+        st.subheader(f"Reservas en progreso en {sucursal}:")
+        st.dataframe(reservasEmpezadas.reset_index(drop=True), hide_index=True)
         
         
 if es_admin(st.session_state['usuario_email']):      
