@@ -53,18 +53,10 @@ def actualizar_estado():
         
         fecha_inicio = pd.to_datetime(fecha_inicio.strip(), format="%d/%m/%Y").date()
         fecha_fin = pd.to_datetime(fecha_fin.strip(), format="%d/%m/%Y").date()
-        
-        #Si la reserva empezo y no esta pago, se cancela
-        if (fecha_inicio <= hoy) & (row.get("estado") == "pendiente"):
-            df.at[i, "estado"] = "cancelado"
-        
-        #Si la reserva empezo y esta pago, se cambia a activo        
-        if (fecha_inicio <= hoy) & (row.get("estado") == "pagado"):
-            df.at[i, "estado"] = "activo"
             
-        #Si la reserva finalizo
-        if (fecha_fin < hoy) & (row.get("estado") == "activo"):
-            df.at[i, "estado"] = "finalizado"
+        #Si la reserva nunca se retiro y termino el periodo de alquiler
+        if (fecha_fin < hoy) & (row.get("estado") == "pagado"):
+            df.at[i, "estado"] = "cancelado"
                
     guardar_reserva(df)
 

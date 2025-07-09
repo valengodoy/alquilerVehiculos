@@ -11,7 +11,7 @@ def logout():
         st.rerun()
 
 if __name__ == "__main__":
-    st.set_page_config(page_title="QuadraSoft - Alquiler de Autos", page_icon="🚗")
+    st.set_page_config(page_title="QuadraSoft - Alquiler de Autos", page_icon="🚗", layout="centered")
     st.title("🚘 QuadraSoft - Alquiler de Autos")
     if 'session_state' not in st.session_state:
         st.session_state['session_state'] = 'no_logged'
