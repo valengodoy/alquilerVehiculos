@@ -38,6 +38,9 @@ if __name__ == "__main__":
     verReservas = st.Page("19_VerReservasAdmin.py", title="Ver reservas registradas", icon="📝")
     verPagos = st.Page("20_VerPagos.py", title="Ver pagos registrados", icon="💵")
     bloquear_o_eliminar = st.Page("21_Bloquear.py", title="Bloquear o eliminar usuario", icon="🚫")
+    agregar_adicional = st.Page("22_agregarAdicional.py", title=" Agregar Adicional", icon="📝")
+    ver_comportamientoDeUsuario = st.Page("23_comportamientoDeUsuarios.py", title="Comportamiento de Usuarios", icon="📝")
+    ver_reportesDeAutos = st.Page("24_reportesDeAutos.py", title="Reportes de Autos", icon="📝")
     
     if st.session_state['session_state'] == 'no_logged':
         pg = st.navigation(
@@ -54,7 +57,7 @@ if __name__ == "__main__":
                 "Maneja tu cuenta": [recuperar_contraseña],
                 "Gestionar Vehículos": [registrar_vehiculo, modificar_vehiculo, eliminar_vehiculo],
                 "Gestionar usuarios y empleados": [registrar_empleado, ver_empleados, eliminarEmpleado, bloquear_o_eliminar],
-                "Ver listados y estadísticas":  [verListadoVehiculos, verEstadisticas, verReservas, verPagos],
+                "Ver listados y estadísticas":  [verListadoVehiculos, verEstadisticas, verReservas, verPagos, ver_comportamientoDeUsuario, ver_reportesDeAutos],
             }
         )
     elif es_empleado(st.session_state['usuario_email']):
@@ -62,7 +65,7 @@ if __name__ == "__main__":
                 "Inicio": [inicio],
                 "Salir de tu cuenta": [cerrar_sesion],
                 "Maneja tu cuenta": [editarMisDatos],
-                "Ver listados y estadísticas":  [verReservas]
+                "Ver listados y estadísticas":  [verReservas, agregar_adicional]
             }
         )
     elif st.session_state['session_state'] == 'logged':

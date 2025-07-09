@@ -6,3 +6,4 @@ id,nombre,email,contraseña,activo,bloqueado,edad,fecha_nac,es_admin,dni,es_empl
 5,empleado2,empleado123@gmail.com,passemp2,True,False,47,23/06/1978,False,66666666,True,Rosario,False
 6,julian,juliantabbita@gmail.com,julian123,True,False,20,28/11/2004,False,46269444,True,La Plata,False
 7,user,user@gmail.com,user1234,True,False,20,06/07/2003,False,23456780,False,,False
+8,johana,segoviajohana992@gmail.com,joha123,True,False,25,02/08/2000,True,12345678,False,,False
