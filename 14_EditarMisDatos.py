@@ -24,7 +24,7 @@ dni = st.text_input("DNI", value=user["dni"])
 fecha_nac_guardada = datetime.strptime(str(user["fecha_nac"]), "%d/%m/%Y").date()
 fecha_nac = st.date_input("Fecha de nacimiento", value=fecha_nac_guardada, min_value=date(1900, 1, 1), max_value=date.today(), )
 if es_empleado(email):
-    SUCURSALES = ["La Plata", "Capital", "Córdoba"]
+    SUCURSALES = ["La Plata", "CABA", "Córdoba"]
     indice_sucursal = SUCURSALES.index(user["sucursal"])
     sucursal = st.selectbox("Sucursal", SUCURSALES, index=indice_sucursal)
 

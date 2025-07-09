@@ -70,7 +70,7 @@ with st.form("registro_empleado"):
     contraseña = st.text_input("Contraseña", type="password")
     dni = st.text_input("DNI")
     fecha_nac = st.date_input("Fecha de nacimiento", min_value=date(1900, 1, 1), max_value=date.today())
-    sucursal = st.selectbox("Selecciona la sucursal del empleado", ("La Plata", "Capital", "Córdoba"), index=None)
+    sucursal = st.selectbox("Selecciona la sucursal del empleado", ("La Plata", "CABA", "Córdoba"), index=None)
     submit = st.form_submit_button("Registrar")
 
     if submit:
@@ -78,3 +78,4 @@ with st.form("registro_empleado"):
             st.error("Todos los campos son obligatorios.")
         else:
             registrar_empleado(nombre, email, contraseña, fecha_nac, dni, sucursal)
+            
