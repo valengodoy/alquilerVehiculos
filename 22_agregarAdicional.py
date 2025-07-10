@@ -76,7 +76,10 @@ if not reserva.empty:
         opciones,
         format_func=lambda x: f"{x} - ${adicionales[adicionales['descripcion'] == x]['precio'].values[0]}"
      )
+    
 
+
+    
     # Mostrar adicionales seleccionados en tiempo real
     if seleccionados:
       st.subheader("🧾 Adicionales seleccionados:")
@@ -92,7 +95,7 @@ if not reserva.empty:
 
       # Opción de cobertura o depósito
       st.markdown("### 🛡️ Seleccioná cómo querés cubrir posibles daños o pérdidas:")
-      opcion_seguro = st.radio(
+      opcion_seguro = st.radio( 
         "¿Cómo querés cubrir el riesgo?",
         ["Pagar cobertura por rotura/pérdida (10%)", "Dejar depósito reembolsable ($10.000)"]
       )
