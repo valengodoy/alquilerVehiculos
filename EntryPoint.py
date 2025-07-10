@@ -41,6 +41,7 @@ if __name__ == "__main__":
     agregar_adicional = st.Page("22_agregarAdicional.py", title=" Agregar Adicional", icon="📝")
     ver_comportamientoDeUsuario = st.Page("23_comportamientoDeUsuarios.py", title="Comportamiento de Usuarios", icon="📝")
     ver_reportesDeAutos = st.Page("24_reportesDeAutos.py", title="Reportes de Autos", icon="📝")
+    editarDatosEmple = st.Page("25_EditarDatosEmpleado.py", title="Editar Datos Empleado",icon="✏️")
     
     if st.session_state['session_state'] == 'no_logged':
         pg = st.navigation(
@@ -56,7 +57,7 @@ if __name__ == "__main__":
                 "Salir de tu cuenta": [cerrar_sesion],
                 "Maneja tu cuenta": [recuperar_contraseña],
                 "Gestionar Vehículos": [registrar_vehiculo, modificar_vehiculo, eliminar_vehiculo],
-                "Gestionar usuarios y empleados": [registrar_empleado, ver_empleados, eliminarEmpleado, bloquear_o_eliminar],
+                "Gestionar usuarios y empleados": [registrar_empleado, ver_empleados, eliminarEmpleado, bloquear_o_eliminar, editarDatosEmple],
                 "Ver listados y estadísticas":  [verListadoVehiculos, verEstadisticas, verReservas, verPagos, ver_comportamientoDeUsuario, ver_reportesDeAutos],
             }
         )
@@ -64,7 +65,6 @@ if __name__ == "__main__":
          pg = st.navigation({
                 "Inicio": [inicio],
                 "Salir de tu cuenta": [cerrar_sesion],
-                "Maneja tu cuenta": [editarMisDatos],
                 "Ver listados y estadísticas":  [verReservas, agregar_adicional]
             }
         )

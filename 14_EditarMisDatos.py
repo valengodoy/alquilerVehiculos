@@ -1,6 +1,6 @@
 import streamlit as st
 from datetime import date, datetime
-from functions.usuarios import existe_usuario, cargar_usuarios_sin_elimin, guardar_usuario, es_empleado
+from functions.usuarios import existe_usuario, cargar_todos_usuarios, guardar_usuario, es_empleado
 
 
 st.title("✏️ Editar Mis Datos")
@@ -8,7 +8,7 @@ st.title("✏️ Editar Mis Datos")
 
 email = st.session_state["usuario_email"]
 
-df = cargar_usuarios_sin_elimin()
+df = cargar_todos_usuarios()
 user_df = df[df["email"].str.lower() == email.lower()]
 
 if user_df.empty:
@@ -23,10 +23,6 @@ gmail = st.text_input("Email", value=user["email"])
 dni = st.text_input("DNI", value=user["dni"])
 fecha_nac_guardada = datetime.strptime(str(user["fecha_nac"]), "%d/%m/%Y").date()
 fecha_nac = st.date_input("Fecha de nacimiento", value=fecha_nac_guardada, min_value=date(1900, 1, 1), max_value=date.today(), )
-if es_empleado(email):
-    SUCURSALES = ["La Plata", "CABA", "Córdoba"]
-    indice_sucursal = SUCURSALES.index(user["sucursal"])
-    sucursal = st.selectbox("Sucursal", SUCURSALES, index=indice_sucursal)
 
 
 if st.button("Editar Datos"):
@@ -63,10 +59,6 @@ if st.button("Editar Datos"):
             st.stop()
         else:
             cambios["dni"] = dni
-    if es_empleado(email):
-        if sucursal != user["sucursal"]:
-            cambios["sucursal"] = sucursal
-
     if cambios:
         for campo, nuevo_valor in cambios.items():
             df.at[idx, campo] = nuevo_valor
@@ -74,6 +66,8 @@ if st.button("Editar Datos"):
         st.success("✅ Edición de usuario exitosa.")
         if "email" in cambios:
             st.session_state["usuario_email"] = cambios["email"]
+        else: 
+            st.session_state["usuario_email"] = user["email"]
     else:
         st.info("ℹ️ No se modificó ningún dato.")
 
