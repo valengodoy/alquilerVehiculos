@@ -1,16 +1,35 @@
 import streamlit as st
 import pandas as pd
-from datetime import date
 import os
+import random
+import string
+from datetime import date
+from functions.usuarios import enviar_codigo_verificacion
 
 RUTA_CSV = "data/usuarios.csv"
+
+def generar_contraseña_temporal(longitud=10):
+    caracteres = string.ascii_letters + string.digits
+    return ''.join(random.choices(caracteres, k=longitud))
+
+def enviar_contraseña(email):
+    ok = False
+    while not ok:
+        temp_password = generar_contraseña_temporal()
+        enviado = enviar_codigo_verificacion(email, temp_password, es_contraseña_temporal=True)
+        if enviado:
+            #st.success("Se envió una contraseña temporal al email ingresado.")
+            ok = True
+            return temp_password
+        else:
+            st.error("Error al enviar el correo. Intenta nuevamente.")
 
 def obtener_nuevo_id(df):
     if df.empty:
         return 1
     return df["id"].max() + 1
 
-def registrar_empleado(nombre, email, contraseña, fecha_nac, dni, sucursal):
+def registrar_empleado(nombre, email, fecha_nac, dni, sucursal):
     hoy = date.today()
     edad = hoy.year - fecha_nac.year - ((hoy.month, hoy.day) < (fecha_nac.month, fecha_nac.day))
 
@@ -20,10 +39,6 @@ def registrar_empleado(nombre, email, contraseña, fecha_nac, dni, sucursal):
 
     if "@" not in email or "." not in email:
         st.error("El correo electrónico no tiene un formato válido.")
-        return
-
-    if len(contraseña) < 8 or not any(char.isdigit() for char in contraseña):
-        st.error("La contraseña debe tener al menos 8 caracteres y contener al menos un número.")
         return
 
     if not dni.isdigit() or len(dni) != 8:
@@ -40,13 +55,17 @@ def registrar_empleado(nombre, email, contraseña, fecha_nac, dni, sucursal):
         st.error("Error: el DNI o correo ya están registrados")
         return
 
+    temp_password = enviar_contraseña(email)
+    if not temp_password:
+        return
+
     nuevo_id = obtener_nuevo_id(df)
 
     nuevo_empleado = {
         "id": nuevo_id,
         "nombre": nombre,
         "email": email,
-        "contraseña": contraseña,
+        "contraseña": temp_password,
         "activo": True,
         "bloqueado": False,
         "edad": edad,
@@ -60,22 +79,20 @@ def registrar_empleado(nombre, email, contraseña, fecha_nac, dni, sucursal):
 
     df = pd.concat([df, pd.DataFrame([nuevo_empleado])], ignore_index=True)
     df.to_csv(RUTA_CSV, index=False)
-    st.success("Empleado registrado exitosamente")
+    st.success("Empleado registrado exitosamente. Se envió una contraseña temporal al email ingresado.")
 
 st.title("Registro de empleado")
 
 with st.form("registro_empleado"):
     nombre = st.text_input("Nombre de usuario")
-    email = st.text_input("Correo electrónico")
-    contraseña = st.text_input("Contraseña", type="password")
+    email = st.text_input("Correo electrónico", key="mailpres")
     dni = st.text_input("DNI")
     fecha_nac = st.date_input("Fecha de nacimiento", min_value=date(1900, 1, 1), max_value=date.today())
     sucursal = st.selectbox("Selecciona la sucursal del empleado", ("La Plata", "CABA", "Córdoba"), index=None)
     submit = st.form_submit_button("Registrar")
 
     if submit:
-        if not nombre or not email or not contraseña or not dni or not sucursal:
+        if not nombre or not email or not dni or not sucursal:
             st.error("Todos los campos son obligatorios.")
         else:
-            registrar_empleado(nombre, email, contraseña, fecha_nac, dni, sucursal)
-            
+            registrar_empleado(nombre, email, fecha_nac, dni, sucursal)
