@@ -17,6 +17,8 @@ if "mailpres" not in st.session_state:
     st.session_state.mailpres=""
 
 actualizar_disponibilidad_por_mantenimiento()
+st.session_state["reserva_seleccionada"] = None
+st.session_state["continuar"] = False
 
 
 catalogo = pd.read_csv('data/vehiculos.csv')

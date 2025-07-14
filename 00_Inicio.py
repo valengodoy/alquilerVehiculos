@@ -1,5 +1,7 @@
 import streamlit as st
 
+st.session_state["reserva_seleccionada"] = None
+st.session_state["continuar"] = False
 st.session_state.paso = 0
 
 st.markdown("""

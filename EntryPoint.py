@@ -3,6 +3,8 @@ from functions.usuarios import es_admin_valido, es_empleado
 
 def logout():
     st.session_state.paso = 0
+    st.session_state["reserva_seleccionada"] = None
+    st.session_state["continuar"] = False
     st.markdown("<br><br>", unsafe_allow_html=True)  # Espaciado superior
     st.write("### ¿Querés salir del sistema?")
     if st.button("🔓 Cerrar Sesión", use_container_width=True):

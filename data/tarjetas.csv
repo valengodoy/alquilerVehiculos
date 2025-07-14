@@ -1,3 +1,3 @@
 id_tarjeta,usuario_id,nombre_usuario,numero_tarjeta,vencimiento,cvv,saldo
-1,1,usuario,56789,01/30,111,199965000
+1,1,usuario,56789,01/30,111,1800001
 2,4,user,78910,01/31,111,5000000

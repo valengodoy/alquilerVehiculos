@@ -113,7 +113,7 @@ def esta_alquilado_fechas(patente, desde, hasta):
     # Filtrar por patente y estado
     reservas_filtradas = df_reservas[
         (df_reservas["patente"].str.upper() == patente.upper()) &
-        (df_reservas["estado"].isin(["activo", "pendiente", "pagado"]))
+        (df_reservas["estado"].isin(["activo", "pagado"]))
     ]
 
     # Verificar si hay solapamiento de fechas
@@ -129,3 +129,40 @@ def obtener_auto(patente):
     df = cargar_todos_vehiculos()
     auto = df[df["patente"] == patente]
     return auto.iloc[0].to_dict()
+
+def se_devolvio(patente):
+    df_reservas = cargar_reservas()  # función que carga todas las reservas
+
+    # Filtra si hay una reserva con el auto dado, en activo
+    reservas_activas = df_reservas[
+        (df_reservas["patente"].str.upper() == patente.upper()) &
+        (df_reservas["estado"].isin(["activo"]))
+    ]
+
+    return reservas_activas.empty
+
+
+def esta_alquilado_fechas_reemplazo(patente, desde, hasta):
+    df_reservas = cargar_reservas()
+
+    df_reservas["fecha_inicio"] = pd.to_datetime(df_reservas["fecha_inicio"].str.strip(), format="%d/%m/%Y").dt.date
+    df_reservas["fecha_fin"] = pd.to_datetime(df_reservas["fecha_fin"].str.strip(), format="%d/%m/%Y").dt.date
+
+    # Filtrar por patente y estado
+    reservas_filtradas = df_reservas[
+        (df_reservas["patente"].str.upper() == patente.upper()) &
+        (df_reservas["estado"].isin(["activo", "pagado"]))
+    ]
+
+    # Verificar si hay solapamiento de fechas
+    for _, fila in reservas_filtradas.iterrows():
+        inicio = fila["fecha_inicio"]
+        fin = fila["fecha_fin"]
+        estado = fila["estado"]
+        if estado == "pagado":
+            if desde <= fin and hasta >= inicio:
+                return True
+        else:
+            return True
+
+    return False
