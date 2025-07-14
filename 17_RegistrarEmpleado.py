@@ -12,17 +12,20 @@ def generar_contraseña_temporal(longitud=10):
     caracteres = string.ascii_letters + string.digits
     return ''.join(random.choices(caracteres, k=longitud))
 
-def enviar_contraseña(email):
-    ok = False
-    while not ok:
-        temp_password = generar_contraseña_temporal()
-        enviado = enviar_codigo_verificacion(email, temp_password, es_contraseña_temporal=True)
-        if enviado:
-            #st.success("Se envió una contraseña temporal al email ingresado.")
-            ok = True
-            return temp_password
-        else:
-            st.error("Error al enviar el correo. Intenta nuevamente.")
+def enviar_contraseña(mail_destino):
+    if not mail_destino:
+        st.error("Debes ingresar un correo.")
+    else:
+        ok = False
+        while not ok:
+            temp_password = generar_contraseña_temporal()
+            enviado = enviar_codigo_verificacion(mail_destino, temp_password, es_contraseña_temporal=True)
+            if enviado:
+                #st.success("Se envió una contraseña temporal al email ingresado.")
+                ok = True
+                return temp_password
+            else:
+                st.error("Error al enviar el correo. Intenta nuevamente.")
 
 def obtener_nuevo_id(df):
     if df.empty:
@@ -51,21 +54,25 @@ def registrar_empleado(nombre, email, fecha_nac, dni, sucursal):
         columnas = ["id", "nombre", "email", "contraseña", "activo", "bloqueado", "edad", "fecha_nac", "es_admin", "dni", "es_empleado", "sucursal", "eliminado"]
         df = pd.DataFrame(columns=columnas)
 
-    if email in df["email"].values or float(dni) in df["dni"].values:
-        st.error("Error: el DNI o correo ya están registrados")
+    if email in df["email"].values:
+        st.error("Error: el correo electrónico ya está registrado.")
         return
 
-    temp_password = enviar_contraseña(email)
-    if not temp_password:
+    if float(dni) in df["dni"].values:
+        st.error("Error: el DNI ya está registrado.")
         return
 
     nuevo_id = obtener_nuevo_id(df)
+    contraseña_temporal = enviar_contraseña(email)
+
+    if not contraseña_temporal:
+        return
 
     nuevo_empleado = {
         "id": nuevo_id,
         "nombre": nombre,
         "email": email,
-        "contraseña": temp_password,
+        "contraseña": contraseña_temporal,
         "activo": True,
         "bloqueado": False,
         "edad": edad,
@@ -85,7 +92,7 @@ st.title("Registro de empleado")
 
 with st.form("registro_empleado"):
     nombre = st.text_input("Nombre de usuario")
-    email = st.text_input("Correo electrónico", key="mailpres")
+    email = st.text_input("Correo electrónico")
     dni = st.text_input("DNI")
     fecha_nac = st.date_input("Fecha de nacimiento", min_value=date(1900, 1, 1), max_value=date.today())
     sucursal = st.selectbox("Selecciona la sucursal del empleado", ("La Plata", "CABA", "Córdoba"), index=None)

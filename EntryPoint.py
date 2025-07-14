@@ -19,31 +19,31 @@ if __name__ == "__main__":
         st.session_state['session_state'] = 'no_logged'
     
     inicio = st.Page("00_Inicio.py", title="Pantalla de inicio", icon="🏠")
-    iniciar_sesion = st.Page("01_IniciarSesion.py", title="Inicia sesión", icon=":material/login:")
-    registrar_usuario = st.Page("02_Registrarse.py", title="Registrate", icon=":material/person_add:")
+    iniciar_sesion = st.Page("01_IniciarSesion.py", title="Iniciar sesión", icon=":material/login:")
+    registrar_usuario = st.Page("02_Registrarse.py", title="Registrarse", icon=":material/person_add:")
     ver_catalogo = st.Page("03_Catalogo.py", title="Ver catálogo", icon="🚗")
     mi_reserva = st.Page("09_MiReserva.py", title="Mi reserva", icon="🚗")
-    verHistorialReserva = st.Page("12_verHistorialReserva.py",title="Historial de Reservas", icon="🚗")
-    recuperar_contraseña = st.Page("08_RecuperarContraseña.py", title="Cambiar Contraseña", icon="🔑")
+    verHistorialReserva = st.Page("12_verHistorialReserva.py", title="Historial de reservas", icon="🚗")
+    recuperar_contraseña = st.Page("08_RecuperarContraseña.py", title="Cambiar contraseña", icon="🔑")
 
     cerrar_sesion = st.Page(logout, title="Cerrar sesión", icon=":material/logout:")
 
     registrar_vehiculo = st.Page("04_RegistrarVehiculo.py", title="Registrar vehículo", icon="📝")
     modificar_vehiculo = st.Page("05_ModificarDatosVehiculos.py", title="Modificar vehículo", icon="🛠️")
     eliminar_vehiculo = st.Page("06_EliminarVehiculo.py", title="Eliminar vehículo", icon="❌")
-    verListadoVehiculos = st.Page("13_verListadoVehiculos.py", title="Listado de Vehiculos", icon="🚗")
-    editarMisDatos = st.Page("14_EditarMisDatos.py", title="Editar Mis Datos", icon="✏️")
-    eliminarEmpleado = st.Page("15_EliminarEmpleado.py", title="Eliminar Cuenta De Empleados", icon="🗑️")
-    verEstadisticas = st.Page("16_VerEstadisticas.py", title=" Ver estadisticas de ingresos", icon="📊")
+    verListadoVehiculos = st.Page("13_verListadoVehiculos.py", title="Listado de vehículos", icon="🚗")
+    editarMisDatos = st.Page("14_EditarMisDatos.py", title="Editar mis datos", icon="✏️")
+    eliminarEmpleado = st.Page("15_EliminarEmpleado.py", title="Eliminar cuenta de empleados", icon="🗑️")
+    verEstadisticas = st.Page("16_VerEstadisticas.py", title="Ver estadísticas de ingresos", icon="📊")
     registrar_empleado = st.Page("17_RegistrarEmpleado.py", title="Registrar nuevo empleado", icon=":material/person_add:")
     ver_empleados = st.Page("18_VerEmpleados.py", title="Ver empleados registrados", icon="👨‍🏭")
     verReservas = st.Page("19_VerReservasAdmin.py", title="Ver reservas registradas", icon="📝")
     verPagos = st.Page("20_VerPagos.py", title="Ver pagos registrados", icon="💵")
     bloquear_o_eliminar = st.Page("21_Bloquear.py", title="Bloquear o eliminar usuario", icon="🚫")
-    agregar_adicional = st.Page("22_agregarAdicional.py", title=" Agregar Adicional", icon="📝")
-    ver_comportamientoDeUsuario = st.Page("23_comportamientoDeUsuarios.py", title="Comportamiento de Usuarios", icon="📝")
-    ver_reportesDeAutos = st.Page("24_reportesDeAutos.py", title="Reportes de Autos", icon="📝")
-    editarDatosEmple = st.Page("25_EditarDatosEmpleado.py", title="Editar Datos Empleado",icon="✏️")
+    agregar_adicional = st.Page("22_agregarAdicional.py", title="Agregar adicional", icon="📝")
+    ver_comportamientoDeUsuario = st.Page("23_comportamientoDeUsuarios.py", title="Comportamiento de usuarios", icon="📝")
+    ver_reportesDeAutos = st.Page("24_reportesDeAutos.py", title="Reportes de autos", icon="📝")
+    editarDatosEmple = st.Page("25_EditarDatosEmpleado.py", title="Editar datos de empleado", icon="✏️")
     reserPres = st.Page("26_reservaPresencial.py", title="Reserva presencial", icon="📝")
     
     if st.session_state['session_state'] == 'no_logged':
@@ -59,7 +59,7 @@ if __name__ == "__main__":
                 "Inicio": [inicio],
                 "Salir de tu cuenta": [cerrar_sesion],
                 "Maneja tu cuenta": [recuperar_contraseña],
-                "Gestionar Vehículos": [registrar_vehiculo, modificar_vehiculo, eliminar_vehiculo],
+                "Gestionar vehículos": [registrar_vehiculo, modificar_vehiculo, eliminar_vehiculo],
                 "Gestionar usuarios y empleados": [registrar_empleado, ver_empleados, eliminarEmpleado, bloquear_o_eliminar, editarDatosEmple],
                 "Ver listados y estadísticas":  [verListadoVehiculos, verEstadisticas, verReservas, verPagos, ver_comportamientoDeUsuario, ver_reportesDeAutos],
             }

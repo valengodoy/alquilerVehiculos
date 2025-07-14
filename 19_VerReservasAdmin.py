@@ -128,4 +128,20 @@ if es_admin(st.session_state['usuario_email']):
     if reservas.empty:
         st.info("No hay reservas registradas en el sistema.")
     else:
+        reservas = reservas.rename(columns={
+            "id_reserva": "ID de Reserva",
+            "usuario_id": "Usuario",
+            "patente": "Patente",
+            "fecha_inicio": "Fecha de Inicio",
+            "fecha_fin": "Fecha de Fin",
+            "estado": "Estado",
+            "costo_dia": "Costo por Día",
+            "costo_total": "Costo Total",
+            "nombre_conductor": "Nombre del Conductor",
+            "edad_conductor": "Edad del Conductor",
+            "dni_conductor": "DNI del Conductor",
+            "alquiler_virtual": "Alquiler Virtual",
+            "sucursal": "Sucursal"
+        })
+
         st.dataframe(reservas.reset_index(drop=True), hide_index=True)
