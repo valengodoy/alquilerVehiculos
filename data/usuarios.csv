@@ -9,3 +9,4 @@ id,nombre,email,contraseña,activo,bloqueado,edad,fecha_nac,es_admin,dni,es_empl
 8,johana,segoviajohana992@gmail.com,joha123,True,False,25,02/08/2000,True,12345678,False,,False
 9,empleado,empleado13@gmail.com,12345aaaa,True,False,31,07/07/1994,False,77777777,True,La Plata,False
 10,valentinaa,valen.c.godoy@gmail.com,mALEl7qLU9,True,False,23,11/07/2001,False,34567890,False,,False
+11,aasdasd,amarela1825@gmail.com,shJyEvNXn5,True,False,25,13/07/2000,False,55556666,False,,False

@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from datetime import date, timedelta,datetime
-from functions.usuarios import obtener_usuario_actual, tiene_reserva, existe_usuario, enviar_codigo_verificacion
+from functions.usuarios import tiene_reserva, existe_usuario, enviar_codigo_verificacion
 from functions.vehiculos import actualizar_disponibilidad_por_mantenimiento, esta_alquilado_fechas
 from functions.reserva import *
 import uuid
@@ -10,205 +10,154 @@ import os
 import random
 import string
 
-RUTA_CSV = "data/usuarios.csv"
+catalogo = pd.read_csv("data/vehiculos.csv")
+usuarios = pd.read_csv("data/usuarios.csv")
+
 if "paso" not in st.session_state:
     st.session_state.paso = 0
 if "mailpres" not in st.session_state:
-    st.session_state.mailpres=""
+    st.session_state.mailpres = 0
 
 actualizar_disponibilidad_por_mantenimiento()
 st.session_state["reserva_seleccionada"] = None
 st.session_state["continuar"] = False
 
+def existe_usuario(email):
+    return email in usuarios["email"].values
 
-catalogo = pd.read_csv('data/vehiculos.csv')
+def generar_contraseña_temporal(longitud=10):
+    caracteres = string.ascii_letters + string.digits
+    return ''.join(random.choices(caracteres, k=longitud))
+
+def enviar_contraseña(mail_destino):
+    mail_destino = mail_destino.strip()
+    if not mail_destino:
+        st.error("Debes ingresar un correo.")
+        return None
+    ok = False
+    while not ok:
+        temp_password = generar_contraseña_temporal()
+        enviado = enviar_codigo_verificacion(mail_destino, temp_password, es_contraseña_temporal=True)
+        if enviado:
+            ok = True
+            return temp_password
+        else:
+            st.error("Error al enviar el correo. Intenta nuevamente.")
+
+def obtener_nuevo_id(df):
+    return 1 if df.empty else df["id"].max() + 1
+
+def registrar_usuario(nombre, fecha_nac, dni):
+    hoy = date.today()
+    edad = hoy.year - fecha_nac.year - ((hoy.month, hoy.day) < (fecha_nac.month, fecha_nac.day))
+
+    if edad < 18:
+        st.error("Debes ser mayor de 18 años para registrarte.")
+        return
+    if not dni.isdigit() or len(dni) != 8:
+        st.error("El DNI debe contener exactamente 8 dígitos numéricos.")
+        return
+    if float(dni) in usuarios["dni"].astype(float).values:
+        st.error("El DNI ya está en uso.")
+        return
+
+    email = st.session_state.mailpres.strip()
+    contraseña_temporal = enviar_contraseña(email)
+    if not contraseña_temporal:
+        return
+
+    nuevo_id = obtener_nuevo_id(usuarios)
+    st.session_state.usuario_id = nuevo_id
+    nuevo_usuario = {
+        "id": nuevo_id,
+        "nombre": nombre,
+        "email": email,
+        "contraseña": contraseña_temporal,
+        "activo": True,
+        "bloqueado": False,
+        "edad": edad,
+        "fecha_nac": fecha_nac.strftime("%d/%m/%Y"),
+        "es_admin": False,
+        "dni": dni,
+        "es_empleado": False,
+        "sucursal": "",
+        "eliminado": False
+    }
+
+    usuarios_nuevo = pd.concat([usuarios, pd.DataFrame([nuevo_usuario])], ignore_index=True)
+    usuarios_nuevo.to_csv("data/usuarios.csv", index=False)
+    st.success("¡Registro exitoso! 🎉. Se envió una contraseña temporal al correo ingresado.")
+    st.session_state.paso = 2
+    if st.form_submit_button("Continuar"):
+        st.rerun()
 
 if st.session_state.paso == 0:
-
     st.title("Buscar o Registrar Usuario")
-
-    # Campo para ingresar el mail
     email = st.text_input("Ingresá tu email")
 
-    # Al hacer clic en "Buscar usuario"
     if st.button("Buscar usuario"):
-        st.session_state.mailpres = email
-
-        if not existe_usuario(email):
-            st.session_state.paso = 1
+        if not email:
+            st.error("Debes ingresar un email.")
+        elif "@" not in email or "." not in email:
+            st.error("El correo electrónico no tiene un formato válido.")
         else:
-            st.session_state.paso = 2
+            st.session_state.mailpres = email.strip()
+            if not existe_usuario(st.session_state.mailpres):
+                st.session_state.paso = 1
+            else:
+                st.session_state.paso = 2
             st.rerun()
-    
+            
 
 elif st.session_state.paso == 1:
-    
-    def generar_contraseña_temporal(longitud=10):
-        caracteres = string.ascii_letters + string.digits
-        return ''.join(random.choices(caracteres, k=longitud))
-
-    def enviar_contraseña ():
-        if not st.session_state.mailpres:
-            st.error("Debes ingresar tu correo para recuperar la contraseña.")
-        else:    
-            ok = False
-            while (not ok):
-                temp_password = generar_contraseña_temporal()
-                enviado = enviar_codigo_verificacion(st.session_state.mailpres, temp_password, es_contraseña_temporal=True)
-                if enviado:
-                    st.success("Se envió una contraseña temporal al email ingresado.")
-                    ok = True
-                    return temp_password
-                else:
-                    st.error("Error al enviar el correo. Intenta nuevamente.")
-
-
-
-    st.session_state.paginaActual = "Registro"
-    st.session_state.paginaAnterior = "Registro"
-    
-
-
-
     st.title("Registro de usuario 📝")
-
-    # Función para obtener un nuevo ID
-    def obtener_nuevo_id(df):
-        if df.empty:
-            return 1
-        return df["id"].max() + 1
-
-    # Función para registrar usuario
-    def registrar_usuario(nombre, email, contraseña, fecha_nac, dni):
-        hoy = date.today()
-        edad = hoy.year - fecha_nac.year - ((hoy.month, hoy.day) < (fecha_nac.month, fecha_nac.day))
-
-        if edad < 18:
-            st.error("Debes ser mayor de 18 años para registrarte.")
-            return
-
-        if "@" not in email or "." not in email:
-            st.error("Debes ingresar un correo electrónico válido.")
-            return
-
-        if len(contraseña) < 8 or not any(char.isdigit() for char in contraseña):
-            st.error("La contraseña debe tener al menos 8 caracteres y contener al menos un número.")
-            return
-
-        if not dni.isdigit() or len(dni) != 8:
-            st.error("El DNI debe contener exactamente 8 dígitos numéricos.")
-            return
-
-        # Cargamos o creamos el CSV
-        if os.path.exists(RUTA_CSV):
-            df = pd.read_csv(RUTA_CSV)
-        else:
-            columnas = ["id", "nombre", "email", "contraseña", "activo", "bloqueado", "edad", "fecha_nac",
-                        "es_admin", "dni", "es_empleado", "sucursal", "eliminado"]
-            df = pd.DataFrame(columns=columnas)
-
-        if email in df["email"].values or float(dni) in df["dni"].values:
-            st.error("El correo electrónico o el DNI ya están en uso.")
-            return
-
-        nuevo_id = obtener_nuevo_id(df)
-
-        nuevo_usuario = {
-            "id": nuevo_id,
-            "nombre": nombre,
-            "email": email,
-            "contraseña": contraseña,
-            "activo": True,
-            "bloqueado": False,
-            "edad": edad,
-            "fecha_nac": fecha_nac.strftime("%d/%m/%Y"),
-            "es_admin": False,
-            "dni": dni,
-            "es_empleado": False,
-            "sucursal": "",
-            "eliminado": False
-        }
-
-        df = pd.concat([df, pd.DataFrame([nuevo_usuario])], ignore_index=True)
-        df.to_csv(RUTA_CSV, index=False)
-        st.success("¡Registro exitoso! 🎉")
-        st.session_state.paso = 2
-        st.rerun()  # ya no mostrar más el formulario
-
-    # FORMULARIO DE REGISTRO
+    st.warning("Usuario no encontrado. Por favor, regístrelo.")
+    st.subheader(f"Registro para: {st.session_state.mailpres}")
     with st.form("registro_form"):
-        c = enviar_contraseña()
         nombre = st.text_input("Nombre de usuario")
-        contraseña = c
         dni = st.text_input("DNI")
         fecha_nac = st.date_input("Fecha de nacimiento", min_value=date(1900, 1, 1), max_value=date.today())
-
         submit = st.form_submit_button("Registrarse")
 
         if submit:
-            if not nombre or not st.session_state.mailpres or not contraseña or not dni:
+            if not nombre or not dni:
                 st.error("Todos los campos son obligatorios.")
             else:
-                registrar_usuario(nombre, st.session_state.mailpres, contraseña, fecha_nac, dni)
-        
+                registrar_usuario(nombre, fecha_nac, dni)
 
 elif st.session_state.paso == 2:
-    st.title("Catálago 🗂️")
+    usuarios_actualizados = pd.read_csv("data/usuarios.csv")
+    st.session_state.userAct = usuarios_actualizados[usuarios_actualizados["email"] == st.session_state.mailpres]
+    st.title("Catálogo 🗂️")
     if catalogo.empty:
         st.warning("⚠️ El catálogo está vacío.")
     else:
-        st.subheader("Filtrar por")
-        st.subheader("🔖 Marca")
-        marca = st.multiselect('Marca del vehiculo', ['Toyota', 'Fiat', 'Volkswagen', 'Renault', 'Chevrolet', 'Ford'])
-        st.subheader("🚗 Tipo de vehículo")
-        tipo = st.multiselect('Tipo de vehiculo', ['SUV', 'Sedan', 'Deportivo'])
-        st.subheader("💲Precio")
-        precio_min, precio_max = st.slider(
-            "Rango de precio",           
-                                min_value=0,
-                max_value=150000,
-                value=(0, 150000),
-                step=1000
-        )
-            
-            
+        marca = st.multiselect('Marca del vehículo', catalogo['marca'].unique())
+        tipo = st.multiselect('Tipo de vehículo', catalogo['tipo'].unique())
+        precio_min, precio_max = st.slider("Rango de precio", 0, 150000, (0, 150000), step=1000)
         filtrarfechas = st.checkbox("Filtrar por disponibilidad entre fechas")
+
         if filtrarfechas:
             st.subheader("🗓️ Fechas de disponibilidad:")
-            manana = date.today() + timedelta(days=1)
-            fecha_desde = st.date_input("Desde", min_value=date.today(), max_value=date.today())
-            fecha_hasta = st.date_input("Hasta", min_value=fecha_desde + timedelta(days=1), max_value=fecha_desde + timedelta(days=14))
-
-            # Validaciones
-            if fecha_desde < date.today():
-                st.error("La fecha de inicio debe ser como mínimo mañana.")
-            elif fecha_hasta <= fecha_desde:
-                    st.error("La reserva debe durar al menos un día.")
-            elif (fecha_hasta - fecha_desde).days > 14:
-                st.error("La duración máxima de reserva es de 14 días.")
-            else:
-                st.success(f"Reservas disponibles desde {fecha_desde} hasta {fecha_hasta}")
-                    
-        filtro = (catalogo['precio_dia'] >= precio_min) & (catalogo['precio_dia'] <= precio_max) & (catalogo['eliminado'] == 'No')
-
+            fecha_desde = st.date_input("Desde", min_value=date.today())
+            fecha_hasta = st.date_input("Hasta", min_value=fecha_desde + timedelta(days=1))
+        
+        filtro = (catalogo['precio_dia'] >= precio_min) & \
+                 (catalogo['precio_dia'] <= precio_max) & \
+                 (catalogo['eliminado'] == 'No')
         if marca:
-                filtro &= catalogo['marca'].isin(marca)
+            filtro &= catalogo['marca'].isin(marca)
         if tipo:
             filtro &= catalogo['tipo'].isin(tipo)
-                
 
         catalogo_filtrado = catalogo[filtro]
 
         if filtrarfechas:
             vehiculos_disponibles_fechas = []
             for idx, row in catalogo_filtrado.iterrows():
-                patente = row['patente']
-                if not esta_alquilado_fechas(patente, fecha_desde, fecha_hasta):
-                        vehiculos_disponibles_fechas.append(idx)
+                if not esta_alquilado_fechas(row['patente'], fecha_desde, fecha_hasta):
+                    vehiculos_disponibles_fechas.append(idx)
             catalogo_filtrado = catalogo_filtrado.loc[vehiculos_disponibles_fechas]
-
-        if obtener_usuario_actual() is None:
-            st.subheader('Inicie sesión para poder realizar una reserva')
 
         if catalogo_filtrado.empty:
             st.error("🚫 No se encontraron autos que coincidan con la búsqueda.")
@@ -219,31 +168,18 @@ elif st.session_state.paso == 2:
                     st.image(f"imagenes/{row['imagen']}", use_container_width=True)
                     st.error(f"**{row['marca']} {row['modelo']} {row['año']} {row['tipo']} 💲{row['precio_dia']}**")
                     st.info(f"Política de cancelación: {row['reembolso']}")
-
-                    if row['disponible'] is False:
+                    if not row['disponible']:
                         st.warning("No disponible")
-                    elif obtener_usuario_actual() is not None:
+                    else:
                         if st.button('Reservar', key=f"reservar_{row['patente']}"):
-                            # Guardar datos de vehículo en session_state para el siguiente paso
-                            st.session_state['vehiculo_seleccionado'] = {
-                                "patente": row['patente'],
-                                "marca": row['marca'],
-                                "modelo": row['modelo'],
-                                "año": row['año'],
-                                "tipo": row['tipo'],
-                                "imagen": row['imagen'],
-                                "precio_dia": row['precio_dia'],
-                                "reembolso": row['reembolso']
-                            }
+                            st.session_state['vehiculo_seleccionado'] = row.to_dict()
                             st.session_state.paso = 3
                             st.rerun()
 
+    
 elif st.session_state.paso == 3:
-
     vehiculo = st.session_state.get('vehiculo_seleccionado', None)
-    df = pd.read_csv("data/usuarios.csv")
-    usuario = df[df["email"] == st.session_state.mailpres]
-    user = usuario.iloc[0].to_dict()
+    user = st.session_state.userAct.iloc[0].to_dict()
 
     if vehiculo is None:
         st.error("No se seleccionó ningún vehículo.")
@@ -275,13 +211,10 @@ elif st.session_state.paso == 3:
         format_func=lambda x: f"{x} - ${adicionales[adicionales['descripcion'] == x]['precio'].values[0]}"
         )
     
-
-
-
         # Mostrar adicionales seleccionados en tiempo real
+        total_nuevos = 0
         if seleccionados:
             st.subheader("🧾 Adicionales seleccionados:")
-            total_nuevos = 0
             precios = []  #Guardamos precio para calculos de cobertura
             for desc in seleccionados:
                 info = adicionales[adicionales["descripcion"] == desc].iloc[0]
@@ -293,20 +226,22 @@ elif st.session_state.paso == 3:
 
 
         # Mostrar reservas activas para ese vehículo
-        RUTA_CSV = "data/alquileres.csv"
-        df = pd.read_csv(RUTA_CSV)
+        df = pd.read_csv("data/alquileres.csv")
         df_filtrado = df[(df["patente"] == vehiculo['patente']) & (df["estado"].isin(["activo", "pendiente", "pagado"]))]
         st.markdown("El vehículo tiene reservas en las siguientes fechas:")
         for i, row in df_filtrado.iterrows():
             st.markdown(f"{row.get('fecha_inicio')} a {row.get('fecha_fin')}")
 
         if st.button('Confirmar reserva'):
-            if (desde >= hasta) or (desde == date.today()) or (hasta == date.today()):
+            if (desde >= hasta) or (hasta == date.today()):
                 st.error('La fecha introducida no es válida ❌')
             elif tiene_reserva(user.get("email")):
                 st.error('Ya tienes una reserva realizada ❌')
             elif esta_alquilado_fechas(vehiculo['patente'], desde, hasta):
                 st.error('El vehículo ya tiene una reserva en ese periodo ❌')
+                st.session_state.paso = 2
+                if st.button("Volver al catálogo"):    
+                    st.rerun()
             else:
                 
                 diferencia = (hasta - desde).days
@@ -325,9 +260,7 @@ elif st.session_state.paso == 3:
                     "alquiler_virtual": True,
                     "sucursal": sucursal
                 }
-                st.write(diferencia * vehiculo['precio_dia'])
-                st.write(total_nuevos)
-                st.write(diferencia * vehiculo['precio_dia'] + total_nuevos)
+                
                 st.info("En caso de salir de la pagina Reservar deberá comenzar el proceso nuevamente")
                 st.session_state["id_reserva"] = nuevo_id
                 st.info('ℹ️ Reserva pendiente - Asignar conductor y Realizar pago para registrar su reserva')
@@ -345,7 +278,6 @@ elif st.session_state.paso == 4:
     RUTA_TARJETAS = "data/tarjetas.csv"
     RUTA_PAGOS = "data/pagos.csv"
 
-    @st.cache_data
     def cargar_datos():
         return (
             pd.read_csv(RUTA_USUARIOS),

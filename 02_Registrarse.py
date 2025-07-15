@@ -39,8 +39,12 @@ def registrar_usuario(nombre, email, contraseña, fecha_nac, dni):
         columnas = ["id", "nombre", "email", "contraseña", "activo", "bloqueado", "edad", "fecha_nac", "es_admin", "dni", "es_empleado", "sucursal", "eliminado"]
         df = pd.DataFrame(columns=columnas)
 
-    if email in df["email"].values or float(dni) in df["dni"].values:
-        st.error("El correo electrónico o el DNI ya están en uso.")
+    if email in df["email"].values:
+        st.error("Error: el correo electrónico ya está registrado.")
+        return
+
+    if float(dni) in df["dni"].values:
+        st.error("Error: el DNI ya está registrado.")
         return
 
     nuevo_id = obtener_nuevo_id(df)

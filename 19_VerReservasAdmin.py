@@ -7,6 +7,7 @@ from datetime import date, datetime
 
 RUTA_RESERVAS = "data/alquileres.csv"
 
+st.session_state.paso = 0
 actualizar_estado()
 
 st.title("Reservas registradas en el sistema")

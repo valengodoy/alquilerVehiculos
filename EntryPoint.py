@@ -44,7 +44,7 @@ if __name__ == "__main__":
     ver_comportamientoDeUsuario = st.Page("23_comportamientoDeUsuarios.py", title="Comportamiento de usuarios", icon="📝")
     ver_reportesDeAutos = st.Page("24_reportesDeAutos.py", title="Reportes de autos", icon="📝")
     editarDatosEmple = st.Page("25_EditarDatosEmpleado.py", title="Editar datos de empleado", icon="✏️")
-    reserPres = st.Page("26_reservaPresencial.py", title="Reserva presencial", icon="📝")
+    reserPres = st.Page("26_reservaPresencial.py", title="Alquiler presencial", icon="📝")
     
     if st.session_state['session_state'] == 'no_logged':
         pg = st.navigation(
