@@ -60,3 +60,24 @@ else:
         color_discrete_sequence=colores_meses
     )
     st.plotly_chart(fig)
+
+
+cantidad_por_mes = pagos.groupby("mes_nombre")["monto_pagado"].count().reset_index()
+cantidad_por_mes.rename(columns={"monto_pagado": "cantidad_ingresos"}, inplace=True)
+
+if cantidad_por_mes.empty or cantidad_por_mes["cantidad_ingresos"].sum() == 0:
+    st.warning("No hay registros de ingresos para mostrar en el gráfico de barras.")
+else:
+    cantidad_por_mes["mes_orden"] = pd.to_datetime(cantidad_por_mes["mes_nombre"], format="%B %Y")
+    cantidad_por_mes = cantidad_por_mes.sort_values("mes_orden")
+
+    fig_barras = px.bar(
+        cantidad_por_mes,
+        x="mes_nombre",
+        y="cantidad_ingresos",
+        title="Cantidad de ingresos por mes",
+        labels={"mes_nombre": "Mes", "cantidad_ingresos": "Cantidad de Ingresos"},
+        color="mes_nombre",
+        color_discrete_sequence=colores_meses
+    )
+    st.plotly_chart(fig_barras)

@@ -93,7 +93,7 @@ def registrar_usuario(nombre, fecha_nac, dni):
 
 if st.session_state.paso == 0:
     st.title("Buscar o Registrar Usuario")
-    email = st.text_input("Ingresá tu email")
+    email = st.text_input("Ingresá email del cliente")
 
     if st.button("Buscar usuario"):
         if not email:
