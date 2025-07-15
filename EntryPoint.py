@@ -39,7 +39,7 @@ if __name__ == "__main__":
     ver_empleados = st.Page("18_VerEmpleados.py", title="Ver empleados registrados", icon="👨‍🏭")
     verReservas = st.Page("19_VerReservasAdmin.py", title="Ver reservas registradas", icon="📝")
     verPagos = st.Page("20_VerPagos.py", title="Ver pagos registrados", icon="💵")
-    bloquear_o_eliminar = st.Page("21_Bloquear.py", title="Bloquear o eliminar usuario", icon="🚫")
+    eliminarUsu= st.Page("21_EliminarUsu.py", title="Eliminar usuario", icon="🚫")
     agregar_adicional = st.Page("22_agregarAdicional.py", title="Agregar adicional", icon="📝")
     ver_comportamientoDeUsuario = st.Page("23_comportamientoDeUsuarios.py", title="Comportamiento de usuarios", icon="📝")
     ver_reportesDeAutos = st.Page("24_reportesDeAutos.py", title="Reportes de autos", icon="📝")
@@ -60,7 +60,7 @@ if __name__ == "__main__":
                 "Salir de tu cuenta": [cerrar_sesion],
                 "Maneja tu cuenta": [recuperar_contraseña],
                 "Gestionar vehículos": [registrar_vehiculo, modificar_vehiculo, eliminar_vehiculo],
-                "Gestionar usuarios y empleados": [registrar_empleado, ver_empleados, eliminarEmpleado, bloquear_o_eliminar, editarDatosEmple],
+                "Gestionar usuarios y empleados": [registrar_empleado, ver_empleados, eliminarUsu, editarDatosEmple],
                 "Ver listados y estadísticas":  [verListadoVehiculos, verEstadisticas, verReservas, verPagos, ver_comportamientoDeUsuario, ver_reportesDeAutos],
             }
         )

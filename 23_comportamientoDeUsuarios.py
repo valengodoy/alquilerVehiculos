@@ -76,12 +76,15 @@ if es_admin:
     stats = obtener_estadisticas_clientes(usuarios, alquileres, pagos)
     st.subheader("Estadísticas de uso de clientes")
     st.dataframe(
-        stats.style.format({
-            "Días promedio por reserva": "{:.1f}",
-            "Total abonado": "${:,.0f}"
-        }),
-        use_container_width=True,
-        hide_index=True
+    stats.style.format({
+        "Reservas totales": "{:.0f}",
+        "Pagos exitosos": "{:.0f}",
+        "Días promedio por reserva": "{:.1f}",
+        "Total abonado": "${:,.0f}"
+    }),
+    use_container_width=True,
+    hide_index=True
     )
+
 else:
     st.warning("Acceso restringido: solo administradores pueden ver estas estadísticas.")

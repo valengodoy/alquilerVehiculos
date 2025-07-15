@@ -1,3 +1,8 @@
 id_reserva,usuario_id,patente,fecha_inicio,fecha_fin,estado,costo_dia,costo_total,nombre_conductor,edad_conductor,dni_conductor,alquiler_virtual,sucursal
-3,user1@gmail.com,ASC215,14/07/2025,15/07/2025,activo,25000,25000,Carlos,25,67547542,True,La Plata
-4,user2@gmail.com,NBV345,10/07/2025,11/07/2025,finalizado,25000,25000,Carlos,25,67547542,True,La Plata
+3,user@gmail.com,ASC215,15/07/2025,16/07/2025,finalizado,25000,25000,Carlos,25,67547542,True,La Plata
+4,user@gmail.com,NBV345,10/07/2025,11/07/2025,finalizado,25000,25000,Carlos,25,67547542,True,La Plata
+5,amarela1825@gmail.com,NJF834,15/07/2025,16/07/2025,finalizado,25000,55000,czxcz,26,55556666,True,La Plata
+6,amarela1825@gmail.com,NJF834,15/07/2025,16/07/2025,finalizado,25000,55000,sdfsdf,23,44455545,True,La Plata
+7,amarela1825@gmail.com,NJF834,15/07/2025,16/07/2025,finalizado,25000,55000,adasd,23,33334444,True,La Plata
+8,amarela1825@gmail.com,NJF834,15/07/2025,21/07/2025,finalizado,25000,180000,aws,60,33344411,True,La Plata
+9,amarela1825@gmail.com,NJF834,15/07/2025,16/07/2025,pagado,25000,75000,asdas,23,33334444,True,CABA

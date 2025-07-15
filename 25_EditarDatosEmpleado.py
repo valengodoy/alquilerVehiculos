@@ -38,7 +38,6 @@ if st.session_state.empleado_buscado:
 
     nombre = st.text_input("Nombre de usuario", value=user["nombre"])
     gmail = st.text_input("Email", value=user["email"])
-    dni = st.text_input("DNI", value=user["dni"])
     fecha_nac_guardada = datetime.strptime(str(user["fecha_nac"]), "%d/%m/%Y").date()
     fecha_nac = st.date_input("Fecha de nacimiento", value=fecha_nac_guardada, min_value=date(1900, 1, 1), max_value=date.today(), )
     SUCURSALES = ["La Plata", "CABA", "Córdoba"]
@@ -75,12 +74,6 @@ if st.session_state.empleado_buscado:
                 cambios["edad"] = edad  
                 cambios["fecha_nac"] = fecha_nac.strftime("%d/%m/%Y")  
 
-        if dni !=  user["dni"]:
-            if not dni.isdigit() or len(dni) != 8:
-                st.error("El DNI debe contener exactamente 8 dígitos numéricos.")
-                st.stop()
-            else:
-                cambios["dni"] = dni
         if cambios:
             for campo, nuevo_valor in cambios.items():
                 df.at[idx, campo] = nuevo_valor
