@@ -42,7 +42,8 @@ def registrar_empleado(nombre, email, fecha_nac, dni, sucursal):
         columnas = ["id", "nombre", "email", "contraseña", "activo", "bloqueado", "edad", "fecha_nac", "es_admin", "dni", "es_empleado", "sucursal", "eliminado"]
         df = pd.DataFrame(columns=columnas)
     
-    if email in df["email"].values:
+    if email in df.loc[df["eliminado"] == False, "email"].values:
+        
         st.error("Error: el correo electrónico ya está registrado.")
         return
     

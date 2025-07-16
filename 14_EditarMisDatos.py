@@ -31,7 +31,9 @@ if st.button("Editar Datos"):
         if "@" not in gmail or "." not in gmail:
             st.error("Debes ingresar un correo electrónico válido.")
             st.stop()
-        elif not df[(df["email"].str.lower() == gmail.strip().lower()) & (df.index != idx)].empty:
+
+
+        elif not df[(df["email"].str.lower() == gmail.strip().lower())& (df["eliminado"] == False) & (df.index != idx)].empty:
             st.error("El correo electrónico ya está en uso por otro usuario.")
             st.stop()
         else:

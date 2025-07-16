@@ -55,7 +55,7 @@ if st.session_state.empleado_buscado:
                 st.error("Debes ingresar un correo electrónico válido.")
                 st.stop()
 
-            elif not df[df["email"].str.lower() == gmail.lower()].empty:
+            elif not df[(df["email"].str.lower() == gmail.lower()) & (df["eliminado"] == False) & (df.index != idx)].empty:
                 st.error("El correo electrónico ya está en uso por otro usuario.")
                 st.stop()
             else: 

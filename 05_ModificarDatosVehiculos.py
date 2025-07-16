@@ -40,7 +40,7 @@ if st.session_state.vehiculo_buscado:
     tipo = st.text_input("Tipo", value=vehiculo["tipo"])
     marca = st.text_input("Marca", value=vehiculo["marca"])
     modelo = st.text_input("Modelo", value=vehiculo["modelo"])
-    reembolso = st.selectbox("Política de cancelación", ["Total", "Parcial (20%)", "Sin reembolso"])
+    reembolso = st.selectbox("Política de cancelación", ["Total", "Parcial(20%)", "Sin reembolso"])
     disponible_actual = str(vehiculo["disponible"]).lower() == "true"
     disponible_legible = "Sí" if disponible_actual else "No"
     seleccion_disponible = st.selectbox("Esta disponible para alquilar?", ["Sí", "No"], index=["Sí", "No"].index(disponible_legible))

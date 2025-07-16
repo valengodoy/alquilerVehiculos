@@ -22,7 +22,7 @@ año = st.text_input("Año")
 disponible = st.selectbox("Está disponible para alquilar?", ["Sí", "No"])
 disponible_bool = True if disponible == "Sí" else False
 tipo = st.selectbox("Tipo de vehículo", ["SUV", "Sedan", "Deportivo"])
-reembolso = st.selectbox("Política de cancelación", ["Total", "Parcial (20%)", "Sin reembolso"])
+reembolso = st.selectbox("Política de cancelación", ["Total", "Parcial(20%)", "Sin reembolso"])
 fecha_mantenimiento = st.date_input("Fecha de mantenimiento", min_value=date.today(), max_value=date(2040, 1, 1))
 precio_dia = st.text_input("Precio por día")
 foto = st.file_uploader("Agregue una foto del vehículo", type=["jpg", "jpeg", "png"])
