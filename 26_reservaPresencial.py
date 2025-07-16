@@ -215,7 +215,6 @@ elif st.session_state.paso == 3:
         
         adicionales = pd.read_csv("data/adicionales.csv") 
 
-
         opciones = adicionales["descripcion"].tolist()
 
         seleccionados = st.multiselect(
@@ -275,7 +274,7 @@ elif st.session_state.paso == 3:
                     "estado": 'pendiente',
                     "costo_dia": vehiculo['precio_dia'],
                     "costo_total": diferencia * vehiculo['precio_dia'] + total_nuevos,
-                    "alquiler_virtual": True,
+                    "alquiler_virtual": False,
                     "sucursal": sucursal
                 }
                 
@@ -284,10 +283,58 @@ elif st.session_state.paso == 3:
                 st.session_state.paso = 4
                 st.rerun()
 
-
-
 elif st.session_state.paso == 4:
+    
+    st.title("🕴🏻Agregar conductor")
+    vehiculo = st.session_state.get('vehiculo_seleccionado', None)
+    user = st.session_state.userAct.iloc[0].to_dict()
+    with st.container():
+            st.subheader(f"Reserva para: {vehiculo['patente']}")
+            st.image(f"imagenes/{vehiculo['imagen']}", use_container_width=True)
+            st.markdown(f"""
+            ### {vehiculo['marca']} {vehiculo['modelo']} ({vehiculo['año']})
+            """)
 
+    with st.container():
+        with st.expander("🧾 Ver detalles de la reserva", expanded=False):
+            st.markdown(f"""
+            - **Vehículo:** {vehiculo['marca']} {vehiculo['modelo']}
+            - **Tipo:** {vehiculo['tipo']}
+            - **Política de Cancelación:** {vehiculo['reembolso']}
+            - **Precio por día:** ${vehiculo['precio_dia']:,.2f}
+            """)
+    reserva = st.session_state['reserva_a_pagar']
+
+    dni = st.text_input("Documento del conductor")
+    nombreApellido = st.text_input("Nombre y apellido del conductor")
+    fecha_nac_conductor = st.date_input("Fecha de nacimiento del conductor", min_value=date(1900, 1, 1), max_value=date.today())
+    st.warning("Recuerde que sin licencia de conducir el conductor no podrá retirar el auto")
+    st.warning("En caso de salir de la pagina sin finalizar deberá comenzar el proceso nuevamente")
+    hoy = date.today()
+    edad = hoy.year - fecha_nac_conductor.year - ((hoy.month, hoy.day) < (fecha_nac_conductor.month, fecha_nac_conductor.day)) 
+    
+    if st.button("Agregar conductor"):
+        if (not dni) or (not nombreApellido):
+            st.error("Debe rellenar todos los campos")
+        elif not dni.isdigit() or len(dni) != 8:
+            st.error("El DNI ingresado no es valido. Debe ser un numero de 8 digitos.")
+        elif edad < 18:
+            st.error("El conductor debe ser mayor a 18 años para poder asignarlo a su reserva")
+        elif conductor_ya_asignado(dni):
+            st.error("El conductor ya está asignado a otra reserva")
+        else:
+            #Guardo conductor en la reserva
+            reserva['nombre_conductor'] = nombreApellido
+            reserva['edad_conductor'] = edad
+            reserva['dni_conductor'] = dni
+
+            st.success("✅ El conductor fue asignado a su reserva registrada")
+            st.session_state.paso = 5
+            if st.button("Pagar Alquiler"):
+                st.rerun()
+
+elif st.session_state.paso == 5:
+    st.session_state.mostrar_warning = True
     # Rutas de archivo
     RUTA_USUARIOS = "data/usuarios.csv"
     RUTA_ALQUILERES = "data/alquileres.csv"
@@ -402,10 +449,12 @@ elif st.session_state.paso == 4:
             
             @st.dialog("¿Deseas confirmar el pago?")
             def confirmar_pago():
+                col1, col2, col3 = st.columns([1, 1], gap="large")
                 st.success("¿Deseas confirmar el pago?")
-                if st.button("Confirmar pago"):
-                    st.session_state.pago_confirmado = True
-                    st.rerun()
+                with col3:
+                    if st.button("Confirmar pago"):
+                        st.session_state.pago_confirmado = True
+                        st.rerun()
 
 
             @st.dialog("¿Deseas cancelar el pago?")
@@ -462,8 +511,11 @@ elif st.session_state.paso == 4:
                                     "numero_tarjeta": numero_tarjeta,
                                     "monto_pagado": monto
                                 }
-
+                                df = pd.read_csv("data/pagos.csv")
+                                df = pd.concat([df, pd.DataFrame([st.session_state['nuevo_pago']])], ignore_index=True)
+                                df.to_csv("data/pagos.csv", index=False)
                                 alquiler_seleccionado['estado'] = "pagado"
+                                registrar_reserva(alquiler_seleccionado)
                                 st.success("✅ ¡Pago realizado con éxito!")
                                 st.session_state.pago_confirmado = False
 
@@ -480,57 +532,14 @@ elif st.session_state.paso == 4:
                                 df_pagos = pd.DataFrame(pagos).reset_index(drop=True)
                                 st.dataframe(df_pagos, hide_index=True)
 
-                                st.session_state.paso = 5
-                                if st.button("Agregar conductor"):
+                                st.session_state.paso = 0
+                                st.session_state.mostrar_warning = False
+                                if st.button("Finalizar"):
                                     st.rerun()    
-           
-            st.warning("En caso de salir de la página, deberás comenzar el proceso nuevamente.")
+            if st.session_state.mostrar_warning:
+                st.warning("En caso de salir de la página sin pagar, deberás comenzar el proceso nuevamente.")
             
 
-elif st.session_state.paso == 5:
-    
-    st.title("🕴🏻Agregar conductor")
-    
-    vehiculo = st.session_state.get('vehiculo_seleccionado', None)
-    
-    st.subheader(f"Reserva para: {vehiculo['patente']}")
-    st.image(f"imagenes/{vehiculo['imagen']}", width=500)
-    st.subheader(f"{vehiculo['marca']} {vehiculo['modelo']} {vehiculo['año']} {vehiculo['tipo']}. Política de cancelación: {vehiculo['reembolso']}")
-    
-    reserva = st.session_state['reserva_a_pagar']
 
-    dni = st.text_input("Documento del conductor")
-    nombreApellido = st.text_input("Nombre y apellido del conductor")
-    fecha_nac_conductor = st.date_input("Fecha de nacimiento del conductor", min_value=date(1900, 1, 1), max_value=date.today())
-    st.warning("Recuerde que sin licencia de conducir el conductor no podrá retirar el auto")
-    st.warning("En caso de salir de la pagina sin finalizar deberá comenzar el proceso nuevamente")
-    hoy = date.today()
-    edad = hoy.year - fecha_nac_conductor.year - ((hoy.month, hoy.day) < (fecha_nac_conductor.month, fecha_nac_conductor.day)) 
-    
-    if st.button("Agregar conductor"):
-        if (not dni) or (not nombreApellido):
-            st.error("Debe rellenar todos los campos")
-        elif not dni.isdigit() or len(dni) != 8:
-            st.error("El DNI ingresado no es valido. Debe ser un numero de 8 digitos.")
-        elif edad < 18:
-            st.error("El conductor debe ser mayor a 18 años para poder asignarlo a su reserva")
-        elif conductor_ya_asignado(dni):
-            st.error("El conductor ya está asignado a otra reserva")
-        else:
-            #Guardo conductor en la reserva
-            reserva['nombre_conductor'] = nombreApellido
-            reserva['edad_conductor'] = edad
-            reserva['dni_conductor'] = dni
-
-            #Guardo reserva en el CSV
-            registrar_reserva(reserva)
-            #Guardo pago en el CSV
-            df = pd.read_csv("data/pagos.csv")
-            df = pd.concat([df, pd.DataFrame([st.session_state['nuevo_pago']])], ignore_index=True)
-            df.to_csv("data/pagos.csv", index=False)
-            st.success("✅ El conductor fue asignado a su reserva registrada")
-            st.session_state.paso = 0
-            if st.button("Finalizar"):
-                st.rerun()
 
 

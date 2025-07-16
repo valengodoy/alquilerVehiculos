@@ -10,7 +10,7 @@ if "eliminarUsu" not in st.session_state:
 if "usuario_a_eliminar" not in st.session_state:
     st.session_state["usuario_a_eliminar"] = None
 
-@st.dialog("🗑️ Confirmar eliminación")
+@st.dialog("Confirmar eliminación🗑️")
 def confirmar_eliminacion(nombre_usuario):
     st.warning(f"Estás a punto de eliminar al usuario **{nombre_usuario}** del sistema. Esta acción marcará al usuario como eliminado. No podrá iniciar sesión ni realizar reservas ⚠️.")
     col1, col2 = st.columns([1, 1], gap="small")
