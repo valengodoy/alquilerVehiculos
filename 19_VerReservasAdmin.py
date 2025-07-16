@@ -10,7 +10,7 @@ RUTA_RESERVAS = "data/alquileres.csv"
 st.session_state.paso = 0
 actualizar_estado()
 
-st.title("Reservas registradas en el sistema")
+st.title("Reservas registradas en el sistema 📝")
 
 reservas = pd.read_csv(RUTA_RESERVAS)
 
@@ -33,8 +33,28 @@ if es_empleado(st.session_state['usuario_email']):
         st.subheader(f"Reservas registradas para el dia de hoy en {sucursal}:")
         for index, row in reservasPagadas.iterrows():
             cols = st.columns([8, 2])
-            cols[0].info(f"{row['id_reserva']} | {row['usuario_id']} | {row['patente']} | {row['fecha_fin']} | {row['costo_total']} | {row['nombre_conductor']} | {row['dni_conductor']}")
 
+            cols[0].markdown(f"""
+            <div style="
+                border: 2px solid #cc0000;
+                border-radius: 10px;
+                padding: 15px;
+                background-color: #000000;
+                margin-bottom: 10px;
+            ">
+                <div style="font-size:20px; font-weight:bold; color:#cc0000; margin-bottom:10px;">
+                    Reserva: {row['id_reserva']}
+                </div>
+                <div style="font-size:15px;">
+                    <b>Usuario:</b> {row['usuario_id']}<br>
+                    <b>Patente:</b> {row['patente']}<br>
+                    <b>Fecha fin:</b> {row['fecha_fin']}<br>
+                    <b>Costo total:</b> ${row['costo_total']}<br>
+                    <b>Nombre conductor:</b> {row['nombre_conductor']}<br>
+                    <b>DNI conductor:</b> {row['dni_conductor']}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
             if cols[1].button('Retirada', key=f"retirar_{row['id_reserva']}"):
                 # Guardar la reserva seleccionada en session_state
                 st.session_state["reserva_seleccionada"] = row.to_dict()

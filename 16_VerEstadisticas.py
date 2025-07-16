@@ -43,7 +43,7 @@ ingresos_reembolsos["monto_reembolsado"] = ingresos_reembolsos["monto_reembolsad
 ingresos_reembolsos["ingreso_neto"] = ingresos_reembolsos["monto_pagado"] - ingresos_reembolsos["monto_reembolsado"]
 
 colores_meses = [
-    "#636EFA", "#EF553B", "#00CC96", "#AB63FA",
+    "#636EFA", "#cc0000", "#00CC96", "#AB63FA",
     "#FFA15A", "#19D3F3", "#FF6692", "#B6E880",
     "#FF97FF", "#FECB52", "#A1C9F4", "#FFB482"
 ]
@@ -66,7 +66,7 @@ cantidad_por_mes = pagos.groupby("mes_nombre")["monto_pagado"].count().reset_ind
 cantidad_por_mes.rename(columns={"monto_pagado": "cantidad_ingresos"}, inplace=True)
 
 if cantidad_por_mes.empty or cantidad_por_mes["cantidad_ingresos"].sum() == 0:
-    st.warning("No hay registros de ingresos para mostrar en el gráfico de barras.")
+    st.warning("No hay registros de ingresos para mostrar.")
 else:
     cantidad_por_mes["mes_orden"] = pd.to_datetime(cantidad_por_mes["mes_nombre"], format="%B %Y")
     cantidad_por_mes = cantidad_por_mes.sort_values("mes_orden")
