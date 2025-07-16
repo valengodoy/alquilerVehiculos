@@ -134,10 +134,29 @@ if es_empleado(st.session_state['usuario_email']):
         st.info(f"No hay reservas en progreso en {sucursal}.")
     else:
         st.subheader(f"Reservas en progreso en {sucursal}:")
-        
         for index, row in reservasEmpezadas.iterrows():
             cols = st.columns([8,2])
-            cols[0].info(f"{row['id_reserva']} | {row['usuario_id']} | {row['patente']} | {row['fecha_fin']} | {row['costo_total']} | {row['nombre_conductor']} | {row['dni_conductor']}")
+            cols[0].markdown(f"""
+            <div style="
+                border: 2px solid #cc0000;
+                border-radius: 10px;
+                padding: 15px;
+                background-color: #000000;
+                margin-bottom: 10px;
+            ">
+                <div style="font-size:20px; font-weight:bold; color:#cc0000; margin-bottom:10px;">
+                    Reserva: {row['id_reserva']}
+                </div>
+                <div style="font-size:15px;">
+                    <b>Usuario:</b> {row['usuario_id']}<br>
+                    <b>Patente:</b> {row['patente']}<br>
+                    <b>Fecha fin:</b> {row['fecha_fin']}<br>
+                    <b>Costo total:</b> ${row['costo_total']}<br>
+                    <b>Nombre conductor:</b> {row['nombre_conductor']}<br>
+                    <b>DNI conductor:</b> {row['dni_conductor']}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
             if cols[1].button('Finalizar', key=f"finalizar_{row['id_reserva']}"):
                 reservas_df = pd.read_csv("data/alquileres.csv")  # Cargar el archivo completo
                 reservas_df.loc[reservas_df["id_reserva"] == row["id_reserva"], "estado"] = "finalizado"
