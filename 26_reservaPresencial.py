@@ -211,7 +211,7 @@ elif st.session_state.paso == 3:
                 """)
         desde = st.date_input("Reserva desde:", min_value=date.today(), max_value=date.today())
         hasta = st.date_input("Hasta:", min_value=desde + timedelta(days=1), max_value=desde + timedelta(days=14))
-        sucursal = st.selectbox('Sucursal', ['CABA','La Plata','Rosario'])
+        sucursal = st.selectbox('Sucursal', ['CABA','La Plata','Cordoba'])
         
         adicionales = pd.read_csv("data/adicionales.csv") 
 

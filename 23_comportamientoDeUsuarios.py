@@ -12,12 +12,11 @@ def cargar_datos():
     alquileres = pd.read_csv(RUTA_ALQUILERES)
     pagos = pd.read_csv(RUTA_PAGOS)
     return usuarios, alquileres, pagos
-
 def obtener_estadisticas_clientes(usuarios, alquileres, pagos):
     clientes = usuarios[
-        (usuarios["es_admin"] == False) &
-        (usuarios["es_empleado"] == False) &
-        (usuarios["activo"] == True) &
+        (usuarios["es_admin"] == False) & 
+        (usuarios["es_empleado"] == False) & 
+        (usuarios["activo"] == True) & 
         (usuarios["eliminado"] == False)
     ]
 
@@ -30,29 +29,35 @@ def obtener_estadisticas_clientes(usuarios, alquileres, pagos):
     alquileres["dias_alquiler"] = (alquileres["fecha_fin"] - alquileres["fecha_inicio"]).dt.days
     dias_prom = alquileres.groupby("usuario_id")["dias_alquiler"].mean().reset_index(name="dias_promedio")
 
+    # Filtrar solo pagos exitosos
     pagos_exitosos = pagos[pagos["estado"] == "exitoso"]
+
+    # Agrupar pagos por nombre de usuario
     pagos_por_cliente = (
         pagos_exitosos.groupby("nombre_usuario")
         .agg(pagos_completados=("id", "count"), total_pagado=("monto_pagado", "sum"))
         .reset_index()
     )
-    pagos_por_cliente["usuario_id"] = pagos_por_cliente["nombre_usuario"] + "@gmail.com"
 
+    # Unimos por el NOMBRE (no por email)
     stats = (
-        clientes[["email", "nombre"]].rename(columns={"email": "usuario_id"})
-        .merge(reservas_por_cliente, on="usuario_id", how="left")
-        .merge(dias_prom, on="usuario_id", how="left")
-        .merge(pagos_por_cliente[["usuario_id", "pagos_completados", "total_pagado"]],
-               on="usuario_id", how="left")
+        clientes[["email", "nombre"]]
+        .merge(reservas_por_cliente, left_on="email", right_on="usuario_id", how="left")
+        .merge(dias_prom, left_on="email", right_on="usuario_id", how="left")
+        .merge(pagos_por_cliente, left_on="nombre", right_on="nombre_usuario", how="left")
     )
 
+    # Eliminar columnas duplicadas innecesarias
+    stats = stats.drop(columns=["usuario_id_x", "usuario_id_y", "nombre_usuario"], errors="ignore")
+
+    # Rellenar NaNs con 0
     for col in ["total_reservas", "dias_promedio", "pagos_completados", "total_pagado"]:
         stats[col] = stats[col].fillna(0)
 
-    # Renombrar columnas
+    # Renombrar columnas para mostrar
     stats = stats.rename(columns={
         "nombre": "Nombre",
-        "usuario_id": "Correo electrónico",
+        "email": "Correo electrónico",
         "total_reservas": "Reservas totales",
         "dias_promedio": "Días promedio por reserva",
         "pagos_completados": "Pagos exitosos",
@@ -63,6 +68,7 @@ def obtener_estadisticas_clientes(usuarios, alquileres, pagos):
     stats.insert(0, "Posición", range(1, len(stats) + 1))
 
     return stats
+
 
 # --------- Interfaz en Streamlit ---------
 st.title("Panel de administración")

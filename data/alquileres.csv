@@ -6,3 +6,4 @@ id_reserva,usuario_id,patente,fecha_inicio,fecha_fin,estado,costo_dia,costo_tota
 7,amarela1825@gmail.com,NJF834,15/07/2025,16/07/2025,finalizado,25000,55000,adasd,23,33334444,True,La Plata
 8,amarela1825@gmail.com,NJF834,15/07/2025,21/07/2025,finalizado,25000,180000,aws,60,33344411,True,La Plata
 9,amarela1825@gmail.com,NJF834,15/07/2025,16/07/2025,pagado,25000,75000,asdas,23,33334444,True,CABA
+10,usuario@gmail.com,ASC215,19/07/2025,20/07/2025,pagado,35000,35000,pepe pepe,46,34567890,True,córdoba
