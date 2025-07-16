@@ -50,18 +50,25 @@ def obtener_nuevo_id(df):
 def registrar_usuario(nombre, fecha_nac, dni):
     hoy = date.today()
     edad = hoy.year - fecha_nac.year - ((hoy.month, hoy.day) < (fecha_nac.month, fecha_nac.day))
-
-    if edad < 18:
-        st.error("Debes ser mayor de 18 años para registrarte.")
-        return
-    if not dni.isdigit() or len(dni) != 8:
-        st.error("El DNI debe contener exactamente 8 dígitos numéricos.")
-        return
+    email = st.session_state.mailpres.strip()
+    
     if float(dni) in usuarios["dni"].astype(float).values:
         st.error("El DNI ya está en uso.")
         return
-
-    email = st.session_state.mailpres.strip()
+    
+    if edad < 18:
+        st.error("Debes ser mayor de 18 años para registrarte.")
+        return
+    
+    if not dni.isdigit() or len(dni) != 8:
+        st.error("El DNI debe contener exactamente 8 dígitos numéricos.")
+        return
+    
+    if "@" not in email or "." not in email:
+        st.error("El correo electrónico no tiene un formato válido.")
+        return
+    
+    
     contraseña_temporal = enviar_contraseña(email)
     if not contraseña_temporal:
         return
@@ -97,8 +104,6 @@ if st.session_state.paso == 0:
     if st.button("Buscar usuario"):
         if not email:
             st.error("Debes ingresar un email.")
-        elif "@" not in email or "." not in email:
-            st.error("El correo electrónico no tiene un formato válido.")
         else:
             st.session_state.mailpres = email.strip()
             if not existe_usuario(st.session_state.mailpres):
@@ -111,8 +116,8 @@ if st.session_state.paso == 0:
 elif st.session_state.paso == 1:
     st.title("Registro de usuario 📝")
     st.warning("Usuario no encontrado. Por favor, regístrelo.")
-    st.subheader(f"Registro para: {st.session_state.mailpres}")
     with st.form("registro_form"):
+        st.session_state.mailpres = st.text_input("Email del usuario a registrar", value=st.session_state.mailpres)
         nombre = st.text_input("Nombre de usuario")
         dni = st.text_input("DNI")
         fecha_nac = st.date_input("Fecha de nacimiento", min_value=date(1900, 1, 1), max_value=date.today())
@@ -317,7 +322,7 @@ elif st.session_state.paso == 4:
             reserva['edad_conductor'] = edad
             reserva['dni_conductor'] = dni
 
-            st.success("✅ El conductor fue asignado a su reserva registrada")
+            st.success("✅ El conductor fue asignado a su reserva exitosamente.")
             st.session_state.paso = 5
             if st.button("Pagar Alquiler"):
                 st.rerun()
@@ -438,18 +443,27 @@ elif st.session_state.paso == 5:
             
             @st.dialog("¿Deseas confirmar el pago?")
             def confirmar_pago():    
-                st.success("¿Deseas confirmar el pago?")
-                if st.button("Confirmar pago"):
+                st.success("Se acreditará el pago y se confirmará la reserva💳")
+                col1, col2 = st.columns([1, 1], gap="large")
+                with col1:
+                    if st.button("Confirmar pago✅"):
                         st.session_state.pago_confirmado = True
                         st.rerun()
-
+                with col2:
+                    if st.button("Cancelar❌"):
+                        st.rerun()
 
             @st.dialog("¿Deseas cancelar el pago?")
             def confirmar_cancelacion():
-                st.warning("⚠️ Esta acción cancelará el proceso de pago y volverás al catálogo.")
-                if st.button("Confirmar cancelación"):
-                    st.session_state.paso = 0
-                    st.rerun()
+                st.warning("Esta acción cancelará el proceso de pago y volverás al catálogo⚠️")
+                col1, col2 = st.columns([1, 1], gap="small")
+                with col1:
+                    if st.button("Confirmar cancelación✅"):
+                        st.session_state.paso = 0
+                        st.rerun()
+                with col2:
+                    if st.button("Volver atrás❌"):
+                        st.rerun()
 
             
             with cols[0]:

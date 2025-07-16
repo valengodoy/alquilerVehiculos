@@ -13,7 +13,7 @@ def cargar_datos():
     alquileres = pd.read_csv(RUTA_ALQUILERES)
     return vehiculos, alquileres
 
-st.title("Listado completo de vehículos (Administrador)")
+st.title("Listado completo de vehículos")
 
 # Cargar datos
 df_vehiculos = pd.read_csv(RUTA_VEHICULOS)

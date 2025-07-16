@@ -37,7 +37,7 @@ def reporte_autos_mas_alquilados(alquileres, vehiculos):
 # -----------------------------------
 # INTERFAZ
 # -----------------------------------
-st.title("Panel de administración")
+st.title("Reportes de autos📝")
 
 usuario_logueado = "vgodoy.info@gmail.com"
 usuarios, alquileres, vehiculos = cargar_datos()

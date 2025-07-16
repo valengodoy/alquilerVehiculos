@@ -45,6 +45,7 @@ if __name__ == "__main__":
     ver_reportesDeAutos = st.Page("24_reportesDeAutos.py", title="Reportes de autos", icon="📝")
     editarDatosEmple = st.Page("25_EditarDatosEmpleado.py", title="Editar datos de empleado", icon="✏️")
     reserPres = st.Page("26_reservaPresencial.py", title="Alquiler presencial", icon="📝")
+    inforTar = st.Page("27_InfoTarjeta.py", title="Informacion de su tarjeta", icon="🏦")
     
     if st.session_state['session_state'] == 'no_logged':
         pg = st.navigation(
@@ -78,7 +79,7 @@ if __name__ == "__main__":
             {
                 "Inicio": [inicio],
                 "Salir de tu cuenta": [cerrar_sesion],
-                "Maneja tu cuenta": [recuperar_contraseña, editarMisDatos],
+                "Maneja tu cuenta": [recuperar_contraseña, editarMisDatos, inforTar],
                 "Reservas": [ver_catalogo, mi_reserva, verHistorialReserva],
             }
         )

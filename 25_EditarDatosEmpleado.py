@@ -61,7 +61,7 @@ if st.session_state.empleado_buscado:
             else: 
                 cambios["email"] = gmail.lower()
         if sucursal.lower() != user["sucursal"].lower():
-            cambios["sucursal"] = sucursal.lower()
+            cambios["sucursal"] = sucursal
 
         hoy = date.today()
         edad = hoy.year - fecha_nac.year - ((hoy.month, hoy.day) < (fecha_nac.month, fecha_nac.day))

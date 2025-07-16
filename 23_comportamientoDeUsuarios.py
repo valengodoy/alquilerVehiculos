@@ -71,7 +71,7 @@ def obtener_estadisticas_clientes(usuarios, alquileres, pagos):
 
 
 # --------- Interfaz en Streamlit ---------
-st.title("Panel de administración")
+st.title("Comportamiento de usuarios📝")
 
 usuario_logueado = "vgodoy.info@gmail.com"
 usuarios, alquileres, pagos = cargar_datos()

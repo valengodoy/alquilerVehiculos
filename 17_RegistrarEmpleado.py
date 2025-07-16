@@ -36,6 +36,20 @@ def registrar_empleado(nombre, email, fecha_nac, dni, sucursal):
     hoy = date.today()
     edad = hoy.year - fecha_nac.year - ((hoy.month, hoy.day) < (fecha_nac.month, fecha_nac.day))
 
+    if os.path.exists(RUTA_CSV):
+        df = pd.read_csv(RUTA_CSV)
+    else:
+        columnas = ["id", "nombre", "email", "contraseña", "activo", "bloqueado", "edad", "fecha_nac", "es_admin", "dni", "es_empleado", "sucursal", "eliminado"]
+        df = pd.DataFrame(columns=columnas)
+    
+    if email in df["email"].values:
+        st.error("Error: el correo electrónico ya está registrado.")
+        return
+    
+    if float(dni) in df["dni"].values:
+        st.error("Error: el DNI ya está registrado.")
+        return
+    
     if edad < 18:
         st.error("El empleado debe ser mayor de 18 años.")
         return
@@ -46,20 +60,6 @@ def registrar_empleado(nombre, email, fecha_nac, dni, sucursal):
 
     if not dni.isdigit() or len(dni) != 8:
         st.error("El DNI debe contener exactamente 8 dígitos numéricos.")
-        return
-
-    if os.path.exists(RUTA_CSV):
-        df = pd.read_csv(RUTA_CSV)
-    else:
-        columnas = ["id", "nombre", "email", "contraseña", "activo", "bloqueado", "edad", "fecha_nac", "es_admin", "dni", "es_empleado", "sucursal", "eliminado"]
-        df = pd.DataFrame(columns=columnas)
-
-    if email in df["email"].values:
-        st.error("Error: el correo electrónico ya está registrado.")
-        return
-
-    if float(dni) in df["dni"].values:
-        st.error("Error: el DNI ya está registrado.")
         return
 
     nuevo_id = obtener_nuevo_id(df)

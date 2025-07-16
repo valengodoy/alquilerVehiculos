@@ -13,11 +13,9 @@ def cargar_empleados():
     ]
     return empleados
 
-st.title("Listado completo de empleados (Administrador)")
-
 empleados = cargar_empleados()
 
-st.subheader("Empleados registrados en el sistema")
+st.title("Empleados registrados en el sistema")
 
 if empleados.empty:
     st.info("No hay empleados cargados en el sistema.")

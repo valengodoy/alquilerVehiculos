@@ -122,6 +122,7 @@ if es_empleado(st.session_state['usuario_email']):
                         reservas = pd.read_csv("data/alquileres.csv")
                         reservas.loc[reservas["id_reserva"] == row['id_reserva'], "estado"] = "cancelado"
                         reservas.to_csv("data/alquileres.csv", index=False)
+                        st.rerun()
 
                     
     
