@@ -151,17 +151,6 @@ elif st.session_state.paso == 2:
 
         catalogo_filtrado = catalogo[filtro]
 
-        alquileres['fecha_inicio'] = pd.to_datetime(alquileres['fecha_inicio']).dt.date
-        alquileres['fecha_fin'] = pd.to_datetime(alquileres['fecha_fin']).dt.date
-        alquileres_hoy = alquileres[
-            (alquileres['estado'].isin(['activo', 'pagado'])) &
-            (alquileres['fecha_inicio'] <= hoy) &
-            (alquileres['fecha_fin'] >= hoy)
-        ]
-
-        patentes_ocupadas_hoy = alquileres_hoy['patente'].unique()
-        catalogo_filtrado = catalogo_filtrado[~catalogo_filtrado['patente'].isin(patentes_ocupadas_hoy)]
-
         if catalogo_filtrado.empty:
             st.error("🚫 No hay vehículos disponibles para alquilar hoy.")
         else:
@@ -448,11 +437,9 @@ elif st.session_state.paso == 5:
 
             
             @st.dialog("¿Deseas confirmar el pago?")
-            def confirmar_pago():
-                col1, col2, col3 = st.columns([1, 1], gap="large")
+            def confirmar_pago():    
                 st.success("¿Deseas confirmar el pago?")
-                with col3:
-                    if st.button("Confirmar pago"):
+                if st.button("Confirmar pago"):
                         st.session_state.pago_confirmado = True
                         st.rerun()
 

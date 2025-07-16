@@ -1,2 +1,2 @@
 id_reserva,usuario_id,patente,fecha_inicio,fecha_fin,estado,costo_dia,costo_total,nombre_conductor,edad_conductor,dni_conductor,alquiler_virtual,sucursal
-1,usuario2@gmail.com,NJF834,15/07/2025,16/07/2025,activo,25000,25000,maria lopez,43,30678901,True,CABA
+1,usuario2@gmail.com,NJF834,14/07/2025,15/07/2025,activo,25000,25000,maria lopez,43,30678901,True,CABA
