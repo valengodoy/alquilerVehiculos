@@ -47,20 +47,20 @@ def registrar_empleado(nombre, email, fecha_nac, dni, sucursal):
         st.error("Error: el correo electrónico ya está registrado.")
         return
     
+    if "@" not in email or "." not in email:
+        st.error("El correo electrónico no tiene un formato válido.")
+        return
+    
     if float(dni) in df["dni"].values:
         st.error("Error: el DNI ya está registrado.")
         return
     
-    if edad < 18:
-        st.error("El empleado debe ser mayor de 18 años.")
-        return
-
-    if "@" not in email or "." not in email:
-        st.error("El correo electrónico no tiene un formato válido.")
-        return
-
     if not dni.isdigit() or len(dni) != 8:
         st.error("El DNI debe contener exactamente 8 dígitos numéricos.")
+        return
+    
+    if edad < 18:
+        st.error("El empleado debe ser mayor de 18 años.")
         return
 
     nuevo_id = obtener_nuevo_id(df)

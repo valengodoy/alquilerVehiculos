@@ -10,6 +10,7 @@ import os
 import random
 import string
 
+RUTA_CSV = "data/usuarios.csv"
 catalogo = pd.read_csv("data/vehiculos.csv")
 usuarios = pd.read_csv("data/usuarios.csv")
 
@@ -52,22 +53,32 @@ def registrar_usuario(nombre, fecha_nac, dni):
     edad = hoy.year - fecha_nac.year - ((hoy.month, hoy.day) < (fecha_nac.month, fecha_nac.day))
     email = st.session_state.mailpres.strip()
     
-    if float(dni) in usuarios["dni"].astype(float).values:
-        st.error("El DNI ya está en uso.")
-        return
+    if os.path.exists(RUTA_CSV):
+        df = pd.read_csv(RUTA_CSV)
+    else:
+        columnas = ["id", "nombre", "email", "contraseña", "activo", "bloqueado", "edad", "fecha_nac", "es_admin", "dni", "es_empleado", "sucursal", "eliminado"]
+        df = pd.DataFrame(columns=columnas)
     
-    if edad < 18:
-        st.error("Debes ser mayor de 18 años para registrarte.")
-        return
-    
-    if not dni.isdigit() or len(dni) != 8:
-        st.error("El DNI debe contener exactamente 8 dígitos numéricos.")
+    if email in df.loc[df["eliminado"] == False, "email"].values:
+        
+        st.error("Error: el correo electrónico ya está registrado.")
         return
     
     if "@" not in email or "." not in email:
         st.error("El correo electrónico no tiene un formato válido.")
         return
     
+    if float(dni) in usuarios["dni"].astype(float).values:
+        st.error("El DNI ya está en uso.")
+        return
+    
+    if not dni.isdigit() or len(dni) != 8:
+        st.error("El DNI debe contener exactamente 8 dígitos numéricos.")
+        return
+    
+    if edad < 18:
+        st.error("Debes ser mayor de 18 años para registrarte.")
+        return
     
     contraseña_temporal = enviar_contraseña(email)
     if not contraseña_temporal:
@@ -248,6 +259,9 @@ elif st.session_state.paso == 3:
                 st.error('La fecha introducida no es válida ❌')
             elif tiene_reserva(user.get("email")):
                 st.error('Ya tienes una reserva realizada ❌')
+                st.session_state.paso = 0
+                if st.button("Volver al inicio"):    
+                    st.rerun()
             elif esta_alquilado_fechas(vehiculo['patente'], desde, hasta):
                 st.error('El vehículo ya tiene una reserva en ese periodo ❌')
                 st.session_state.paso = 2
